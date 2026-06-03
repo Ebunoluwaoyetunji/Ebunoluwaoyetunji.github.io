@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fileo — UX Case Study by Ebunoluwa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --navy: #0B1628;
+  --navy-mid: #1A2E4A;
+  --sage: #4A7C6F;
+  --sage-light: #8BBFB3;
+  --sage-pale: #E8F2EF;
+  --cream: #F5F2EC;
+  --warm-white: #FAFAF8;
+  --border: #E2DED8;
+  --border-mid: #D0CCC6;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555;
+  --text-tertiary: #999;
+  --amber: #F0C070;
+  --error: #C45E1A;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* NAV */
+.cs-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--navy);
+  padding: 0 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.cs-nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cream);
+}
+.cs-nav-logo span { color: var(--sage); }
+
+.cs-nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.cs-nav-links a {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.cs-nav-links a:hover { color: var(--cream); }
+
+.cs-nav-tag {
+  font-size: 11px;
+  color: var(--sage-light);
+  background: rgba(74,124,111,0.15);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 0.5px solid rgba(74,124,111,0.3);
+}
+
+/* COVER */
+.cover {
+  background: var(--navy);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 80px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74,124,111,0.10) 0%, transparent 70%);
+}
+
+.cover-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sage-light);
+  margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+
+.cover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 80px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: -3px;
+  line-height: 0.95;
+  margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+
+.cover-title span { color: var(--sage); }
+
+.cover-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-style: italic;
+  color: rgba(245,242,236,0.45);
+  margin-bottom: 56px;
+  position: relative; z-index: 1;
+}
+
+.cover-meta-row {
+  display: flex;
+  gap: 48px;
+  padding-top: 32px;
+  border-top: 0.5px solid rgba(255,255,255,0.1);
+  position: relative; z-index: 1;
+  flex-wrap: wrap;
+}
+
+.cover-meta-item {}
+.cover-meta-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 4px;
+}
+.cover-meta-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cream);
+}
+
+/* LAYOUT */
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 80px 48px;
+}
+
+.page-wide {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 48px;
+}
+
+.dark-page {
+  background: var(--navy);
+}
+
+/* SECTION HEADERS */
+.section-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--sage);
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.dark-page .section-eyebrow { color: var(--sage-light); }
+
+.section-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.dark-page .section-h { color: var(--cream); }
+
+.section-intro {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 48px;
+  max-width: 600px;
+}
+
+.dark-page .section-intro { color: rgba(245,242,236,0.6); }
+
+/* PROSE */
+.prose h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.3px;
+  margin: 40px 0 14px;
+  line-height: 1.2;
+}
+
+.prose h4 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+  margin: 24px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.prose p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 20px;
+}
+
+.prose p strong { color: var(--navy); font-weight: 500; }
+
+.prose ul {
+  margin: 0 0 20px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.prose ul li {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  padding: 6px 0 6px 20px;
+  position: relative;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.prose ul li:last-child { border-bottom: none; }
+
+.prose ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--sage);
+  font-size: 13px;
+}
+
+/* CALLOUT */
+.callout {
+  background: var(--sage-pale);
+  border-left: 3px solid var(--sage);
+  border-radius: 0 10px 10px 0;
+  padding: 20px 24px;
+  margin: 32px 0;
+}
+
+.callout p {
+  font-size: 15px;
+  color: #1A3D36;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.callout p strong { color: #0D2620; }
+
+.callout-dark {
+  background: rgba(74,124,111,0.12);
+  border-left: 3px solid var(--sage);
+  border-radius: 0 10px 10px 0;
+  padding: 20px 24px;
+  margin: 32px 0;
+}
+
+.callout-dark p {
+  font-size: 15px;
+  color: var(--sage-light);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* STAT BLOCKS */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.stat-card {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.stat-source {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+}
+
+/* PERSONA CARDS */
+.persona-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.persona-block {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.persona-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+
+.persona-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+
+.persona-role {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sage);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.persona-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.5;
+  padding: 14px 16px;
+  background: var(--cream);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border-left: 2px solid var(--sage);
+}
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+
+.tag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.tag-pain { background: #FFF0E8; color: #C45E1A; }
+.tag-goal { background: var(--sage-pale); color: #2D5C52; }
+.tag-insight { background: #F0F0FF; color: #5555CC; }
+
+/* DECISION BLOCKS */
+.decision-block {
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.decision-header {
+  background: var(--navy);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.decision-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--sage-light);
+  background: rgba(74,124,111,0.2);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.decision-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.decision-body {
+  padding: 20px 24px;
+  background: var(--warm-white);
+}
+
+.decision-why {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sage);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.decision-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.decision-evidence {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--cream);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  border-left: 2px solid var(--amber);
+}
+
+.decision-evidence strong { color: var(--navy); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+
+/* COMPETITOR TABLE */
+.comp-table {
+  width: 100%;
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.comp-table-head {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  background: var(--navy);
+  padding: 12px 16px;
+  gap: 8px;
+}
+
+.comp-th {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.comp-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  padding: 12px 16px;
+  gap: 8px;
+  border-bottom: 0.5px solid var(--border);
+  background: var(--warm-white);
+  align-items: center;
+}
+
+.comp-row:last-child { border-bottom: none; }
+.comp-row.highlight { background: var(--sage-pale); }
+
+.comp-name { font-size: 13px; font-weight: 500; color: var(--navy); }
+.comp-name small { display: block; font-size: 11px; font-weight: 400; color: var(--text-tertiary); }
+.comp-cell { font-size: 13px; color: var(--text-secondary); text-align: center; }
+.comp-yes { color: var(--sage); font-size: 16px; text-align: center; }
+.comp-no { color: var(--error); font-size: 16px; text-align: center; }
+
+/* FLOW DIAGRAM */
+.flow-step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.flow-step::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: -16px;
+  width: 1px;
+  background: var(--border);
+}
+
+.flow-step:last-child::after { display: none; }
+
+.flow-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cream);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.flow-num.sage { background: var(--sage); }
+
+.flow-content {
+  padding: 8px 0 28px;
+}
+
+.flow-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.flow-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.flow-edge {
+  font-size: 11px;
+  color: var(--sage);
+  font-weight: 500;
+  margin-top: 6px;
+  padding: 4px 10px;
+  background: var(--sage-pale);
+  border-radius: 20px;
+  display: inline-block;
+}
+
+/* INSIGHT BLOCKS */
+.insight-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.insight-card {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.insight-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--sage);
+  margin-bottom: 8px;
+}
+
+.insight-text {
+  font-size: 14px;
+  color: var(--navy);
+  line-height: 1.6;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.insight-impact {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* REFLECTION */
+.reflection-block {
+  background: var(--navy);
+  border-radius: 20px;
+  padding: 48px;
+  margin: 32px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.reflection-block::before {
+  content: '"';
+  position: absolute;
+  top: -20px; left: 32px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 200px;
+  color: rgba(74,124,111,0.08);
+  line-height: 1;
+}
+
+.reflection-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  position: relative;
+  z-index: 1;
+  max-width: 580px;
+  margin-bottom: 20px;
+}
+
+.reflection-attr {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+/* NEXT STEPS */
+.next-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.next-card {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.next-phase {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.next-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.next-body {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* DIVIDER */
+.section-divider {
+  height: 0.5px;
+  background: var(--border);
+  margin: 0 48px;
+}
+
+/* FOOTER */
+.cs-footer {
+  background: var(--navy);
+  padding: 56px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.footer-logo span { color: var(--sage); }
+
+.footer-designer {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.7;
+}
+
+.footer-designer strong { color: var(--cream); display: block; font-size: 16px; margin-bottom: 4px; }
+
+/* UTILITIES */
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-32 { margin-top: 32px; }
+.mt-48 { margin-top: 48px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+.mb-48 { margin-bottom: 48px; }
+.label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); margin-bottom: 12px; display: block; }
+
+@media (max-width: 768px) {
+  .cs-nav { padding: 0 24px; }
+  .cs-nav-links { display: none; }
+  .cover { padding: 48px 24px; }
+  .cover-title { font-size: 48px; }
+  .cover-meta-row { gap: 24px; }
+  .page, .page-wide { padding: 48px 24px; }
+  .stat-row { grid-template-columns: 1fr; }
+  .persona-row { grid-template-columns: 1fr; }
+  .insight-grid { grid-template-columns: 1fr; }
+  .next-grid { grid-template-columns: 1fr; }
+  .comp-table-head, .comp-row { grid-template-columns: 2fr 1fr 1fr; }
+  .comp-th:nth-child(4), .comp-th:nth-child(5),
+  .comp-cell:nth-child(4), .comp-cell:nth-child(5),
+  .comp-yes:nth-child(4), .comp-yes:nth-child(5),
+  .comp-no:nth-child(4), .comp-no:nth-child(5) { display: none; }
+  .cs-footer { padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="cs-nav">
+  <div class="cs-nav-logo">File<span>o</span></div>
+  <ul class="cs-nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#decisions">Decisions</a></li>
+    <li><a href="#flows">Flows</a></li>
+    <li><a href="#screens">Screens</a></li>
+    <li><a href="#prototypes">Prototypes</a></li>
+    <li><a href="#reflection">Reflection</a></li>
+  </ul>
+  <span class="cs-nav-tag">UX Case Study</span>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-label">UX Case Study · 2026</div>
+  <div class="cover-title">File<span>o</span></div>
+  <div class="cover-subtitle">Designing an AI-native tax filing service for Nigerian freelancers</div>
+  <div class="cover-meta-row">
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Designer</div>
+      <div class="cover-meta-value">Ebunoluwa (Solo)</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Role</div>
+      <div class="cover-meta-value">Product Designer — Research, Strategy, Design</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Duration</div>
+      <div class="cover-meta-value">Personal Project · 2026</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Category</div>
+      <div class="cover-meta-value">AI-Native Service · Fintech · Nigeria</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Tools</div>
+      <div class="cover-meta-value">Figma · Desk Research · User Interviews</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 01 OVERVIEW -->
+<!-- ══════════════════════ -->
+<div id="overview">
+<div class="page">
+  <span class="section-eyebrow">01 — Overview</span>
+  <h2 class="section-h">What is Fileo and why does it matter</h2>
+  <p class="section-intro">Fileo is an AI-native tax filing service that handles annual personal income tax returns on behalf of Nigerian freelancers and remote workers. The user answers simple questions, uploads their documents, and approves a summary. Fileo does everything else — including filing directly with the relevant state revenue service.</p>
+
+  <div class="prose">
+
+    <h3>The context</h3>
+    <p>In January 2026, Nigeria's Finance Act amendments came into full effect, making it mandatory for every taxable individual — including freelancers, remote workers, and people with side incomes — to file an annual personal income tax return. This was not new legislation, but enforcement had never been applied to this group before. For millions of Nigerians who had earned through platforms like Payoneer, Wise, Grey, and Stripe, this was the first time they were formally required to interact with the tax system.</p>
+
+    <p>The deadline for filing was March 31, 2026. On that day, the government portals crashed under the volume of users attempting to comply. Thousands were left stranded. Officials confirmed that penalties would still apply despite the system failure. By May 2026 — when this project began — a large percentage of the target population had not filed, penalties were accumulating at ₦50,000 per month after the first month, and no solution existed in the market that actually handled the filing process on behalf of users.</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-number">123.9M</div>
+        <div class="stat-label">Nigerians issued a NIN — all now formally in the tax net</div>
+        <div class="stat-source">NIN Enrolment Data, Oct 2025</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">₦50,000</div>
+        <div class="stat-label">Penalty added every month after the first month of non-compliance</div>
+        <div class="stat-source">Nigeria Tax Administration Act, 2025</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Products in the Nigerian market that file on your behalf — as of May 2026</div>
+        <div class="stat-source">Competitive audit, May 2026</div>
+      </div>
+    </div>
+
+    <h3>My role</h3>
+    <p>I was the sole designer on this project, responsible for every stage from initial research through to the final design system. I identified the problem space, conducted desk research, spoke with a potential user to validate assumptions, defined the user personas, mapped the information architecture, designed all six onboarding screens, the income collection flow, the review and edge case flows, the dashboard, and the incomplete filing state. I also built the brand identity system and wrote the copy across all surfaces.</p>
+
+    <p>This project was designed as a personal portfolio piece with the intention of building and launching it as a real product.</p>
+
+    <h3>The YC connection</h3>
+    <p>This project was directly inspired by Y Combinator's Summer 2026 Request for Startups, which identified AI-Native Service Companies as a priority investment area. YC's framing was specific: the next wave of valuable companies would not build tools that help people do things — they would build services that do things entirely, replacing the human labour currently outsourced to consultants, accountants, and agents. Fileo sits directly in this category. The AI processes documents, calculates obligations, and prepares the return. A CITN-certified tax professional reviews it. The user approves and the service files. This is a human-in-the-loop AI service — exactly what YC described.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════ -->
+<!-- 02 RESEARCH -->
+<!-- ══════════════════════ -->
+<div id="research">
+<div class="page">
+  <span class="section-eyebrow">02 — Research</span>
+  <h2 class="section-h">Understanding the problem before designing the solution</h2>
+  <p class="section-intro">Before designing a single screen, I needed to understand the actual state of tax compliance in Nigeria, who was affected, what they did and didn't know, and why existing solutions were failing them.</p>
+
+  <div class="prose">
+
+    <h3>Research questions</h3>
+    <p>I started by writing down what I did not know. This is a discipline I apply deliberately — separating what I know from what I am assuming from what I need to find out. For this project, the four questions that needed verified answers before I could design anything were:</p>
+
+    <ul>
+      <li>How does the Nigerian tax system actually see foreign income — what is visible to the NRS and what is not?</li>
+      <li>Were Nigerian freelancers paying tax before the 2026 reforms, and if so, to which country?</li>
+      <li>What is the current awareness level among Nigerian freelancers about the new requirements?</li>
+      <li>Is the assumption that "paying tax to my client's country covers my Nigerian obligation" a common misconception — and is it actually wrong?</li>
+    </ul>
+
+    <p>These questions shaped my entire research approach. I did not start with wireframes. I started with answers.</p>
+
+    <h3>Key research findings</h3>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Finding 01</div>
+        <div class="insight-text">Foreign income linked to a Nigerian BVN is already visible to the NRS</div>
+        <div class="insight-impact">Payoneer, Wise, Grey, and similar platforms linked to BVN accounts are not hidden from authorities. The grey area that freelancers operated in no longer exists. This was not widely known.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 02</div>
+        <div class="insight-text">Most freelancers operated in a genuine grey area — not deliberate evasion</div>
+        <div class="insight-impact">The tax status of income earned remotely from foreign companies was legally ambiguous before 2026. Freelancers were not hiding — they were operating in a system that had no clear rules for their situation. That system has now changed.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 03</div>
+        <div class="insight-text">The "I pay tax to my client's country" belief is both common and wrong</div>
+        <div class="insight-impact">Many Nigerian remote workers believe that withholding tax deducted by a foreign client satisfies their Nigerian tax obligation. Under the 2026 reforms, Nigerian residents must self-declare all global income regardless of where tax was already deducted.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 04</div>
+        <div class="insight-text">The portal crash on March 31 created a large population of motivated but stranded users</div>
+        <div class="insight-impact">Thousands of people who wanted to comply were unable to. They are now accumulating penalties for a failure that was partly the government's. This group — frustrated, already behind, actively looking for help — is one of the most commercially viable user segments for Fileo.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 05</div>
+        <div class="insight-text">Tax compliance is becoming a gateway to financial services</div>
+        <div class="insight-impact">Fintechs including Paystack and Flutterwave are integrating Tax ID verification into their onboarding. Non-compliance will soon block access to loans, government contracts, and visa applications. The stakes extend far beyond avoiding a fine.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 06</div>
+        <div class="insight-text">Even people below the ₦800,000 threshold must still file a nil return</div>
+        <div class="insight-impact">The most common assumption among low earners is that "I don't earn enough to pay tax, so I don't need to do anything." This is factually incorrect. Filing is mandatory even when the tax owed is zero. Failing to file still incurs penalties.</div>
+      </div>
+    </div>
+
+    <h3>User research — speaking to a potential user</h3>
+    <p>Beyond desk research, I conducted a conversation with a potential user — a Nigerian professional with a salaried job and income from multiple sources. This conversation produced three specific product insights that directly shaped the design:</p>
+
+    <div class="callout">
+      <p><strong>Insight 1 — Tax education is needed before the product.</strong> The user wanted to understand the difference between income tax and VAT before they trusted any service touching their finances. The fear was not just "will you make a mistake" — it was "I don't even understand what you're doing with my money."</p>
+    </div>
+
+    <div class="callout">
+      <p><strong>Insight 2 — Record keeping is essential for trust.</strong> Nigerian users are sceptical of digital services that do not provide a permanent, accessible record of what happened. The user specifically asked whether they could come back and see their previous filings. This became a core feature of the dashboard.</p>
+    </div>
+
+    <div class="callout">
+      <p><strong>Insight 3 — Undescribed bank transactions are a real problem.</strong> The user flagged that Nigerian bank statements frequently contain transactions with no description — just an amount, a date, and a reference code. Since Fileo's income detection relies on reading bank statements, this edge case needed a deliberate design solution rather than an error state.</p>
+    </div>
+
+    <h3>Competitive audit</h3>
+    <p>I audited every existing solution in the Nigerian tax compliance space before designing anything. The findings were consistent: every product currently available either requires the user to do the hard work themselves, or is not yet live.</p>
+  </div>
+
+  <div class="comp-table">
+    <div class="comp-table-head">
+      <div class="comp-th">Product</div>
+      <div class="comp-th" style="text-align:center">Files for you</div>
+      <div class="comp-th" style="text-align:center">Human review</div>
+      <div class="comp-th" style="text-align:center">AI-powered</div>
+      <div class="comp-th" style="text-align:center">Currently live</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-name">Rev360 / TaxPro Max<small>Government portal — NRS</small></div>
+      <div class="comp-no">✗</div>
+      <div class="comp-no">✗</div>
+      <div class="comp-no">✗</div>
+      <div class="comp-yes">✓</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-name">Taash<small>AI tax tracking tool</small></div>
+      <div class="comp-no">✗</div>
+      <div class="comp-no">✗</div>
+      <div class="comp-yes">✓</div>
+      <div class="comp-no">✗</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-name">Human Accountant<small>Individual tax consultants</small></div>
+      <div class="comp-yes">✓</div>
+      <div class="comp-yes">✓</div>
+      <div class="comp-no">✗</div>
+      <div class="comp-yes">✓</div>
+    </div>
+    <div class="comp-row highlight">
+      <div class="comp-name" style="color:var(--sage);font-weight:600">Fileo<small style="color:var(--sage)">AI-native filing service</small></div>
+      <div class="comp-yes">✓</div>
+      <div class="comp-yes">✓</div>
+      <div class="comp-yes">✓</div>
+      <div class="comp-cell" style="color:var(--amber);font-size:12px">In design</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>The gap is specific and unoccupied: a service that is AI-powered, uses certified human review, files on the user's behalf, and is actually available. Taash validates that the market exists — people are signing up for a waiting list. But Taash stops at estimation. Fileo starts where Taash ends.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════ -->
+<!-- 03 DEFINITION -->
+<!-- ══════════════════════ -->
+<div id="definition">
+<div class="page">
+  <span class="section-eyebrow">03 — Problem Definition & Users</span>
+  <h2 class="section-h">Who Fileo is for and what it is solving</h2>
+  <p class="section-intro">Research produced a clear problem statement and five distinct user profiles. Rather than designing for all five equally, I made a deliberate prioritisation decision that shaped every design choice that followed.</p>
+
+  <div class="prose">
+
+    <h3>The problem statement</h3>
+  </div>
+
+  <div class="reflection-block">
+    <div class="reflection-text">Nigerian freelancers and remote workers with irregular, multi-source income are now legally required to file annual tax returns — but they lack the knowledge, documentation, and financial means to do it alone. What was once an ignored obligation is now actively enforced, leaving a large population confused, anxious, and exposed to compounding penalties.</div>
+    <div class="reflection-attr">Fileo Problem Statement</div>
+  </div>
+
+  <div class="prose">
+    <p>This statement does four things deliberately. It names the user specifically rather than broadly. It describes their income reality — irregular and multi-source — which is the core technical challenge. It acknowledges both the knowledge gap and the financial barrier. And it explains why the timing matters: this was not always a problem, but it is now.</p>
+
+    <h3>Five user profiles</h3>
+    <p>I identified five distinct user mindsets in the target population. Each has a different relationship with the problem, a different emotional state, and different design implications. Documenting all five was important — but designing for all five equally would have produced a product that served nobody well.</p>
+  </div>
+
+  <div class="persona-row">
+    <div class="persona-block">
+      <div class="persona-avatar">AU</div>
+      <div class="persona-name">The Aware but Paralysed</div>
+      <div class="persona-role">Primary User — Remote Worker</div>
+      <div class="persona-quote">"I know I should file. I just don't know how, and I'm scared I'll do it wrong."</div>
+      <div class="label">Pain Points</div>
+      <div class="tag-row">
+        <span class="tag tag-pain">Fears making a mistake</span>
+        <span class="tag tag-pain">Doesn't trust service providers</span>
+        <span class="tag tag-pain">Multiple income sources</span>
+        <span class="tag tag-pain">Messy financial records</span>
+      </div>
+      <div class="label mt-16">Design implication</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6">Every screen must reduce anxiety. Trust signals must be explicit and specific — not generic. The user must be able to review everything before it is submitted.</p>
+    </div>
+    <div class="persona-block">
+      <div class="persona-avatar" style="background:#1A2E4A">DI</div>
+      <div class="persona-name">The Disengaged Low Earner</div>
+      <div class="persona-role">Secondary User — Local Freelancer</div>
+      <div class="persona-quote">"I barely make anything. Why would they come for me?"</div>
+      <div class="tag-row">
+        <span class="tag tag-pain">Doesn't think the law applies</span>
+        <span class="tag tag-pain">Doesn't know nil returns are required</span>
+        <span class="tag tag-pain">Will only engage via fintech platforms</span>
+      </div>
+      <div class="label mt-16">Design implication</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6">This user won't come to Fileo directly. The go-to-market strategy — fintech platform partnerships — is the design solution for reaching them.</p>
+    </div>
+    <div class="persona-block">
+      <div class="persona-avatar" style="background:#2A3F5A">FC</div>
+      <div class="persona-name">The False Compliant</div>
+      <div class="persona-role">Secondary User — Salaried + Side Income</div>
+      <div class="persona-quote">"My employer handles my PAYE. I'm covered."</div>
+      <div class="tag-row">
+        <span class="tag tag-pain">Confidently wrong</span>
+        <span class="tag tag-pain">Undeclared side income</span>
+        <span class="tag tag-pain">Professional reputation at risk</span>
+      </div>
+      <div class="label mt-16">Design implication</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6">Must be handled with care — the discovery that they are non-compliant must feel like help, not accusation. Needs combined filing for employment and side income.</p>
+    </div>
+    <div class="persona-block">
+      <div class="persona-avatar" style="background:#3D4A5A">FF</div>
+      <div class="persona-name">The Failed Complier</div>
+      <div class="persona-role">Secondary User — Already Behind</div>
+      <div class="persona-quote">"I tried. The portal crashed. Now I'm being penalised for their system failing."</div>
+      <div class="tag-row">
+        <span class="tag tag-pain">Frustrated and behind</span>
+        <span class="tag tag-pain">Penalty growing each month</span>
+        <span class="tag tag-pain">Needs proof of good faith attempt</span>
+      </div>
+      <div class="label mt-16">Design implication</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6">The retroactive filing path must acknowledge the system's failure, not the user's. Penalty mitigation guidance and proof of attempt are specific features for this user.</p>
+    </div>
+  </div>
+
+  <div class="persona-block mb-32" style="border-color:var(--border)">
+    <div class="persona-avatar" style="background:#4A5568">WL</div>
+    <div class="persona-name">The Willing but Lost</div>
+    <div class="persona-role">Secondary User — Jargon Barrier</div>
+    <div class="persona-quote">"I've read everything I could find. Every answer creates three new questions."</div>
+    <div class="tag-row mb-16">
+      <span class="tag tag-pain">Overwhelmed by tax language</span>
+      <span class="tag tag-pain">Doesn't know which state to file with</span>
+      <span class="tag tag-pain">Has given up twice already</span>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.6"><strong>Design implication:</strong> Every piece of copy must be written in plain language. No tax term should appear without an immediate plain-English explanation. The product must never assume prior knowledge.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Why the primary user determines every design decision</h3>
+    <p>Fileo serves all five user profiles. But it is primarily designed for <strong>the Aware but Paralysed user</strong> — the remote worker who knows they need to comply but is blocked by anxiety, complexity, and distrust. This decision was not arbitrary. It was strategic for three reasons.</p>
+
+    <p>First, this user is the most motivated. They already believe the problem is real. Fileo does not need to convince them — it needs to remove the obstacles in their way. Second, designing for the most anxious and distrustful user produces a product rigorous enough for everyone else. The trust signals, the review step, the plain language — these serve all five users, but they are only built if the most demanding user is the primary target. Third, this user represents the largest commercially viable segment — they are willing to pay for a solution and they are actively looking for one.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════ -->
+<!-- 04 DESIGN DECISIONS -->
+<!-- ══════════════════════ -->
+<div id="decisions">
+<div class="page">
+  <span class="section-eyebrow">04 — Design Decisions</span>
+  <h2 class="section-h">The specific choices made and the reasons behind them</h2>
+  <p class="section-intro">Every significant design decision in Fileo was made in response to a specific user insight or research finding. This section documents those decisions explicitly so the connection between research and design is traceable.</p>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 01</span>
+      <div class="decision-title">Conversational onboarding — one question at a time</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">The onboarding flow presents one question per screen rather than a multi-field form. Each question is written in plain language. Progress is always visible. No tax terminology appears without an immediate explanation of what it means.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        Research identified two primary drop-off points in the user journey: onboarding (if it is too long or uses jargon) and the document upload stage (if it is too complex). A potential user confirmed this directly. The form approach was rejected because it presents the full complexity of the task at once. The conversational approach breaks it into small, answerable steps. The cognitive load is distributed across time rather than concentrated in a single moment.
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 02</span>
+      <div class="decision-title">User reviews and approves the return before submission</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">Before anything is submitted to the revenue service, the user sees a complete, plain-language summary of their return — income declared, deductions applied, tax calculated, state revenue service identified. They must actively approve it. Nothing is submitted without their confirmation.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        User research identified "what if the service makes a mistake with my numbers" as the primary trust barrier for the Aware but Paralysed user. The principle "Fileo does the work, the user makes the final call" directly addresses this fear. Removing this step would simplify the flow but destroy the trust it took six screens to build. A commitment gate modal was added before the final submission to make the action feel deliberate, not accidental.
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 03</span>
+      <div class="decision-title">Platform-first income collection with grouped document uploads</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">Instead of asking "what was your income last year?" — which would require the user to calculate and remember — Fileo asks "which platforms did you receive payments through?" The user selects from a visual grid of platforms they recognise. Fileo then asks for the specific documents relevant to those platforms only, grouped clearly by platform with step-by-step instructions for how to download each statement.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        Research showed that Nigerian freelancers receive income through multiple platforms simultaneously — Payoneer, Grey, Wise, brand deals, YouTube AdSense, direct bank transfer. Asking for "income records" is too abstract. Breaking it into "which platforms?" and then "upload the statement from that platform" is concrete and achievable. The grouped upload approach was chosen over a month-by-month approach after identifying that twelve months of questions would be too long, even though month-by-month is more natural for memory recall.
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 04</span>
+      <div class="decision-title">A hard gate on unresolved flagged transactions</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">When Fileo detects a bank transaction with no description, it flags it and asks the user to categorise it. The user cannot proceed to deductions or review until every flagged transaction has a category. The Continue button remains disabled and its label changes to "Resolve transactions first." Once all flags are resolved, the button activates and a confirmation message appears.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        A potential user identified this as a specific real-world problem: Nigerian bank statements regularly contain transactions with no description — just an amount, a date, and a reference number. Allowing the user to skip unresolved transactions would produce an inaccurate return and expose them to the exact penalties Fileo is meant to prevent. The gate is firm but the language is warm — framed as "we need your help to get this right" rather than as an error or a block.
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 05</span>
+      <div class="decision-title">The review screen leads with savings, not the tax bill</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">The review screen opens with a dark hero card showing two numbers side by side at equal visual weight: the amount saved through deductions on the left, and the tax owed on the right. Neither number is hidden. The headline reads: "Here's your final return — ready to file." The savings figure is shown in green. The tax owed is shown in white. An explanatory line inside the card states what the bill would have been without deductions.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        An earlier version led with only the deductions saved, which a design review identified as potentially misleading — users might mistake the savings figure for the amount they owed. Leading with only the tax bill would trigger anxiety and potential abandonment. The side-by-side layout was chosen to show both numbers simultaneously, with the savings contextualising the bill. The emotional impact shifts from "I owe this much" to "Fileo reduced what I owed, and here is the final number."
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 06</span>
+      <div class="decision-title">A tax education section on the landing page with an interactive calculator</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">Before asking anyone to create an account, the landing page includes a section that explains the difference between income tax and VAT in plain language, shows how Nigerian tax bands work visually, and provides an interactive calculator where the user can enter their income and deductions to see their estimated tax owed — before committing to anything.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        A potential user stated directly: "Nigerians are not always educated on how tax works. They need to see that Fileo is not just taking their money — they need to understand the process." The calculator serves a dual purpose: it educates the user and it converts them. The moment someone enters their income and sees their estimated tax, the problem becomes real and personal. Combined with the deduction fields — which reduce the number — the user experiences Fileo's value before they have created an account.
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 07</span>
+      <div class="decision-title">Save progress and return — designed as a first-class feature</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">After identity verification, users can save their progress and return later. When they return, they see a dedicated incomplete filing dashboard — not the main dashboard — that shows their progress bar, exactly where they stopped, what documents they still need to gather, and step-by-step instructions for how to obtain each missing document. A deadline countdown with the compounding penalty amount creates urgency without being alarmist.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        Filing a tax return requires documents that not everyone has immediately available — bank statements, Payoneer annual reports, rent receipts. A user who starts the process at 11pm without their documents ready should not face an abandoned session or a restart. Saving progress is standard product behaviour but the returning state — the incomplete filing dashboard — was deliberately designed as a full screen because the user's needs when returning are different from their needs when starting fresh. They need orientation, not a fresh introduction.
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-block">
+    <div class="decision-header">
+      <span class="decision-num">Decision 08</span>
+      <div class="decision-title">Fintech platform partnerships as the primary go-to-market</div>
+    </div>
+    <div class="decision-body">
+      <div class="decision-why">Why this was chosen</div>
+      <div class="decision-text">Fileo's primary distribution strategy is not paid advertising or organic social media. It is integration with the fintech platforms — Grey, Payoneer, Geegpay, Raenest — that Nigerian freelancers already use to receive payments. The government's Tax ID implementation, announced May 18, 2026, requires fintechs to verify tax compliance before serving users. This creates a natural, contextual entry point: the moment a freelancer sees "you need to be tax compliant to continue" inside their payment platform is the moment of highest motivation for Fileo.</div>
+      <div class="decision-evidence">
+        <strong>Evidence</strong>
+        The Disengaged Low Earner — who does not believe the law applies to them — will not discover Fileo through a search or an ad. They will discover it when their payment platform enforces compliance. The partnership model also creates trust transfer: if Grey or Geegpay recommends Fileo, the user inherits some of that platform's existing trust. This is a more efficient and more credible acquisition path than any paid channel.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════ -->
+<!-- 05 FLOWS & IA -->
+<!-- ══════════════════════ -->
+<div id="flows">
+<div class="page">
+  <span class="section-eyebrow">05 — Information Architecture & User Flows</span>
+  <h2 class="section-h">How the product is structured and how users move through it</h2>
+  <p class="section-intro">The information architecture organises Fileo into four distinct areas. The user flows document four distinct journeys — each corresponding to a different user mindset and entry point.</p>
+
+  <div class="prose">
+    <h3>Information architecture</h3>
+    <p>Fileo's product is structured into four areas, each with a distinct purpose and user state:</p>
+
+    <ul>
+      <li><strong>Public area</strong> — Landing page, tax explainer and calculator, pricing, and trust/FAQ. Accessible to all unauthenticated users. Purpose: convert a curious visitor into a person who creates an account.</li>
+      <li><strong>Onboarding</strong> — Six-step flow covering account creation, identity verification, welcome screen, income source selection, document upload, and deductions discovery. Purpose: collect everything Fileo needs to prepare an accurate return.</li>
+      <li><strong>Filing flow</strong> — Income summary with flagged transaction resolution, deductions, review and approval, commitment gate, and confirmation. Purpose: present the prepared return to the user, get approval, and file.</li>
+      <li><strong>Authenticated dashboard</strong> — Home with compliance status, filing history, documents, compliance badge, and profile. Purpose: serve returning users with record-keeping, proof of compliance, and access to past filings.</li>
+    </ul>
+
+    <h3>Flow 1 — The first-time user</h3>
+    <p>The primary journey from entry to filed return. This flow includes two key decision points: a trust gate on the landing page (where a sceptical user may read the FAQ and tax explainer before proceeding) and a flagged transactions gate in the income summary (where unresolved transactions block progression).</p>
+  </div>
+
+  <div style="margin:32px 0">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-content">
+        <div class="flow-title">Entry from fintech app banner</div>
+        <div class="flow-desc">User sees a compliance prompt inside Grey, Payoneer, or another fintech platform. Taps through to Fileo's landing page.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-content">
+        <div class="flow-title">Landing page — trust gate</div>
+        <div class="flow-desc">User reads the headline, how-it-works section, and trust signals. If not convinced, they scroll to the tax explainer and FAQ. Once convinced, they tap "Get started."</div>
+        <div class="flow-edge">Edge: Sceptical user reads tax explainer → returns to create account</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-content">
+        <div class="flow-title">Account creation + identity verification</div>
+        <div class="flow-desc">Name, email, phone number, password. Then NIN and BVN with plain-language explanations of why each is needed and how to find them.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-content">
+        <div class="flow-title">Welcome screen — expectations set</div>
+        <div class="flow-desc">User sees what happens next in four clear steps. Time estimate shown: about 10 minutes. Option to save progress and return later is presented here.</div>
+        <div class="flow-edge">Edge: User not ready → saves progress → returns via incomplete filing dashboard</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">5</div>
+      <div class="flow-content">
+        <div class="flow-title">Income source selection</div>
+        <div class="flow-desc">Multi-select visual grid of platforms organised into three categories: international payment platforms, Nigerian fintechs, and content/creator platforms. Includes Payoneer, Wise, Grey, Geegpay, Raenest, YouTube/AdSense, TikTok, brand deals, Upwork/Fiverr, and others. Continue button activates only when at least one platform is selected.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">6</div>
+      <div class="flow-content">
+        <div class="flow-title">Document upload — grouped by platform</div>
+        <div class="flow-desc">Upload requests shown together, grouped by each selected platform. Each group has specific, step-by-step instructions for how to obtain the statement. Required and optional tags on each item.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">7</div>
+      <div class="flow-content">
+        <div class="flow-title">Income summary + flagged transactions gate</div>
+        <div class="flow-desc">Fileo presents grouped income totals, foreign currency converted at CBN average rate. Flagged transactions appear below with categorisation options. Continue button is disabled until all flags are resolved.</div>
+        <div class="flow-edge">Gate: Unresolved transactions block progression</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">8</div>
+      <div class="flow-content">
+        <div class="flow-title">Deductions discovery</div>
+        <div class="flow-desc">Three toggleable deduction categories: rent, pension, health insurance. Each shows the maximum saving before the toggle is switched on — motivating engagement. Fields expand when toggled. Notes explain how each deduction is calculated.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">9</div>
+      <div class="flow-content">
+        <div class="flow-title">Review and approval</div>
+        <div class="flow-desc">Full return summary in plain language. Savings and tax owed shown side by side. Edit options available for income, deductions, and documents. "I have a question" option available.</div>
+        <div class="flow-edge">Edge: User wants to change something → change navigator → specific edit screen → returns to review</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num sage">✓</div>
+      <div class="flow-content">
+        <div class="flow-title">Commitment gate → submission → confirmation</div>
+        <div class="flow-desc">Modal confirms the action is irreversible. User taps "Yes, submit my return." Confirmation screen shows a four-step timeline: approved → professional review → filed with LIRS → confirmation email. Download option available immediately.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>Flow 2 — The returning user</h3>
+    <p>A user who has already filed at least one return logs in directly to the dashboard. From there, three paths are available: viewing their compliance badge (and sharing or downloading it as proof), accessing filing history to view or download past returns and tax clearance certificates, or beginning a new year's filing when the period opens. The dashboard is the single source of truth for their compliance record.</p>
+
+    <h3>Flow 3 — The retroactive filer</h3>
+    <p>A user who missed the March 31 deadline arrives at Fileo having already accumulated penalties. The landing page includes retroactive filing pricing. After account creation and verification, this user sees a penalty summary — showing their current exposure clearly — before proceeding through the same income and deductions flow as a standard filer. Their return includes a late filing note and penalty mitigation guidance, and they receive documented proof that they have now filed — which serves as evidence of good faith compliance.</p>
+
+    <h3>Flow 4 — The interrupted filer</h3>
+    <p>A user who creates an account but does not have all their documents ready saves their progress after the welcome screen. When they return, they land on the incomplete filing dashboard rather than the standard dashboard. This screen shows their progress bar, exactly which step they stopped at, a checklist of completed and pending steps, and a "what you still need to gather" section with step-by-step instructions for each missing document. A deadline countdown is visible throughout. The "Continue my filing" button navigates them directly to the step where they stopped.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════ -->
+<!-- 06 KEY SCREENS -->
+<!-- ══════════════════════ -->
+<div id="screens">
+<div class="page">
+  <span class="section-eyebrow">06 — Key Screens</span>
+  <h2 class="section-h">The designed experience</h2>
+  <p class="section-intro">The screens below represent the most critical moments in the Fileo user journey. Each is described with the specific design reasoning behind it — not just what it looks like, but why it was built that way.</p>
+
+  <div class="prose">
+
+    <h3>The landing page</h3>
+    <p>The landing page is structured as a six-section scrollable experience: hero, problem statement, how it works, trust, pricing, and final call to action. The decision to use multiple sections rather than a single dense page was deliberate — each section answers one question in the user's decision process. The hero section answers "what is this and is it for me?" in five seconds. The problem section makes the user feel understood — it describes their exact situation using verified data including the portal crash, the monthly penalty, and the BVN visibility issue. The how it works section removes fear of the unknown by showing the four steps before the user commits to anything.</p>
+
+    <p>The hero headline reads: "We file your taxes. You do nothing." This was chosen over more qualified alternatives because the primary anxiety of the target user is complexity. The headline's job is to tell them that complexity has been removed. The trust section uses specific, verifiable claims rather than general assurances: bank-level encryption, CITN-certified professionals, NRS compliance. The pricing section shows three tiers — Basic, Freelancer, and Retroactive — with transparent pricing and a comparison note showing the typical cost of a human accountant.</p>
+
+    <h3>The tax education section</h3>
+    <p>This section appears between "How it works" and "Trust" on the landing page. It begins with a headline that directly addresses the fear identified in user research: "Fileo is not taking your money. The government was always going to." Two cards distinguish income tax from VAT — the former labelled clearly as what Fileo handles, the latter explained as something the user has already been paying automatically on purchases. The tax band chart uses horizontal bars at varying opacity to show the progressive rate structure visually. The interactive calculator below allows the user to enter their income and deductions and see their estimated liability in real time. When the user adds deductions and the taxable income drops, the experience communicates Fileo's value without any additional copy.</p>
+
+    <h3>The onboarding flow</h3>
+    <p>The six onboarding screens share a consistent structure: a progress bar at the top (always showing completion percentage), a single task per screen, and a two-button footer with a primary action and a back option. Screen 2 — identity verification — includes a plain-language explanation of why the NIN and BVN are needed and a helper note below each field explaining how to find the number. Screen 3 — the welcome screen — sets the expectation that the process takes about 10 minutes and shows what happens in each subsequent step. This screen was designed specifically to prevent drop-off from users who don't know what they're walking into.</p>
+
+    <h3>Income collection and the flagged transactions screen</h3>
+    <p>The income source selection screen uses a tile grid rather than a dropdown or text list. Tiles are visually scannable, tactile on mobile, and match the way users think about platforms — as recognisable brand names, not abstract financial categories. The grid is organised into three visual groups: international platforms, Nigerian fintechs, and content/creator platforms. The counter below the grid updates as selections are made — "3 platforms selected" — providing feedback and creating a sense of completeness.</p>
+
+    <p>The income summary screen is split into two parts. The top shows the calculated totals grouped and labelled clearly. Below that, flagged transactions are presented in amber — a visual signal of caution without alarm. Each transaction shows the date, amount, and a plain question: "What was this payment for?" Four options are presented as buttons — not a dropdown, not a text field — because buttons are the fastest interaction for a mobile user and the options cover the vast majority of real-world cases. The gate is enforced programmatically: the Continue button is disabled and its label changes. Once the last flag is resolved, the button activates and a green confirmation message appears. The gate feels like it opens, not like a block is removed.</p>
+
+    <h3>The review screen</h3>
+    <p>The review screen is the most important screen in the product. A user who reaches this point has invested ten minutes and trusted Fileo with their financial information. The design must honour that investment and convert it into a completed filing.</p>
+
+    <p>The screen leads with a dark card showing the savings and tax owed side by side. The intent is to contextualise the bill before the user processes it emotionally. Below the card, a complete income breakdown shows all platforms and amounts. The tax calculation table shows the arithmetic transparently — income, deductions, allowance, taxable income, tax owed. The filing information card shows which state revenue service the return is being filed with, for which tax year, and by which category of professional. A certified professional review note explains the next step: the return will be reviewed before submission and the user will hear within two hours. An "I have a question" option is prominently available — not buried in a menu. The two footer buttons — primary "Approve and submit" and secondary "I want to make a change" — are equal in size but different in hierarchy.</p>
+
+    <h3>The dashboard</h3>
+    <p>The dashboard serves returning users. Its single most important function is to communicate compliance status immediately. The compliance card occupies the top of the screen with a clear status tag, the tax year, and the filing date. Three summary statistics — years filed, total saved through deductions, penalties incurred — are visible at a glance. The compliance badge button opens a modal showing a shareable proof-of-compliance card with the user's name, tax year, filing authority, and the CITN certification of the reviewing professional. The badge includes a disclaimer that it is Fileo-issued confirmation of filing, not a government certificate — this is an intentional trust decision: overclaiming the badge's authority would be dishonest and could cause problems for users presenting it as official documentation.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════ -->
+<!-- 07 PROTOTYPES -->
+<!-- ══════════════════════ -->
+<div id="prototypes">
+<div class="page-wide">
+  <span class="section-eyebrow">07 — Interactive Prototypes</span>
+  <h2 class="section-h">Explore the designs</h2>
+  <p class="section-intro">Every screen below is the actual designed prototype — fully interactive. Click through the flows, fill in the fields, and explore the edge cases exactly as a real user would.</p>
+
+  <!-- LANDING PAGE -->
+  <div class="mb-48">
+    <div class="label mb-8">Screen 01 — Landing Page</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The full scrollable landing page. Notice how each section answers one question in the user's decision process — from "what is this" to "is it safe" to "how much does it cost."</p>
+    <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08)">
+      <iframe src="fileo_landing_page.html" width="100%" height="600" frameborder="0" scrolling="yes" style="display:block"></iframe>
+    </div>
+  </div>
+
+  <!-- ONBOARDING -->
+  <div class="mb-48">
+    <div class="label mb-8">Screen 02 — Onboarding Flow (6 screens)</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The complete onboarding journey from account creation to deductions discovery. Use the Continue and Back buttons to move through all six screens. On Screen 4 (income sources), select platforms to activate the Continue button.</p>
+    <div style="display:flex;justify-content:center">
+      <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08);width:100%;max-width:480px">
+        <iframe src="fileo_onboarding.html" width="100%" height="640" frameborder="0" scrolling="no" style="display:block"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCOME FLOW -->
+  <div class="mb-48">
+    <div class="label mb-8">Screen 03 — Income Collection & Flagged Transactions</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The income collection flow showing platform selection, grouped document uploads, and the income summary with flagged transactions gate. The Continue button on the summary screen remains locked until all three flagged transactions are categorised.</p>
+    <div style="display:flex;justify-content:center">
+      <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08);width:100%;max-width:480px">
+        <iframe src="fileo_review_edge_cases.html" width="100%" height="660" frameborder="0" scrolling="no" style="display:block"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW + EDGE CASES -->
+  <div class="mb-48">
+    <div class="label mb-8">Screen 04 — Review, Edge Cases & Confirmation</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The review screen with the balanced savings/tax hero, the commitment gate modal, the change navigator, and the confirmation timeline. Try both paths — approve the return and try making a change — to see how edge cases are handled.</p>
+    <div style="display:flex;justify-content:center">
+      <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08);width:100%;max-width:480px">
+        <iframe src="fileo_review_edge_cases.html" width="100%" height="660" frameborder="0" scrolling="no" style="display:block"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="mb-48">
+    <div class="label mb-8">Screen 05 — Authenticated Dashboard</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The returning user dashboard showing compliance status, filing history, and documents. Tap any filing year to expand the actions. Tap "View badge" to see the compliance badge modal.</p>
+    <div style="display:flex;justify-content:center">
+      <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08);width:100%;max-width:480px">
+        <iframe src="fileo_dashboard.html" width="100%" height="680" frameborder="0" scrolling="no" style="display:block"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCOMPLETE DASHBOARD -->
+  <div class="mb-48">
+    <div class="label mb-8">Screen 06 — Incomplete Filing Dashboard</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The saved progress state for users who started filing but are not yet ready to complete it. Shows exactly where they stopped, what they still need to gather, and a deadline countdown with the compounding penalty amount.</p>
+    <div style="display:flex;justify-content:center">
+      <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08);width:100%;max-width:480px">
+        <iframe src="fileo_incomplete_dashboard.html" width="100%" height="680" frameborder="0" scrolling="no" style="display:block"></iframe>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════ -->
+<!-- 08 REFLECTION -->
+<!-- ══════════════════════ -->
+<div id="reflection">
+<div class="dark-page">
+<div class="page">
+  <span class="section-eyebrow">08 — Reflection & Next Steps</span>
+  <h2 class="section-h">What I learned and what comes next</h2>
+  <p class="section-intro">A case study without honest reflection is a highlight reel. This section documents what worked, what I would do differently, what remains unvalidated, and what the product needs before it can be built and launched.</p>
+
+  <div class="prose" style="color:rgba(245,242,236,0.7)">
+
+    <h3 style="color:var(--cream)">What worked well</h3>
+    <p style="color:rgba(245,242,236,0.6)"><strong style="color:var(--cream)">Starting with research questions, not wireframes.</strong> The decision to write down what I did not know before designing anything produced a more grounded product. The four research questions I identified at the start of the project directly shaped the five user profiles, which directly shaped the eight design decisions, which directly shaped the screens. The research is traceable through to the final output.</p>
+
+    <p style="color:rgba(245,242,236,0.6)"><strong style="color:var(--cream)">Speaking to a real user early.</strong> The conversation with a potential user produced three insights that would not have come from desk research alone — the tax education gap, the record-keeping requirement, and the undescribed bank transaction problem. Each became a significant feature. The investment was a single conversation. The return was a more honest and useful product.</p>
+
+    <p style="color:rgba(245,242,236,0.6)"><strong style="color:var(--cream)">Making the primary user decision explicitly.</strong> Committing to the Aware but Paralysed user as the primary design target — rather than trying to serve all five equally — produced a coherent product with a clear point of view. Every screen can be evaluated against one question: does this reduce anxiety and build trust for someone who is sceptical and overwhelmed?</p>
+
+    <h3 style="color:var(--cream)">What I would do differently</h3>
+    <p style="color:rgba(245,242,236,0.6)"><strong style="color:var(--cream)">More user conversations before finalising the flows.</strong> The research for this project was primarily desk-based with one user conversation. A stronger research phase would include five to eight conversations with actual Nigerian freelancers covering a range of income levels, platforms, and levels of tax awareness. Some of the assumptions I made about user behaviour — particularly around the deductions screen and the document upload flow — are reasonable but unvalidated.</p>
+
+    <p style="color:rgba(245,242,236,0.6)"><strong style="color:var(--cream)">Prototype testing on the commitment gate.</strong> The commitment gate modal — the "are you sure?" screen before final submission — was designed based on reasoning about what anxious users need. It has not been tested. It is possible that the gate adds friction rather than reassurance for some users. Usability testing with the prototype would verify this.</p>
+
+    <p style="color:rgba(245,242,236,0.6)"><strong style="color:var(--cream)">Pricing research.</strong> The ₦15,000 starting price for basic filing and ₦25,000 for the freelancer plan were set based on positioning against human accountants (₦50,000–₦150,000) and reasonable estimation. The right pricing for a new service in this market requires actual willingness-to-pay research — asking real users the maximum they would pay before choosing not to use the service.</p>
+
+    <h3 style="color:var(--cream)">What remains unvalidated</h3>
+    <p style="color:rgba(245,242,236,0.6)">Three core assumptions in this product need validation before it is built:</p>
+  </div>
+
+  <div class="callout-dark">
+    <p><strong>Assumption 1:</strong> Users will trust an AI-prepared return reviewed by a professional they have never met. This assumption underlies the entire product. It has not been tested. Competitor behaviour — Taash's waiting list — suggests people are interested in AI tax tools, but interest in a tool is different from trust in a service that files on your behalf.</p>
+  </div>
+
+  <div class="callout-dark">
+    <p><strong>Assumption 2:</strong> Nigerian fintech platforms will partner with Fileo. The go-to-market strategy depends on integration with Grey, Geegpay, Raenest, and similar platforms. This is not guaranteed. The alternative — direct acquisition through paid channels or organic content — is more expensive and less contextually relevant.</p>
+  </div>
+
+  <div class="callout-dark">
+    <p><strong>Assumption 3:</strong> The AI can accurately extract income from messy Nigerian bank statements. The technical feasibility of the core AI layer — reading PDFs, identifying income transactions, handling undescribed entries, converting foreign currencies — has not been validated. This is the most significant technical risk in the product.</p>
+  </div>
+
+  <div class="prose" style="margin-top:32px">
+    <h3 style="color:var(--cream)">What comes next</h3>
+  </div>
+
+  <div class="next-grid" style="margin-top:16px">
+    <div class="next-card">
+      <div class="next-phase">Phase 1 — Validation</div>
+      <div class="next-title">User testing and technical discovery</div>
+      <div class="next-body">Five to eight user interviews. Prototype usability testing on the onboarding and review flows. Technical feasibility assessment of the AI document processing layer. Willingness-to-pay research on pricing.</div>
+    </div>
+    <div class="next-card">
+      <div class="next-phase">Phase 2 — MVP</div>
+      <div class="next-title">Minimum viable service</div>
+      <div class="next-body">Single income source filing only. Manual document review by a CITN professional with AI assistance. Payoneer and Grey as the first supported platforms. Lagos-based users initially. Measure time-to-file and completion rate.</div>
+    </div>
+    <div class="next-card">
+      <div class="next-phase">Phase 3 — Scale</div>
+      <div class="next-title">Fintech partnerships and automation</div>
+      <div class="next-body">Integrate with one fintech platform as a proof-of-concept partnership. Automate income extraction for supported platforms. Add multi-state filing support. Launch retroactive filing product. Build the dashboard record-keeping features.</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="cs-footer">
+  <div>
+    <div class="footer-logo">File<span>o</span></div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.3);margin-top:8px;max-width:400px;line-height:1.6">An AI-native tax filing service for Nigerian freelancers and remote workers. Personal project — research, strategy, and design by Ebunoluwa.</p>
+  </div>
+  <div class="footer-designer">
+    <strong>Ebunoluwa</strong>
+    UI/UX Designer · Lagos, Nigeria<br>
+    2 years professional experience · Fintech specialist<br>
+    <span style="color:var(--sage-light);margin-top:4px;display:block">ebunoluwaportfolio.framer.website</span>
+  </div>
+</div>
+
+</body>
+</html>
