@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fileo — Landing Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #F5F2EC; color: #1A1A1A; }
+
+.fl-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 32px; border-bottom: 0.5px solid #E2DED8;
+  background: #FAFAF8; position: sticky; top: 0; z-index: 10;
+}
+.fl-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: #1A1A1A; }
+.fl-logo span { color: #4A7C6F; }
+.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-link { font-size: 13px; color: #666; text-decoration: none; }
+.nav-cta { font-size: 13px; font-weight: 500; color: #fff; background: #0B1628; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* HERO */
+.fl-hero { padding: 64px 32px 56px; text-align: center; border-bottom: 0.5px solid #E2DED8; background: #FAFAF8; }
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: #4A7C6F; background: #E8F2EF; padding: 5px 12px; border-radius: 20px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.4px; }
+.hero-h1 { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 600; color: #1A1A1A; line-height: 1.1; letter-spacing: -0.5px; margin-bottom: 20px; max-width: 520px; margin-left: auto; margin-right: auto; }
+.hero-h1 em { font-style: italic; color: #4A7C6F; }
+.hero-sub { font-size: 15px; color: #666; line-height: 1.7; max-width: 400px; margin: 0 auto 32px; }
+.hero-cta-row { display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 40px; }
+.btn-primary { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: #fff; background: #0B1628; padding: 13px 28px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.btn-ghost { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #666; background: transparent; border: 0.5px solid #D0CCC6; padding: 13px 22px; border-radius: 8px; cursor: pointer; }
+.hero-trust { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+.trust-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; }
+.trust-pill i { font-size: 14px; color: #4A7C6F; }
+
+/* PROBLEM */
+.fl-problem { padding: 56px 32px; background: #F0EDE8; border-bottom: 0.5px solid #E2DED8; }
+.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: #4A7C6F; margin-bottom: 16px; }
+.problem-h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: #1A1A1A; line-height: 1.2; letter-spacing: -0.3px; margin-bottom: 20px; max-width: 480px; }
+.problem-body { font-size: 14px; color: #666; line-height: 1.8; max-width: 480px; margin-bottom: 32px; }
+.problem-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.problem-card { background: #FAFAF8; border: 0.5px solid #E2DED8; border-radius: 12px; padding: 16px; }
+.problem-card i { font-size: 20px; color: #4A7C6F; margin-bottom: 10px; display: block; }
+.problem-card strong { display: block; font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 4px; }
+.problem-card span { font-size: 12px; color: #666; line-height: 1.5; }
+
+/* HOW */
+.fl-how { padding: 56px 32px; border-bottom: 0.5px solid #E2DED8; background: #FAFAF8; }
+.how-h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: #1A1A1A; letter-spacing: -0.3px; margin-bottom: 8px; }
+.how-sub { font-size: 14px; color: #666; margin-bottom: 36px; }
+.how-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0; }
+.how-step { padding: 20px 16px; border: 0.5px solid #E2DED8; background: #FAFAF8; }
+.how-step:first-child { border-radius: 12px 0 0 12px; }
+.how-step:last-child { border-radius: 0 12px 12px 0; }
+.how-step:not(:first-child) { border-left: none; }
+.step-n { font-size: 11px; font-weight: 500; color: #4A7C6F; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 10px; }
+.step-icon { width: 32px; height: 32px; border-radius: 50%; background: #0B1628; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.step-icon i { font-size: 15px; color: #fff; }
+.step-title { font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 6px; line-height: 1.3; }
+.step-desc { font-size: 12px; color: #666; line-height: 1.5; }
+.time-note { margin-top: 20px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #666; }
+.time-note i { font-size: 15px; color: #4A7C6F; }
+
+/* TRUST */
+.fl-trust { padding: 56px 32px; background: #F0EDE8; border-bottom: 0.5px solid #E2DED8; }
+.trust-h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: #1A1A1A; letter-spacing: -0.3px; margin-bottom: 8px; }
+.trust-sub { font-size: 14px; color: #666; margin-bottom: 32px; max-width: 400px; }
+.trust-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.trust-card { background: #FAFAF8; border: 0.5px solid #E2DED8; border-radius: 12px; padding: 20px; }
+.trust-card i { font-size: 22px; color: #0B1628; margin-bottom: 12px; display: block; }
+.trust-card strong { display: block; font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 6px; }
+.trust-card p { font-size: 12px; color: #666; line-height: 1.6; }
+
+/* PRICING */
+.fl-pricing { padding: 56px 32px; border-bottom: 0.5px solid #E2DED8; text-align: center; background: #FAFAF8; }
+.pricing-h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: #1A1A1A; letter-spacing: -0.3px; margin-bottom: 8px; }
+.pricing-sub { font-size: 14px; color: #666; margin-bottom: 36px; }
+.pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; text-align: left; }
+.pricing-card { background: #FAFAF8; border: 0.5px solid #E2DED8; border-radius: 12px; padding: 24px; }
+.pricing-card.featured { border: 2px solid #4A7C6F; }
+.pricing-tag { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; color: #4A7C6F; background: #E8F2EF; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 16px; }
+.pricing-name { font-size: 15px; font-weight: 500; color: #1A1A1A; margin-bottom: 4px; }
+.pricing-amount { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: #1A1A1A; letter-spacing: -0.5px; margin-bottom: 4px; }
+.pricing-freq { font-size: 12px; color: #666; margin-bottom: 20px; }
+.pricing-divider { height: 0.5px; background: #E2DED8; margin-bottom: 16px; }
+.pricing-feature { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; font-size: 12px; color: #666; line-height: 1.5; }
+.pricing-feature i { font-size: 14px; color: #4A7C6F; flex-shrink: 0; margin-top: 1px; }
+.pricing-compare { margin-top: 20px; font-size: 12px; color: #666; text-align: center; }
+.pricing-compare span { color: #4A7C6F; font-weight: 500; }
+
+/* CTA */
+.fl-cta { padding: 64px 32px; text-align: center; background: #0B1628; }
+.cta-h2 { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; color: #F5F2EC; letter-spacing: -0.3px; margin-bottom: 12px; line-height: 1.2; }
+.cta-h2 em { font-style: italic; color: #8BBFB3; }
+.cta-sub { font-size: 14px; color: #8B9BAD; margin-bottom: 32px; max-width: 360px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+.btn-light { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: #0B1628; background: #F5F2EC; padding: 14px 32px; border-radius: 8px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.cta-note { margin-top: 16px; font-size: 12px; color: #8B9BAD; }
+
+/* FOOTER */
+.fl-footer { padding: 20px 32px; border-top: 0.5px solid #E2DED8; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: #FAFAF8; }
+.footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #1A1A1A; }
+.footer-logo span { color: #4A7C6F; }
+.footer-links { display: flex; gap: 20px; }
+.footer-link { font-size: 12px; color: #666; text-decoration: none; }
+.footer-copy { font-size: 12px; color: #999; width: 100%; }
+
+/* PARTNER STRIP */
+.fl-partners { padding: 20px 32px; border-top: 0.5px solid #E2DED8; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; background: #FAFAF8; }
+.partner-label { font-size: 12px; color: #999; }
+.partner-logos { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.partner-logo { font-size: 12px; font-weight: 500; color: #666; padding: 4px 12px; border: 0.5px solid #E2DED8; border-radius: 8px; }
+</style>
+</head>
+<body>
+
+<nav class="fl-nav">
+  <div class="fl-logo">File<span>o</span></div>
+  <div class="nav-links">
+    <a href="#" class="nav-link">How it works</a>
+    <a href="#" class="nav-link">Pricing</a>
+    <button class="nav-cta">Get started</button>
+  </div>
+</nav>
+
+<section class="fl-hero">
+  <div class="hero-badge"><i class="ti ti-shield-check"></i> NRS compliant · 2026</div>
+  <h1 class="hero-h1">We file your taxes.<br><em>You do nothing.</em></h1>
+  <p class="hero-sub">Tell us how you earn. Upload what you have. We handle the rest — no accountant, no government portal, no guessing.</p>
+  <div class="hero-cta-row">
+    <button class="btn-primary">Start filing — it's free to begin <i class="ti ti-arrow-right"></i></button>
+    <button class="btn-ghost">See how it works</button>
+  </div>
+  <div class="hero-trust">
+    <div class="trust-pill"><i class="ti ti-clock"></i> Takes about 10 minutes</div>
+    <div class="trust-pill"><i class="ti ti-user-check"></i> Reviewed by certified tax professionals</div>
+    <div class="trust-pill"><i class="ti ti-lock"></i> Bank-level encryption</div>
+  </div>
+</section>
+
+<section class="fl-problem">
+  <div class="section-label">Why this matters now</div>
+  <h2 class="problem-h2">You probably haven't filed. You're not alone — but the clock is running.</h2>
+  <p class="problem-body">Since January 2026, every Nigerian earner — including freelancers, remote workers, and anyone with a side income — must file an annual tax return. Most people missed the March deadline. The penalty? ₦100,000 for the first month, then ₦50,000 every month after. It adds up quietly.</p>
+  <div class="problem-cards">
+    <div class="problem-card"><i class="ti ti-alert-triangle"></i><strong>The portal crashed</strong><span>Thousands tried to file on March 31st and couldn't. The system failed — penalties still applied.</span></div>
+    <div class="problem-card"><i class="ti ti-eye"></i><strong>Your income is visible</strong><span>Payoneer, Wise, Grey — if it's linked to your BVN, NRS can see it. The grey area is gone.</span></div>
+    <div class="problem-card"><i class="ti ti-currency-naira"></i><strong>Accountants are expensive</strong><span>A good tax consultant charges ₦50,000–₦150,000. Fileo starts at ₦15,000.</span></div>
+    <div class="problem-card"><i class="ti ti-files"></i><strong>Tax clearance is now required</strong><span>Loans, visas, job applications — non-compliance is becoming a blocker to your financial life.</span></div>
+  </div>
+</section>
+
+<section class="fl-how">
+  <div class="section-label">The process</div>
+  <h2 class="how-h2">Four steps. About 10 minutes.</h2>
+  <p class="how-sub">We made it this simple on purpose — because it should never have been this complicated.</p>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="step-n">Step 01</div>
+      <div class="step-icon"><i class="ti ti-message-dots"></i></div>
+      <div class="step-title">Tell us how you earn</div>
+      <div class="step-desc">Simple questions about your income sources. No jargon, no forms.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-n">Step 02</div>
+      <div class="step-icon"><i class="ti ti-upload"></i></div>
+      <div class="step-title">Upload what you have</div>
+      <div class="step-desc">Bank statements, Payoneer history, invoices — whatever you have is enough.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-n">Step 03</div>
+      <div class="step-icon"><i class="ti ti-eye-check"></i></div>
+      <div class="step-title">Review before we submit</div>
+      <div class="step-desc">See exactly what we're filing. Approve it. Nothing goes without your confirmation.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-n">Step 04</div>
+      <div class="step-icon"><i class="ti ti-check"></i></div>
+      <div class="step-title">We file. You're done.</div>
+      <div class="step-desc">A certified tax professional submits your return. You get your receipt by email.</div>
+    </div>
+  </div>
+  <div class="time-note"><i class="ti ti-clock"></i> Most users complete their filing in under 10 minutes</div>
+</section>
+
+<section class="fl-trust">
+  <div class="section-label">Why trust Fileo</div>
+  <h2 class="trust-h2">Your data. Your return. Your control.</h2>
+  <p class="trust-sub">We know handing over your financial information takes trust. Here's exactly how we protect it.</p>
+  <div class="trust-grid">
+    <div class="trust-card"><i class="ti ti-shield-lock"></i><strong>Bank-level encryption</strong><p>All documents and personal data are encrypted end-to-end using the same standards as Nigerian commercial banks.</p></div>
+    <div class="trust-card"><i class="ti ti-user-check"></i><strong>Certified tax professionals</strong><p>Every return is reviewed by a CITN-certified tax professional before submission. AI prepares, humans verify.</p></div>
+    <div class="trust-card"><i class="ti ti-eye-off"></i><strong>Your data is yours</strong><p>We use your information only to file your return. It is never sold, shared, or used for anything else. Ever.</p></div>
+    <div class="trust-card"><i class="ti ti-file-certificate"></i><strong>NRS compliant</strong><p>Fileo operates fully within the Nigeria Tax Administration Act 2025. Your filing is legally valid.</p></div>
+  </div>
+</section>
+
+<section class="fl-pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="pricing-h2">Transparent pricing. No surprises.</h2>
+  <p class="pricing-sub">A fraction of what an accountant charges — with the same result.</p>
+  <div class="pricing-cards">
+    <div class="pricing-card">
+      <div class="pricing-name">Basic</div>
+      <div class="pricing-amount">₦15,000</div>
+      <div class="pricing-freq">one-time · per tax year</div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Single income source</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Standard deductions applied</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Filing to state revenue service</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Email confirmation and receipt</div>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-tag">Most popular</div>
+      <div class="pricing-name">Freelancer</div>
+      <div class="pricing-amount">₦25,000</div>
+      <div class="pricing-freq">one-time · per tax year</div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Multiple income sources</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Foreign income conversion handled</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>All deductions maximised</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Priority review by tax professional</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Downloadable filed return copy</div>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-name">Retroactive</div>
+      <div class="pricing-amount">₦35,000</div>
+      <div class="pricing-freq">one-time · missed deadline</div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Late filing handled</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Penalty mitigation guidance</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Proof of compliance attempt</div>
+      <div class="pricing-feature"><i class="ti ti-check"></i>Everything in Freelancer plan</div>
+    </div>
+  </div>
+  <p class="pricing-compare">The average Nigerian tax consultant charges <span>₦50,000 – ₦150,000</span> for the same outcome.</p>
+</section>
+
+<section class="fl-cta">
+  <h2 class="cta-h2">Stop putting it off.<br><em>It takes 10 minutes.</em></h2>
+  <p class="cta-sub">Every month you wait, the penalty grows. File today and get it off your mind for the year.</p>
+  <button class="btn-light">Start filing now <i class="ti ti-arrow-right"></i></button>
+  <p class="cta-note">Free to start · No payment until you're ready to submit</p>
+</section>
+
+<div class="fl-partners">
+  <span class="partner-label">Trusted by freelancers using</span>
+  <div class="partner-logos">
+    <span class="partner-logo">Grey</span>
+    <span class="partner-logo">Payoneer</span>
+    <span class="partner-logo">Geegpay</span>
+    <span class="partner-logo">Wise</span>
+    <span class="partner-logo">Raenest</span>
+  </div>
+</div>
+
+<footer class="fl-footer">
+  <div class="footer-logo">File<span>o</span></div>
+  <div class="footer-links">
+    <a href="#" class="footer-link">Privacy policy</a>
+    <a href="#" class="footer-link">Terms</a>
+    <a href="#" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Fileo Technologies Ltd. Registered in Nigeria.</div>
+</footer>
+
+</body>
+</html>

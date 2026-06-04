@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fileo — Onboarding Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #F0EDE8; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
+
+.shell { background: #FAFAF8; border: 0.5px solid #E2DED8; border-radius: 16px; overflow: hidden; width: 100%; max-width: 420px; min-height: 600px; display: flex; flex-direction: column; box-shadow: 0 8px 40px rgba(11,22,40,0.08); }
+
+.ob-nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 0.5px solid #E2DED8; }
+.ob-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: #1A1A1A; }
+.ob-logo span { color: #4A7C6F; }
+.ob-step-label { font-size: 12px; color: #888; }
+
+.ob-progress { padding: 12px 24px; border-bottom: 0.5px solid #E2DED8; }
+.progress-track { height: 3px; background: #E2DED8; border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: #4A7C6F; border-radius: 2px; transition: width 0.4s ease; }
+
+.ob-body { flex: 1; padding: 28px 24px 20px; display: flex; flex-direction: column; overflow-y: auto; }
+.ob-screen { display: none; flex-direction: column; flex: 1; }
+.ob-screen.active { display: flex; }
+
+.screen-tag { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: #4A7C6F; margin-bottom: 8px; }
+.screen-h { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: #1A1A1A; line-height: 1.2; letter-spacing: -0.3px; margin-bottom: 6px; }
+.screen-sub { font-size: 13px; color: #666; line-height: 1.7; margin-bottom: 24px; }
+
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 12px; font-weight: 500; color: #666; margin-bottom: 6px; }
+.field input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #1A1A1A; background: #F5F5F3; border: 0.5px solid #D0CCC6; border-radius: 8px; padding: 11px 14px; outline: none; }
+.field input:focus { border-color: #4A7C6F; }
+.field-note { font-size: 11px; color: #888; margin-top: 5px; line-height: 1.5; }
+
+.why-box { display: flex; gap: 10px; background: #E8F2EF; border-radius: 8px; padding: 12px 14px; margin-bottom: 24px; }
+.why-box i { font-size: 15px; color: #4A7C6F; flex-shrink: 0; margin-top: 1px; }
+.why-box p { font-size: 12px; color: #2D5C52; line-height: 1.6; }
+
+.welcome-icon { width: 56px; height: 56px; background: #0B1628; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.welcome-icon i { font-size: 24px; color: #fff; }
+.time-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #666; background: #F5F5F3; border: 0.5px solid #E2DED8; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
+.time-badge i { font-size: 13px; color: #4A7C6F; }
+.welcome-steps { display: flex; flex-direction: column; border: 0.5px solid #E2DED8; border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+.welcome-step { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-bottom: 0.5px solid #E2DED8; }
+.welcome-step:last-child { border-bottom: none; }
+.ws-num { width: 24px; height: 24px; border-radius: 50%; background: #F5F5F3; border: 0.5px solid #E2DED8; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: #666; flex-shrink: 0; }
+.ws-text strong { display: block; font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 2px; }
+.ws-text span { font-size: 12px; color: #666; }
+
+.category-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; color: #888; margin: 14px 0 8px; }
+.category-label:first-of-type { margin-top: 0; }
+.platform-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 4px; }
+.platform-tile { border: 0.5px solid #E2DED8; border-radius: 8px; padding: 12px 8px; text-align: center; cursor: pointer; background: #F5F5F3; transition: all 0.15s; user-select: none; }
+.platform-tile:hover { border-color: #4A7C6F; }
+.platform-tile.selected { border-color: #4A7C6F; background: #E8F2EF; }
+.platform-tile i { font-size: 18px; color: #666; margin-bottom: 5px; display: block; }
+.platform-tile.selected i { color: #4A7C6F; }
+.platform-tile span { font-size: 11px; color: #666; font-weight: 500; display: block; line-height: 1.3; }
+.platform-tile.selected span { color: #2D5C52; }
+.selected-count { font-size: 12px; color: #4A7C6F; font-weight: 500; margin-top: 12px; min-height: 18px; }
+
+.deduction-intro { background: #E8F2EF; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
+.deduction-intro i { font-size: 16px; color: #4A7C6F; flex-shrink: 0; }
+.deduction-intro p { font-size: 12px; color: #2D5C52; line-height: 1.6; }
+.deduction-item { border: 0.5px solid #E2DED8; border-radius: 12px; overflow: hidden; margin-bottom: 10px; background: #F5F5F3; }
+.deduction-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; }
+.deduction-left { display: flex; align-items: center; gap: 12px; }
+.deduction-icon { width: 32px; height: 32px; border-radius: 50%; background: #FAFAF8; border: 0.5px solid #E2DED8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.deduction-icon i { font-size: 15px; color: #0B1628; }
+.deduction-title { font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 2px; }
+.deduction-saving { font-size: 11px; color: #4A7C6F; font-weight: 500; }
+.toggle-switch { width: 36px; height: 20px; background: #D0CCC6; border-radius: 10px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; border: none; }
+.toggle-switch.on { background: #4A7C6F; }
+.toggle-switch::after { content: ''; position: absolute; width: 14px; height: 14px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: left 0.2s; }
+.toggle-switch.on::after { left: 19px; }
+.deduction-body { padding: 0 16px 14px; display: none; }
+.deduction-body.open { display: block; }
+.deduction-body label { display: block; font-size: 12px; color: #666; margin-bottom: 6px; }
+.deduction-body input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #1A1A1A; background: #FAFAF8; border: 0.5px solid #D0CCC6; border-radius: 8px; padding: 10px 14px; outline: none; }
+.deduction-body input:focus { border-color: #4A7C6F; }
+.deduction-note { font-size: 11px; color: #666; margin-top: 6px; line-height: 1.5; }
+
+.ob-footer { padding: 14px 24px; border-top: 0.5px solid #E2DED8; display: flex; justify-content: space-between; align-items: center; background: #FAFAF8; }
+.btn-back { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.btn-next { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: #fff; background: #0B1628; padding: 11px 22px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="ob-nav">
+    <div class="ob-logo">File<span>o</span></div>
+    <span class="ob-step-label" id="stepLabel">Create account · 1 of 6</span>
+  </nav>
+  <div class="ob-progress">
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:16%"></div></div>
+  </div>
+  <div class="ob-body">
+
+    <!-- S1: Account -->
+    <div class="ob-screen active" id="s1">
+      <div class="screen-tag">Create your account</div>
+      <h2 class="screen-h">Let's get you set up</h2>
+      <p class="screen-sub">Takes less than a minute. No payment required yet.</p>
+      <div class="field"><label>Full name</label><input type="text" placeholder="Adaeze Okonkwo"/></div>
+      <div class="field"><label>Email address</label><input type="email" placeholder="adaeze@email.com"/></div>
+      <div class="field"><label>Phone number</label><input type="tel" placeholder="080xxxxxxxx"/></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="At least 8 characters"/></div>
+    </div>
+
+    <!-- S2: Verify -->
+    <div class="ob-screen" id="s2">
+      <div class="screen-tag">Verify your identity</div>
+      <h2 class="screen-h">We need to confirm who you are</h2>
+      <p class="screen-sub">Required by law for us to file on your behalf — and it protects you.</p>
+      <div class="why-box"><i class="ti ti-info-circle"></i><p>Your NIN and BVN allow us to link your filing to the correct tax record. We do not store or share this beyond what's needed to file your return.</p></div>
+      <div class="field"><label>National Identification Number (NIN)</label><input type="text" placeholder="11-digit NIN" maxlength="11"/><div class="field-note">Find your NIN by dialling *346# on your registered number</div></div>
+      <div class="field"><label>Bank Verification Number (BVN)</label><input type="text" placeholder="11-digit BVN" maxlength="11"/><div class="field-note">Find your BVN by dialling *565*0# on any network</div></div>
+    </div>
+
+    <!-- S3: Welcome -->
+    <div class="ob-screen" id="s3">
+      <div class="welcome-icon"><i class="ti ti-check"></i></div>
+      <div class="screen-tag">You're verified</div>
+      <h2 class="screen-h">Here's what happens next</h2>
+      <p class="screen-sub">We'll ask a few simple questions. No tax knowledge needed.</p>
+      <div class="time-badge"><i class="ti ti-clock"></i> About 10 minutes from here</div>
+      <div class="welcome-steps">
+        <div class="welcome-step"><div class="ws-num">1</div><div class="ws-text"><strong>Tell us how you earned</strong><span>Select the platforms you received payments through</span></div></div>
+        <div class="welcome-step"><div class="ws-num">2</div><div class="ws-text"><strong>Upload your records</strong><span>Bank statements, transaction history — whatever you have</span></div></div>
+        <div class="welcome-step"><div class="ws-num">3</div><div class="ws-text"><strong>Find your deductions</strong><span>We'll identify what reduces your tax bill</span></div></div>
+        <div class="welcome-step"><div class="ws-num">4</div><div class="ws-text"><strong>Review and approve</strong><span>See exactly what we're filing before anything is submitted</span></div></div>
+      </div>
+    </div>
+
+    <!-- S4: Platforms -->
+    <div class="ob-screen" id="s4">
+      <div class="screen-tag">Income sources</div>
+      <h2 class="screen-h">How did you receive payments in 2025?</h2>
+      <p class="screen-sub">Select everything that applies — even if you only used it once.</p>
+      <div class="category-label">International platforms</div>
+      <div class="platform-grid">
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-brand-paypal"></i><span>Payoneer</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-world"></i><span>Wise</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-brand-stripe"></i><span>Stripe</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-briefcase"></i><span>Deel</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-credit-card"></i><span>PayPal</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-currency-bitcoin"></i><span>Crypto/P2P</span></div>
+      </div>
+      <div class="category-label">Nigerian fintechs</div>
+      <div class="platform-grid">
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-building-bank"></i><span>Grey</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-device-mobile"></i><span>Geegpay</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-wallet"></i><span>Raenest</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-transfer"></i><span>Bank transfer</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-device-mobile-dollar"></i><span>OPay/Kuda</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-cash"></i><span>Cash</span></div>
+      </div>
+      <div class="category-label">Content & creator</div>
+      <div class="platform-grid">
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-brand-youtube"></i><span>YouTube/AdSense</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-brand-tiktok"></i><span>TikTok Fund</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-speakerphone"></i><span>Brand deals</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-laptop"></i><span>Upwork/Fiverr</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-files"></i><span>Substack/Patreon</span></div>
+        <div class="platform-tile" onclick="togglePlatform(this)"><i class="ti ti-dots"></i><span>Other</span></div>
+      </div>
+      <div class="selected-count" id="selectedCount"></div>
+    </div>
+
+    <!-- S5: Upload -->
+    <div class="ob-screen" id="s5">
+      <div class="screen-tag">Upload records</div>
+      <h2 class="screen-h">Upload what you have</h2>
+      <p class="screen-sub">Grouped by platform. Instructions included for each one.</p>
+      <div style="border:0.5px solid #E2DED8;border-radius:12px;overflow:hidden;margin-bottom:10px;background:#F5F5F3">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:0.5px solid #E2DED8">
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:#0B1628;display:flex;align-items:center;justify-content:center"><i class="ti ti-brand-paypal" style="font-size:13px;color:#fff"></i></div><span style="font-size:13px;font-weight:500;color:#1A1A1A">Payoneer</span></div>
+          <span style="font-size:11px;background:#FFF0E8;color:#C45E1A;padding:2px 8px;border-radius:20px;font-weight:500">Pending</span>
+        </div>
+        <div style="padding:14px 16px"><div style="font-size:12px;color:#666;margin-bottom:10px">Payoneer → Reports → Annual Summary → Download PDF. Jan–Dec 2025.</div><div style="border:1px dashed #D0CCC6;border-radius:8px;padding:14px;text-align:center;cursor:pointer"><i class="ti ti-upload" style="font-size:18px;color:#666;margin-bottom:4px;display:block"></i><span style="font-size:12px;color:#666">Tap to upload · <span style="color:#4A7C6F">or drag and drop</span></span></div></div>
+      </div>
+      <div style="border:0.5px solid #E2DED8;border-radius:12px;overflow:hidden;margin-bottom:10px;background:#F5F5F3">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:0.5px solid #E2DED8">
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:#0B1628;display:flex;align-items:center;justify-content:center"><i class="ti ti-building-bank" style="font-size:13px;color:#fff"></i></div><span style="font-size:13px;font-weight:500;color:#1A1A1A">Grey</span></div>
+          <span style="font-size:11px;background:#FFF0E8;color:#C45E1A;padding:2px 8px;border-radius:20px;font-weight:500">Pending</span>
+        </div>
+        <div style="padding:14px 16px"><div style="font-size:12px;color:#666;margin-bottom:10px">Grey app → Account → Statement → Full year 2025. Download as PDF.</div><div style="border:1px dashed #D0CCC6;border-radius:8px;padding:14px;text-align:center;cursor:pointer"><i class="ti ti-upload" style="font-size:18px;color:#666;margin-bottom:4px;display:block"></i><span style="font-size:12px;color:#666">Tap to upload · <span style="color:#4A7C6F">or drag and drop</span></span></div></div>
+      </div>
+      <div style="display:flex;gap:8px;background:#E8F2EF;border-radius:8px;padding:12px 14px;margin-top:4px"><i class="ti ti-lock" style="font-size:15px;color:#4A7C6F;flex-shrink:0;margin-top:1px"></i><p style="font-size:12px;color:#2D5C52;line-height:1.6">All uploads are encrypted immediately. Your documents are used only to prepare your return.</p></div>
+    </div>
+
+    <!-- S6: Deductions -->
+    <div class="ob-screen" id="s6">
+      <div class="screen-tag">Your deductions</div>
+      <h2 class="screen-h">Let's reduce what you owe</h2>
+      <p class="screen-sub">Legal expenses the government lets you subtract. Most people miss them.</p>
+      <div class="deduction-intro"><i class="ti ti-trending-down"></i><p><strong>This could save you significantly.</strong> Every deduction legally reduces your taxable income — meaning you pay less.</p></div>
+      <div class="deduction-item">
+        <div class="deduction-header" onclick="toggleDeduction('rent')">
+          <div class="deduction-left"><div class="deduction-icon"><i class="ti ti-home"></i></div><div><div class="deduction-title">Rent payments</div><div class="deduction-saving">Up to ₦500,000 off your taxable income</div></div></div>
+          <button class="toggle-switch" id="toggle-rent" onclick="event.stopPropagation();toggleDeduction('rent')"></button>
+        </div>
+        <div class="deduction-body" id="body-rent"><label>How much did you pay in rent in 2025? (₦)</label><input type="number" placeholder="e.g. 600000"/><div class="deduction-note">We'll apply 20% of this amount, up to a maximum of ₦500,000.</div></div>
+      </div>
+      <div class="deduction-item">
+        <div class="deduction-header" onclick="toggleDeduction('pension')">
+          <div class="deduction-left"><div class="deduction-icon"><i class="ti ti-piggy-bank"></i></div><div><div class="deduction-title">Pension contributions</div><div class="deduction-saving">Up to 8% of your income deducted</div></div></div>
+          <button class="toggle-switch" id="toggle-pension" onclick="event.stopPropagation();toggleDeduction('pension')"></button>
+        </div>
+        <div class="deduction-body" id="body-pension"><label>Total pension contributions in 2025 (₦)</label><input type="number" placeholder="e.g. 180000"/><div class="deduction-note">Applies whether through employer or personal pension plan.</div></div>
+      </div>
+      <div class="deduction-item">
+        <div class="deduction-header" onclick="toggleDeduction('health')">
+          <div class="deduction-left"><div class="deduction-icon"><i class="ti ti-heart-plus"></i></div><div><div class="deduction-title">Health insurance</div><div class="deduction-saving">Full premium amount deducted</div></div></div>
+          <button class="toggle-switch" id="toggle-health" onclick="event.stopPropagation();toggleDeduction('health')"></button>
+        </div>
+        <div class="deduction-body" id="body-health"><label>Total health insurance paid in 2025 (₦)</label><input type="number" placeholder="e.g. 120000"/><div class="deduction-note">Include HMO premiums, NHIS contributions, or private health insurance.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ob-footer">
+    <button class="btn-back" id="backBtn" onclick="nav(-1)" style="visibility:hidden"><i class="ti ti-arrow-left"></i> Back</button>
+    <button class="btn-next" id="nextBtn" onclick="nav(1)">Continue <i class="ti ti-arrow-right"></i></button>
+  </div>
+</div>
+
+<script>
+let cur = 1;
+const total = 6;
+const labels = ['Create account','Verify identity','Overview','Income sources','Upload records','Deductions'];
+let selected = [];
+
+function nav(d) {
+  const next = cur + d;
+  if (next < 1 || next > total) return;
+  document.getElementById('s'+cur).classList.remove('active');
+  cur = next;
+  document.getElementById('s'+cur).classList.add('active');
+  document.getElementById('stepLabel').textContent = labels[cur-1] + ' · ' + cur + ' of ' + total;
+  document.getElementById('progressFill').style.width = ((cur/total)*100)+'%';
+  document.getElementById('backBtn').style.visibility = cur === 1 ? 'hidden' : 'visible';
+  const nb = document.getElementById('nextBtn');
+  if (cur === 4) { nb.disabled = selected.length === 0; nb.innerHTML = selected.length === 0 ? 'Select at least one <i class="ti ti-arrow-right"></i>' : 'Continue <i class="ti ti-arrow-right"></i>'; }
+  else { nb.disabled = false; nb.innerHTML = cur === total ? 'Go to review <i class="ti ti-arrow-right"></i>' : 'Continue <i class="ti ti-arrow-right"></i>'; }
+}
+
+function togglePlatform(el) {
+  el.classList.toggle('selected');
+  const name = el.querySelector('span').textContent;
+  if (el.classList.contains('selected')) selected.push(name);
+  else selected = selected.filter(p => p !== name);
+  const c = selected.length;
+  document.getElementById('selectedCount').textContent = c === 0 ? '' : c + ' platform' + (c > 1 ? 's' : '') + ' selected';
+  if (cur === 4) { const nb = document.getElementById('nextBtn'); nb.disabled = c === 0; nb.innerHTML = c === 0 ? 'Select at least one <i class="ti ti-arrow-right"></i>' : 'Continue <i class="ti ti-arrow-right"></i>'; }
+}
+
+function toggleDeduction(key) {
+  const t = document.getElementById('toggle-'+key);
+  const b = document.getElementById('body-'+key);
+  if (t.classList.contains('on')) { t.classList.remove('on'); b.classList.remove('open'); }
+  else { t.classList.add('on'); b.classList.add('open'); }
+}
+</script>
+</body>
+</html>

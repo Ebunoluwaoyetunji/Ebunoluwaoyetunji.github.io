@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fileo — Brand Identity System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0B1628;
+  --navy-mid: #1A2E4A;
+  --sage: #4A7C6F;
+  --sage-light: #8BBFB3;
+  --sage-pale: #E8F2EF;
+  --cream: #F5F2EC;
+  --warm-white: #FAFAF8;
+  --border: #E2DED8;
+  --border-mid: #D0CCC6;
+  --text-primary: #1A1A1A;
+  --text-secondary: #666;
+  --text-tertiary: #999;
+  --amber: #F0C070;
+  --coral: #E8735A;
+  --error: #C45E1A;
+  --success: #4A7C6F;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* ─── NAV ─── */
+.brand-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--navy);
+  padding: 0 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.brand-nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: -0.3px;
+}
+
+.brand-nav-logo span { color: var(--sage); }
+
+.brand-nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.brand-nav-links a {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.brand-nav-links a:hover { color: var(--cream); }
+
+.brand-nav-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sage-light);
+  background: rgba(74,124,111,0.15);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 0.5px solid rgba(74,124,111,0.3);
+}
+
+/* ─── COVER ─── */
+.cover {
+  background: var(--navy);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 80px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74,124,111,0.12) 0%, transparent 70%);
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,192,112,0.06) 0%, transparent 70%);
+}
+
+.cover-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sage-light);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 96px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: -4px;
+  line-height: 1;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-logo span { color: var(--sage); }
+
+.cover-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: rgba(245,242,236,0.5);
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-divider {
+  width: 1px;
+  height: 48px;
+  background: rgba(255,255,255,0.15);
+  margin: 0 auto 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-meta {
+  display: flex;
+  gap: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-meta-item { text-align: left; }
+.cover-meta-label { font-size: 11px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.cover-meta-value { font-size: 14px; color: var(--cream); font-weight: 500; }
+
+/* ─── SECTIONS ─── */
+.section {
+  padding: 80px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-divider {
+  width: 100%;
+  height: 0.5px;
+  background: var(--border);
+  margin: 0 48px;
+  max-width: calc(1100px - 96px);
+}
+
+.section-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--sage);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.section-sub {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+.dark-section {
+  background: var(--navy);
+  padding: 80px 0;
+}
+
+.dark-section .section {
+  color: var(--cream);
+}
+
+.dark-section .section-title { color: var(--cream); }
+.dark-section .section-sub { color: rgba(245,242,236,0.6); }
+.dark-section .section-number { color: var(--sage-light); }
+
+/* ─── CARDS ─── */
+.card-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.card {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.card-dark {
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.card-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--sage);
+  margin-bottom: 10px;
+}
+
+.card-dark .card-label { color: var(--sage-light); }
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.card-dark .card-title { color: var(--cream); }
+
+.card-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.card-dark .card-body { color: rgba(245,242,236,0.6); }
+
+/* ─── BRAND FOUNDATION ─── */
+.mission-block {
+  background: var(--navy);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-block::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74,124,111,0.15) 0%, transparent 70%);
+}
+
+.mission-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--cream);
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  max-width: 640px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 24px;
+}
+
+.mission-quote span { color: var(--sage); }
+
+.mission-attr {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(245,242,236,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.value-card {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.value-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--sage-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  font-size: 18px;
+}
+
+.value-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.value-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── COLOR PALETTE ─── */
+.color-swatch {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 0.5px solid var(--border);
+}
+
+.color-block {
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+}
+
+.color-name-on-block {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.color-info {
+  padding: 16px;
+  background: var(--warm-white);
+}
+
+.color-hex {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+
+.color-rgb {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.color-why {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ─── TYPOGRAPHY ─── */
+.type-sample {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-bottom: 16px;
+}
+
+.type-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.type-role {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--sage);
+}
+
+.type-specs {
+  text-align: right;
+}
+
+.type-spec-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.type-display-sample {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.type-heading-sample {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.type-body-sample {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.type-ui-sample {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+}
+
+.type-why {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-top: 16px;
+  border-top: 0.5px solid var(--border);
+  margin-top: 16px;
+}
+
+/* ─── VERBAL IDENTITY ─── */
+.tagline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.tagline-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 0.5px solid var(--border);
+  gap: 16px;
+}
+
+.tagline-item:last-child { border-bottom: none; }
+
+.tagline-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.tagline-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--navy);
+  font-style: italic;
+  flex: 1;
+}
+
+.tagline-note {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-align: right;
+}
+
+.tagline-item.featured {
+  background: var(--navy);
+}
+
+.tagline-item.featured .tagline-num { color: rgba(255,255,255,0.3); }
+.tagline-item.featured .tagline-text { color: var(--cream); }
+.tagline-item.featured .tagline-note { color: var(--sage-light); }
+
+.microcopy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.microcopy-card {
+  border-radius: var(--radius-md);
+  padding: 16px;
+  border: 0.5px solid var(--border);
+}
+
+.microcopy-type {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.mc-onboard .microcopy-type { background: var(--sage-pale); color: var(--sage); }
+.mc-success .microcopy-type { background: #E8F2EF; color: #2D5C52; }
+.mc-error .microcopy-type { background: #FFF0E8; color: #C45E1A; }
+
+.microcopy-text {
+  font-size: 14px;
+  color: var(--navy);
+  line-height: 1.5;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.microcopy-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ─── DESIGN SYSTEM ─── */
+.radius-demo {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.radius-item {
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+  gap: 8px;
+}
+
+.radius-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--cream);
+  text-align: center;
+}
+
+.spacing-demo {
+  display: flex;
+  gap: 0;
+  align-items: flex-end;
+}
+
+.spacing-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.spacing-block {
+  background: var(--sage);
+  border-radius: 2px;
+  width: 24px;
+}
+
+.spacing-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+.shadow-demo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.shadow-item {
+  background: var(--warm-white);
+  border-radius: var(--radius-md);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.btn-demo { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+.btn-primary-demo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--navy);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary-demo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+  background: var(--sage-pale);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid #C5DDD8;
+  cursor: pointer;
+}
+
+.btn-ghost-demo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-secondary);
+  background: transparent;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: 0.5px solid var(--border);
+  cursor: pointer;
+}
+
+.btn-destructive-demo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--error);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+}
+
+.input-demo {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--navy);
+  background: var(--warm-white);
+  border: 0.5px solid var(--border-mid);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  outline: none;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.input-demo.focused { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(74,124,111,0.1); }
+.input-demo.error { border-color: var(--error); }
+
+/* ─── MOODBOARD ─── */
+.mood-card {
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mood-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.mood-sub {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  max-width: 480px;
+}
+
+.mood-swatches {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.mood-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.mood-attr {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mood-tag {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* ─── PERSONA ─── */
+.persona-card {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.persona-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 16px;
+}
+
+.persona-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.persona-role {
+  font-size: 13px;
+  color: var(--sage);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.persona-stats { display: flex; flex-direction: column; gap: 6px; }
+
+.persona-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.persona-stat i { font-size: 13px; color: var(--sage); }
+
+.persona-section-title {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--sage);
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.persona-section-title:first-of-type { margin-top: 0; }
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--sage-pale);
+  color: var(--sage);
+  font-weight: 500;
+}
+
+.tag.pain { background: #FFF0E8; color: #C45E1A; }
+.tag.goal { background: #E8F2EF; color: #2D5C52; }
+
+/* ─── VOICE PRINCIPLES ─── */
+.voice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.voice-card {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.voice-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.voice-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.voice-examples { display: flex; flex-direction: column; gap: 6px; }
+
+.voice-do, .voice-dont {
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+}
+
+.voice-do {
+  background: #E8F2EF;
+  color: #1A3D36;
+  border-left: 2px solid var(--sage);
+}
+
+.voice-dont {
+  background: #FFF0E8;
+  color: #7A3B0A;
+  border-left: 2px solid var(--error);
+  text-decoration-color: var(--error);
+}
+
+.voice-do::before { content: '✓ '; font-weight: 500; }
+.voice-dont::before { content: '✗ '; font-weight: 500; }
+
+/* ─── BRAND ARCHETYPE ─── */
+.archetype-block {
+  background: var(--navy);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.archetype-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.archetype-sub {
+  font-size: 14px;
+  color: var(--sage-light);
+  font-style: italic;
+  margin-bottom: 24px;
+}
+
+.archetype-desc {
+  font-size: 14px;
+  color: rgba(245,242,236,0.7);
+  line-height: 1.7;
+}
+
+.archetype-traits { display: flex; flex-direction: column; gap: 12px; }
+
+.archetype-trait {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-md);
+}
+
+.trait-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.trait-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 3px;
+}
+
+.trait-desc {
+  font-size: 12px;
+  color: rgba(245,242,236,0.5);
+  line-height: 1.5;
+}
+
+/* ─── ICONOGRAPHY ─── */
+.icon-demo {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.icon-item {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-item i { font-size: 22px; color: var(--navy); }
+.icon-item.sage i { color: var(--sage); }
+
+/* ─── ILLUSTRATION ─── */
+.illus-scene {
+  background: var(--warm-white);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+}
+
+.illus-preview {
+  height: 140px;
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+.illus-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.illus-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ─── POSITIONING ─── */
+.positioning-block {
+  background: var(--sage-pale);
+  border: 0.5px solid #C5DDD8;
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  margin-bottom: 24px;
+}
+
+.positioning-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--navy);
+  line-height: 1.5;
+  letter-spacing: -0.3px;
+}
+
+.positioning-text strong { color: var(--sage); font-weight: 600; }
+
+/* ─── LOGO SECTION ─── */
+.logo-demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  margin-bottom: 12px;
+}
+
+.logo-demo.light { background: var(--warm-white); border: 0.5px solid var(--border); }
+.logo-demo.dark { background: var(--navy); }
+.logo-demo.sage-bg { background: var(--sage); }
+
+.logo-large {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: -2px;
+}
+
+.logo-large.on-light { color: var(--navy); }
+.logo-large.on-light span { color: var(--sage); }
+.logo-large.on-dark { color: var(--cream); }
+.logo-large.on-dark span { color: var(--sage-light); }
+.logo-large.on-sage { color: #fff; }
+.logo-large.on-sage span { color: rgba(255,255,255,0.6); }
+
+/* ─── SPACING ─── */
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 0.5px solid var(--border);
+  font-size: 13px;
+}
+
+.spec-row:last-child { border-bottom: none; }
+.spec-key { color: var(--text-secondary); }
+.spec-val { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--navy); }
+
+/* ─── FOOTER ─── */
+.brand-footer {
+  background: var(--navy);
+  padding: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.footer-logo span { color: var(--sage); }
+
+.footer-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ─── UTILITIES ─── */
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+@media (max-width: 768px) {
+  .brand-nav { padding: 0 24px; }
+  .brand-nav-links { display: none; }
+  .section { padding: 48px 24px; }
+  .cover-logo { font-size: 56px; }
+  .cover-meta { flex-direction: column; gap: 20px; }
+  .card-grid-2, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr; }
+  .values-grid { grid-template-columns: 1fr 1fr; }
+  .persona-card { grid-template-columns: 1fr; }
+  .archetype-block { grid-template-columns: 1fr; }
+  .microcopy-grid { grid-template-columns: 1fr; }
+  .shadow-demo { grid-template-columns: repeat(2, 1fr); }
+  .voice-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="brand-nav">
+  <div class="brand-nav-logo">File<span>o</span></div>
+  <ul class="brand-nav-links">
+    <li><a href="#foundation">Foundation</a></li>
+    <li><a href="#strategy">Strategy</a></li>
+    <li><a href="#audience">Audience</a></li>
+    <li><a href="#verbal">Verbal</a></li>
+    <li><a href="#visual">Visual</a></li>
+    <li><a href="#system">System</a></li>
+    <li><a href="#moodboard">Moodboard</a></li>
+  </ul>
+  <span class="brand-nav-tag">Brand Book v1.0</span>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">Brand Identity System</div>
+  <div class="cover-logo">File<span>o</span></div>
+  <div class="cover-tagline">Your tax return, handled.</div>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Document</div>
+      <div class="cover-meta-value">Brand Book v1.0</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Category</div>
+      <div class="cover-meta-value">AI-Native Service · Fintech</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Market</div>
+      <div class="cover-meta-value">Nigeria — Global Ambition</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Year</div>
+      <div class="cover-meta-value">2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 01 BRAND FOUNDATION -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="foundation">
+<div class="section">
+  <span class="section-number">01 — Brand Foundation</span>
+  <h2 class="section-title">Why Fileo exists</h2>
+  <p class="section-sub">The beliefs, purpose, and personality that drive every decision — from the product to the copy to the colour of a button.</p>
+
+  <div class="mission-block">
+    <div class="mission-quote">"Tax compliance should not require a law degree, an accountant, or <span>three weeks of anxiety.</span>"</div>
+    <div class="mission-attr">The founding belief</div>
+  </div>
+
+  <div class="card-grid card-grid-2 mb-32">
+    <div class="card">
+      <div class="card-label">Mission</div>
+      <div class="card-title">Remove the friction between Nigerians and tax compliance</div>
+      <div class="card-body">Fileo exists to handle the hard parts of tax filing so that every freelancer, remote worker, and self-employed Nigerian can stay compliant without needing expertise, money, or time they don't have.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Vision</div>
+      <div class="card-title">A Nigeria where compliance is effortless</div>
+      <div class="card-body">We envision a future where being tax compliant requires no more effort than sending a WhatsApp message. Where the government's systems and individuals' lives are bridged by intelligent, human-centred services.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Purpose</div>
+      <div class="card-title">Give people their time, confidence, and peace of mind back</div>
+      <div class="card-body">Tax anxiety is real. Fileo's deeper purpose is to remove that specific fear from people's lives — permanently — and replace it with a quiet, settled confidence that they are compliant and protected.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Brand Promise</div>
+      <div class="card-title">We handle it. Completely.</div>
+      <div class="card-body">Not "we make it easier." Not "we guide you through it." We do it. The user's job is to answer a few questions and approve. Everything else is Fileo's responsibility.</div>
+    </div>
+  </div>
+
+  <div class="label mb-16">Core Values</div>
+  <div class="values-grid mb-32">
+    <div class="value-card">
+      <div class="value-icon">🛡️</div>
+      <div class="value-name">Trust above all</div>
+      <div class="value-desc">We handle sensitive financial information. Every design, copy, and product decision must earn and maintain trust. We never overclaim, never hide, never surprise.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">✦</div>
+      <div class="value-name">Radical clarity</div>
+      <div class="value-desc">Tax is complex. Fileo is not. We translate every legal and financial concept into language a normal person understands without feeling talked down to.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">⚡</div>
+      <div class="value-name">Effortless outcomes</div>
+      <div class="value-desc">The measure of success is not a beautiful interface. It is a filed return, a compliant user, a fear removed. Outcomes over aesthetics, always.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🤝</div>
+      <div class="value-name">Human in the loop</div>
+      <div class="value-desc">AI does the work but humans verify it. A certified tax professional reviews every return. We are not reckless with automation — we are responsible with it.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🌍</div>
+      <div class="value-name">Nigerian by design</div>
+      <div class="value-desc">Built for how Nigerians actually earn — Payoneer, Grey, brand deals, cash, multiple streams. We do not adapt a foreign product. We build for this context.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">📈</div>
+      <div class="value-name">Privacy as default</div>
+      <div class="value-desc">User data is used for one purpose: filing their return. It is never sold, shared, or leveraged. Privacy is not a feature we advertise. It is a constraint we obey.</div>
+    </div>
+  </div>
+
+  <div class="label mb-16">Brand Personality</div>
+  <div class="card-grid card-grid-3">
+    <div class="card">
+      <div class="card-label">Calm</div>
+      <div class="card-title">Steady, not cold</div>
+      <div class="card-body">Fileo doesn't panic, doesn't hype, doesn't add urgency that isn't real. It is the calm, capable voice in a stressful situation.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Competent</div>
+      <div class="card-title">Expert, not arrogant</div>
+      <div class="card-body">Fileo knows tax law deeply but never shows off. It uses that knowledge to protect the user, not to impress them.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Human</div>
+      <div class="card-title">Warm, not robotic</div>
+      <div class="card-body">AI powers the service but humans write the words. Every message sounds like a knowledgeable friend, not a chatbot or a legal document.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section-divider" style="margin: 0 auto; display:block; width: calc(100% - 96px); max-width: 1004px;"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 02 BRAND STRATEGY -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="strategy">
+<div class="section">
+  <span class="section-number">02 — Brand Strategy</span>
+  <h2 class="section-title">Where Fileo stands</h2>
+  <p class="section-sub">How Fileo is positioned in the market, who it competes with, and what makes it genuinely different.</p>
+
+  <div class="positioning-block mb-24">
+    <div class="label mb-16">Positioning Statement</div>
+    <div class="positioning-text">
+      For <strong>Nigerian freelancers and remote workers</strong> who are newly required to file personal income tax returns but lack the knowledge, documentation, and time to do it alone, <strong>Fileo</strong> is an AI-native tax filing service that <strong>handles the entire process on their behalf</strong> — unlike government portals or software tools that still require the user to do the hard work themselves.
+    </div>
+  </div>
+
+  <div class="card-grid card-grid-2 mb-32">
+    <div class="card">
+      <div class="card-label">Unique Value Proposition</div>
+      <div class="card-title">The only service that files for you — not with you</div>
+      <div class="card-body">Every competitor in the Nigerian tax space — from Rev360 to Taash to individual accountants — still requires the user to do significant work. Fileo is the only product where the user's job ends at answering questions and pressing approve. The service does everything else.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Competitive Advantage</div>
+      <div class="card-title">AI speed, human accountability</div>
+      <div class="card-body">Fileo's combination of AI document processing and CITN-certified professional review creates a service that is faster than a human accountant, more trustworthy than pure automation, and more accessible than either. This is the specific combination no competitor currently offers.</div>
+    </div>
+  </div>
+
+  <div class="archetype-block mb-32">
+    <div>
+      <div class="label" style="color:rgba(255,255,255,0.35); margin-bottom:8px">Brand Archetype</div>
+      <div class="archetype-name">The Caregiver</div>
+      <div class="archetype-sub">with the competence of the Sage</div>
+      <div class="archetype-desc">Fileo's primary archetype is the Caregiver — it exists to protect, help, and relieve burden. But it pairs this with the Sage's competence and knowledge. It does not just want to help — it is genuinely capable of doing so. The result is a brand that feels both warm and trustworthy.</div>
+    </div>
+    <div class="archetype-traits">
+      <div class="archetype-trait">
+        <div class="trait-icon">🛡️</div>
+        <div>
+          <div class="trait-title">Protective</div>
+          <div class="trait-desc">Shields users from penalties, confusion, and system failure. Always on their side.</div>
+        </div>
+      </div>
+      <div class="archetype-trait">
+        <div class="trait-icon">📖</div>
+        <div>
+          <div class="trait-title">Knowledgeable</div>
+          <div class="trait-desc">Knows the law so the user doesn't have to. Uses expertise to simplify, not intimidate.</div>
+        </div>
+      </div>
+      <div class="archetype-trait">
+        <div class="trait-icon">🤝</div>
+        <div>
+          <div class="trait-title">Reliable</div>
+          <div class="trait-desc">Does what it says. No surprises, no hidden steps, no abandoned submissions.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label mb-16">Brand Attributes</div>
+  <div class="card-grid card-grid-4">
+    <div class="card" style="text-align:center; padding:20px">
+      <div style="font-size:32px; margin-bottom:8px">🔒</div>
+      <div class="card-title" style="font-size:16px">Trustworthy</div>
+    </div>
+    <div class="card" style="text-align:center; padding:20px">
+      <div style="font-size:32px; margin-bottom:8px">⚡</div>
+      <div class="card-title" style="font-size:16px">Efficient</div>
+    </div>
+    <div class="card" style="text-align:center; padding:20px">
+      <div style="font-size:32px; margin-bottom:8px">🌿</div>
+      <div class="card-title" style="font-size:16px">Calming</div>
+    </div>
+    <div class="card" style="text-align:center; padding:20px">
+      <div style="font-size:32px; margin-bottom:8px">🎯</div>
+      <div class="card-title" style="font-size:16px">Precise</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section-divider" style="margin: 0 auto; display:block; width: calc(100% - 96px); max-width: 1004px;"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 03 TARGET AUDIENCE -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="audience">
+<div class="section">
+  <span class="section-number">03 — Target Audience</span>
+  <h2 class="section-title">Who Fileo serves</h2>
+  <p class="section-sub">Two primary personas informed by research into Nigeria's freelance and remote work community.</p>
+
+  <div class="persona-card mb-16">
+    <div>
+      <div class="persona-avatar">AO</div>
+      <div class="persona-name">Adaeze, 27</div>
+      <div class="persona-role">Primary Persona — Freelance Designer</div>
+      <div class="persona-stats">
+        <div class="persona-stat">📍 Lagos, Nigeria</div>
+        <div class="persona-stat">💻 Works with US and UK clients</div>
+        <div class="persona-stat">💰 Earns via Payoneer + Grey</div>
+        <div class="persona-stat">📱 Twitter, LinkedIn, Figma daily</div>
+      </div>
+    </div>
+    <div>
+      <div class="persona-section-title">Pain Points</div>
+      <div class="tag-list mb-16">
+        <span class="tag pain">Doesn't understand tax jargon</span>
+        <span class="tag pain">Portal crashed on deadline day</span>
+        <span class="tag pain">Can't afford an accountant</span>
+        <span class="tag pain">Worried about making mistakes</span>
+        <span class="tag pain">Irregular income, messy records</span>
+      </div>
+
+      <div class="persona-section-title">Goals</div>
+      <div class="tag-list mb-16">
+        <span class="tag goal">Be fully compliant without stress</span>
+        <span class="tag goal">Keep using Grey and Payoneer safely</span>
+        <span class="tag goal">Get tax clearance for visa application</span>
+        <span class="tag goal">Never think about tax again until next year</span>
+      </div>
+
+      <div class="persona-section-title">Motivations</div>
+      <p style="font-size:13px; color:var(--text-secondary); line-height:1.6">Adaeze is motivated by career growth and financial stability. Tax compliance is not something she's passionate about — she simply wants it handled so she can focus on her work. The penalty news scared her into action. She needs to trust Fileo before she'll share her financial data.</p>
+    </div>
+  </div>
+
+  <div class="persona-card">
+    <div>
+      <div class="persona-avatar" style="background:#1A2E4A">KO</div>
+      <div class="persona-name">Kola, 34</div>
+      <div class="persona-role">Secondary Persona — Salaried + Side Business</div>
+      <div class="persona-stats">
+        <div class="persona-stat">📍 Abuja, Nigeria</div>
+        <div class="persona-stat">🏢 Works at a bank full-time</div>
+        <div class="persona-stat">💼 Runs a consulting side business</div>
+        <div class="persona-stat">💰 PAYE deducted + cash side income</div>
+      </div>
+    </div>
+    <div>
+      <div class="persona-section-title">Pain Points</div>
+      <div class="tag-list mb-16">
+        <span class="tag pain">Thinks PAYE covers everything</span>
+        <span class="tag pain">Side income undeclared for years</span>
+        <span class="tag pain">Worried about professional reputation</span>
+        <span class="tag pain">Doesn't want colleagues to know</span>
+      </div>
+
+      <div class="persona-section-title">Goals</div>
+      <div class="tag-list mb-16">
+        <span class="tag goal">Become fully compliant discreetly</span>
+        <span class="tag goal">Protect career advancement prospects</span>
+        <span class="tag goal">Understand what he actually owes</span>
+      </div>
+
+      <div class="persona-section-title">Motivations</div>
+      <p style="font-size:13px; color:var(--text-secondary); line-height:1.6">Kola is motivated by professional reputation and upward mobility. For him, non-compliance isn't a financial risk — it's a career risk. He needs Fileo to be discreet, accurate, and comprehensive enough to handle both his employment income and his side business in one place.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section-divider" style="margin: 0 auto; display:block; width: calc(100% - 96px); max-width: 1004px;"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 04 VERBAL IDENTITY -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="verbal">
+<div class="section">
+  <span class="section-number">04 — Verbal Identity</span>
+  <h2 class="section-title">How Fileo speaks</h2>
+  <p class="section-sub">Every word Fileo writes is a design decision. The voice is consistent across every surface — from the landing page headline to an error message at 11pm.</p>
+
+  <div class="label mb-16">Brand Voice Principles</div>
+  <div class="voice-grid mb-32">
+    <div class="voice-card">
+      <div class="voice-title">Clear, not clever</div>
+      <div class="voice-body">We never sacrifice clarity for wit. If someone has to read a sentence twice, we've failed. Plain language is not dumbing down — it's respect.</div>
+      <div class="voice-examples">
+        <div class="voice-do">Your return has been filed successfully.</div>
+        <div class="voice-dont">Your fiscal submission has been successfully processed and transmitted.</div>
+      </div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-title">Calm, not cold</div>
+      <div class="voice-body">Warmth doesn't mean exclamation marks and emojis. It means treating the user as a capable adult who happens to be in a stressful situation.</div>
+      <div class="voice-examples">
+        <div class="voice-do">We noticed a transaction we couldn't identify. Help us categorise it.</div>
+        <div class="voice-dont">ERROR: Unrecognised transaction detected. Action required immediately.</div>
+      </div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-title">Honest, not alarming</div>
+      <div class="voice-body">We tell the truth about penalties, deadlines, and consequences — but we never use fear as a conversion tool. Facts, not manipulation.</div>
+      <div class="voice-examples">
+        <div class="voice-do">Missing the deadline adds ₦50,000 per month. Filing today stops the clock.</div>
+        <div class="voice-dont">⚠️ WARNING: You could face MASSIVE fines! Act NOW before it's too late!</div>
+      </div>
+    </div>
+    <div class="voice-card">
+      <div class="voice-title">Confident, not arrogant</div>
+      <div class="voice-body">We know what we're doing and we say so. But we never talk down to users or make them feel ignorant for not knowing what we know.</div>
+      <div class="voice-examples">
+        <div class="voice-do">We'll handle the calculation. You just need to confirm the numbers look right.</div>
+        <div class="voice-dont">As a tax-compliant service, we utilise advanced computation to determine your liability.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label mb-16">Tagline Options</div>
+  <div class="tagline-list mb-32">
+    <div class="tagline-item featured">
+      <div class="tagline-num">01</div>
+      <div class="tagline-text">Your tax return, handled.</div>
+      <div class="tagline-note">⭐ Recommended — direct, outcome-led</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">02</div>
+      <div class="tagline-text">We file. You focus.</div>
+      <div class="tagline-note">Action-contrast pairing</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">03</div>
+      <div class="tagline-text">Tax compliance, without the complexity.</div>
+      <div class="tagline-note">Problem-solution framing</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">04</div>
+      <div class="tagline-text">Done in 10 minutes. Filed by professionals.</div>
+      <div class="tagline-note">Speed + trust combination</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">05</div>
+      <div class="tagline-text">The accountant you never had to call.</div>
+      <div class="tagline-note">Familiar metaphor, aspirational</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">06</div>
+      <div class="tagline-text">File once. Relax all year.</div>
+      <div class="tagline-note">Emotional payoff — peace of mind</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">07</div>
+      <div class="tagline-text">Nigeria's freelancers, finally compliant.</div>
+      <div class="tagline-note">Community and identity-led</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">08</div>
+      <div class="tagline-text">Tax, sorted. Move on.</div>
+      <div class="tagline-note">Dismissive of complexity — liberating</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">09</div>
+      <div class="tagline-text">From messy income to clean compliance.</div>
+      <div class="tagline-note">Transformation framing</div>
+    </div>
+    <div class="tagline-item">
+      <div class="tagline-num">10</div>
+      <div class="tagline-text">We know Nigerian tax. We handle yours.</div>
+      <div class="tagline-note">Specificity + service promise</div>
+    </div>
+  </div>
+
+  <div class="label mb-16">Microcopy Examples</div>
+  <div class="microcopy-grid mb-16">
+    <div class="microcopy-card mc-onboard">
+      <span class="microcopy-type">Onboarding</span>
+      <div class="microcopy-text">Takes about 10 minutes</div>
+      <div class="microcopy-sub">We'll ask simple questions. No tax knowledge needed.</div>
+    </div>
+    <div class="microcopy-card mc-onboard">
+      <span class="microcopy-type">Onboarding</span>
+      <div class="microcopy-text">Why do we need your NIN?</div>
+      <div class="microcopy-sub">It lets us file your return with the correct tax record. We don't store or share it.</div>
+    </div>
+    <div class="microcopy-card mc-onboard">
+      <span class="microcopy-type">Onboarding</span>
+      <div class="microcopy-text">Select everything that applies — even if you only used it once.</div>
+      <div class="microcopy-sub">This tells us which documents to ask for. Nothing else.</div>
+    </div>
+    <div class="microcopy-card mc-onboard">
+      <span class="microcopy-type">Onboarding</span>
+      <div class="microcopy-text">Let's find what reduces your bill.</div>
+      <div class="microcopy-sub">Most people miss deductions they're legally entitled to. We won't let that happen.</div>
+    </div>
+    <div class="microcopy-card mc-success">
+      <span class="microcopy-type">Success</span>
+      <div class="microcopy-text">Your return has been approved.</div>
+      <div class="microcopy-sub">A certified tax professional is reviewing it now. You'll hear from us within 2 hours.</div>
+    </div>
+    <div class="microcopy-card mc-success">
+      <span class="microcopy-type">Success</span>
+      <div class="microcopy-text">Filed with LIRS. You're done.</div>
+      <div class="microcopy-sub">Your tax clearance certificate will be ready within 5 working days.</div>
+    </div>
+    <div class="microcopy-card mc-success">
+      <span class="microcopy-type">Success</span>
+      <div class="microcopy-text">Your deductions saved you ₦185,000.</div>
+      <div class="microcopy-sub">Without them, you would have owed ₦597,000. We applied everything you're entitled to.</div>
+    </div>
+    <div class="microcopy-card mc-success">
+      <span class="microcopy-type">Success</span>
+      <div class="microcopy-text">Progress saved.</div>
+      <div class="microcopy-sub">Pick up exactly where you left off whenever you're ready.</div>
+    </div>
+    <div class="microcopy-card mc-error">
+      <span class="microcopy-type">Error</span>
+      <div class="microcopy-text">We couldn't read this document.</div>
+      <div class="microcopy-sub">Try uploading a clearer scan or a PDF version instead.</div>
+    </div>
+    <div class="microcopy-card mc-error">
+      <span class="microcopy-type">Error</span>
+      <div class="microcopy-text">3 transactions still need your input.</div>
+      <div class="microcopy-sub">We can't calculate your return accurately until these are resolved.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section-divider" style="margin: 0 auto; display:block; width: calc(100% - 96px); max-width: 1004px;"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 05 VISUAL IDENTITY -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="visual">
+<div class="section">
+  <span class="section-number">05 — Visual Identity</span>
+  <h2 class="section-title">How Fileo looks</h2>
+  <p class="section-sub">A visual system built on calm authority. Every colour, typeface, and visual decision reinforces trust, clarity, and competence.</p>
+
+  <!-- LOGO -->
+  <div class="label mb-16">Logo System</div>
+  <div class="card-grid card-grid-3 mb-8">
+    <div>
+      <div class="logo-demo light">
+        <div class="logo-large on-light">File<span>o</span></div>
+      </div>
+      <p class="label mt-8" style="text-align:center">Primary — on light</p>
+    </div>
+    <div>
+      <div class="logo-demo dark">
+        <div class="logo-large on-dark">File<span>o</span></div>
+      </div>
+      <p class="label mt-8" style="text-align:center">Reversed — on dark</p>
+    </div>
+    <div>
+      <div class="logo-demo sage-bg">
+        <div class="logo-large on-sage">File<span>o</span></div>
+      </div>
+      <p class="label mt-8" style="text-align:center">On brand colour</p>
+    </div>
+  </div>
+
+  <div class="card mb-32">
+    <div class="card-label">Logo Guidelines</div>
+    <div class="spec-row"><span class="spec-key">Typeface</span><span class="spec-val">Cormorant Garamond · 600 weight</span></div>
+    <div class="spec-row"><span class="spec-key">Accent character</span><span class="spec-val">Lowercase "o" — Sage Green #4A7C6F</span></div>
+    <div class="spec-row"><span class="spec-key">Minimum size (digital)</span><span class="spec-val">24px / 18pt</span></div>
+    <div class="spec-row"><span class="spec-key">Minimum clear space</span><span class="spec-val">½ cap-height on all sides</span></div>
+    <div class="spec-row"><span class="spec-key">Never do</span><span class="spec-val">Stretch, rotate, recolour, apply drop shadow, use on busy backgrounds</span></div>
+  </div>
+
+  <!-- COLOUR PALETTE -->
+  <div class="label mb-16">Colour Palette</div>
+
+  <div class="label mb-8" style="color:var(--text-tertiary)">Primary Colours</div>
+  <div class="card-grid card-grid-3 mb-24">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#0B1628">
+        <div class="color-name-on-block" style="color:#F5F2EC">Midnight Navy</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#0B1628</div>
+        <div class="color-rgb">RGB(11, 22, 40)</div>
+        <div class="color-why">The primary brand colour. Deep, authoritative, serious without being harsh. Signals security and institutional trust — the colour of a bank vault, not a toy.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#4A7C6F">
+        <div class="color-name-on-block" style="color:#fff">Compliance Sage</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#4A7C6F</div>
+        <div class="color-rgb">RGB(74, 124, 111)</div>
+        <div class="color-why">The accent colour. Sage green universally signals safety, go-ahead, and compliance. Psychologically calming. Rare enough in Nigerian fintech to be distinctive.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#F5F2EC">
+        <div class="color-name-on-block" style="color:#0B1628">Warm Cream</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#F5F2EC</div>
+        <div class="color-rgb">RGB(245, 242, 236)</div>
+        <div class="color-why">Background and large surface colour. Warmer than pure white — reduces eye strain, feels premium and considered. Pairs with navy to create a classic, trustworthy combination.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label mb-8" style="color:var(--text-tertiary)">Secondary Colours</div>
+  <div class="card-grid card-grid-3 mb-24">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#1A2E4A">
+        <div class="color-name-on-block" style="color:#F5F2EC">Navy Mid</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#1A2E4A</div>
+        <div class="color-rgb">RGB(26, 46, 74)</div>
+        <div class="color-why">Used for gradient backgrounds and secondary dark surfaces. Creates depth and dimensionality without introducing a second hue.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#8BBFB3">
+        <div class="color-name-on-block" style="color:#0B1628">Sage Light</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#8BBFB3</div>
+        <div class="color-rgb">RGB(139, 191, 179)</div>
+        <div class="color-why">Used for text and labels on dark backgrounds. A lighter tint of Compliance Sage that maintains brand consistency without sacrificing contrast.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#F0C070">
+        <div class="color-name-on-block" style="color:#0B1628">Amber Alert</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#F0C070</div>
+        <div class="color-rgb">RGB(240, 192, 112)</div>
+        <div class="color-why">Used sparingly for warnings, deadlines, and pending states. Warm enough not to trigger alarm, visible enough to communicate importance. Never used for primary CTAs.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label mb-8" style="color:var(--text-tertiary)">Neutral Colours</div>
+  <div class="card-grid card-grid-4 mb-24">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#FAFAF8; border-bottom:0.5px solid #E2DED8">
+        <div class="color-name-on-block" style="color:#1A1A1A; font-size:14px">Warm White</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#FAFAF8</div>
+        <div class="color-rgb">RGB(250, 250, 248)</div>
+        <div class="color-why">Card and surface background. Slightly warmer than pure white.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#E2DED8">
+        <div class="color-name-on-block" style="color:#1A1A1A; font-size:14px">Border</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#E2DED8</div>
+        <div class="color-rgb">RGB(226, 222, 216)</div>
+        <div class="color-why">Default border and divider colour. Warm-toned for consistency.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#888888">
+        <div class="color-name-on-block" style="color:#fff; font-size:14px">Secondary Text</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#666666</div>
+        <div class="color-rgb">RGB(102, 102, 102)</div>
+        <div class="color-why">Body text, descriptions, supporting copy.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#1A1A1A">
+        <div class="color-name-on-block" style="color:#fff; font-size:14px">Primary Text</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#1A1A1A</div>
+        <div class="color-rgb">RGB(26, 26, 26)</div>
+        <div class="color-why">All primary text on light backgrounds. Softer than pure black.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label mb-8" style="color:var(--text-tertiary)">Semantic Colours</div>
+  <div class="card-grid card-grid-3 mb-32">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#4A7C6F">
+        <div class="color-name-on-block" style="color:#fff">Success Green</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#4A7C6F</div>
+        <div class="color-why">Filed successfully, compliant status, confirmed actions. Same as Compliance Sage — reinforces brand consistency in positive states.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#F0C070">
+        <div class="color-name-on-block" style="color:#0B1628">Warning Amber</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#F0C070</div>
+        <div class="color-why">Deadlines approaching, pending states, items needing attention. Warm and visible without triggering panic.</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#C45E1A">
+        <div class="color-name-on-block" style="color:#fff">Error Terracotta</div>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">#C45E1A</div>
+        <div class="color-why">Errors, overdue penalties, hard blocks. Chosen over red intentionally — less alarming, more Nigerian in palette, maintains brand warmth even in critical states.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="label mb-16">Typography System</div>
+
+  <div class="type-sample">
+    <div class="type-meta">
+      <div class="type-role">Display Font — Cormorant Garamond</div>
+      <div class="type-specs">
+        <div class="type-spec-item">Weights: 500, 600</div>
+        <div class="type-spec-item">Use: Hero headings, logo, brand moments</div>
+      </div>
+    </div>
+    <div class="type-display-sample">Your return,<br><em>handled.</em></div>
+    <div class="type-why">Cormorant Garamond brings authority, elegance, and editorial gravitas that most fintech products avoid. This deliberate choice signals that Fileo is not another startup — it is a professional service. The italic variant is particularly powerful for emotional moments and taglines. Rare in Nigerian fintech, immediately distinctive.</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">
+      <div class="type-role">Heading Font — Cormorant Garamond</div>
+      <div class="type-specs">
+        <div class="type-spec-item">Weights: 600</div>
+        <div class="type-spec-item">Use: Section titles, card headings, screen headers</div>
+      </div>
+    </div>
+    <div class="type-heading-sample">Here's your final return — ready to file.</div>
+    <div class="type-why">Using the same typeface for display and heading creates visual hierarchy through size alone, maintaining brand cohesion. The serif heading style gives every screen a premium, considered feel.</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">
+      <div class="type-role">Body Font — DM Sans</div>
+      <div class="type-specs">
+        <div class="type-spec-item">Weights: 300, 400, 500</div>
+        <div class="type-spec-item">Use: Body copy, descriptions, explanations</div>
+      </div>
+    </div>
+    <div class="type-body-sample">Tell us how you earned in 2025. We'll ask simple questions — no tax knowledge needed. Most users complete this step in under 3 minutes.</div>
+    <div class="type-why">DM Sans is geometric but warm — friendlier than Helvetica, more professional than Poppins, more distinctive than Inter. Its slightly wide letterforms improve readability at small sizes on mobile. An excellent pairing with Cormorant — the contrast between serif elegance and sans warmth mirrors Fileo's personality: authoritative but approachable.</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">
+      <div class="type-role">UI / Mono Font — DM Mono</div>
+      <div class="type-specs">
+        <div class="type-spec-item">Weights: 400, 500</div>
+        <div class="type-spec-item">Use: Currency amounts, codes, HEX values, step numbers</div>
+      </div>
+    </div>
+    <div class="type-ui-sample" style="font-family:'DM Mono', monospace; font-size:20px; color:#0B1628">₦412,000 &nbsp;·&nbsp; Step 03 &nbsp;·&nbsp; #4A7C6F</div>
+    <div class="type-why">DM Mono shares DNA with DM Sans — same family, harmonious design. Used exclusively for numbers, amounts, and technical strings. Monospace numerals prevent amount values from shifting visually as digits change.</div>
+  </div>
+
+  <!-- ICONOGRAPHY -->
+  <div class="label mb-16 mt-32">Iconography System</div>
+  <div class="card mb-32">
+    <div class="card-grid card-grid-2">
+      <div>
+        <div class="card-label">Recommended Library</div>
+        <div class="card-title" style="margin-bottom:12px">Tabler Icons</div>
+        <div class="card-body">Tabler Icons provide 4,000+ consistent, open-source icons with a clean, modern aesthetic. The style is outline-first with precise stroke weight — matching Fileo's precision-focused visual identity.</div>
+        <div class="mt-16">
+          <div class="spec-row"><span class="spec-key">Style</span><span class="spec-val">Outline / Stroke</span></div>
+          <div class="spec-row"><span class="spec-key">Stroke thickness</span><span class="spec-val">1.5px at 24px size</span></div>
+          <div class="spec-row"><span class="spec-key">Corner radius</span><span class="spec-val">2px — rounded but not circular</span></div>
+          <div class="spec-row"><span class="spec-key">Default size</span><span class="spec-val">20px (UI) · 24px (feature) · 32px (hero)</span></div>
+          <div class="spec-row"><span class="spec-key">Colour</span><span class="spec-val">Inherit text colour or Sage Green for emphasis</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="card-label mb-8">Icon Examples — Key Fileo Icons</div>
+        <div class="icon-demo">
+          <div class="icon-item"><i class="ti ti-shield-check"></i></div>
+          <div class="icon-item sage"><i class="ti ti-check"></i></div>
+          <div class="icon-item"><i class="ti ti-upload"></i></div>
+          <div class="icon-item"><i class="ti ti-file-certificate"></i></div>
+          <div class="icon-item"><i class="ti ti-currency-naira"></i></div>
+          <div class="icon-item sage"><i class="ti ti-eye-check"></i></div>
+          <div class="icon-item"><i class="ti ti-lock"></i></div>
+          <div class="icon-item"><i class="ti ti-user-check"></i></div>
+          <div class="icon-item sage"><i class="ti ti-trending-down"></i></div>
+          <div class="icon-item"><i class="ti ti-message-dots"></i></div>
+          <div class="icon-item"><i class="ti ti-calendar"></i></div>
+          <div class="icon-item sage"><i class="ti ti-home"></i></div>
+        </div>
+        <div class="mt-16">
+          <div class="voice-dont" style="font-size:12px">Never use filled icons, emoji as icons, or icons at inconsistent sizes within the same view.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ILLUSTRATION -->
+  <div class="label mb-16">Illustration Style</div>
+  <div class="card mb-24">
+    <div class="card-grid card-grid-2">
+      <div>
+        <div class="card-label">Art Direction</div>
+        <div class="card-body mb-16">Fileo illustrations use a <strong>flat geometric style</strong> with warm, limited colour palettes drawn from the brand system. Characters are abstract enough to avoid specific representation while clearly Nigerian in context — clothing, setting, and visual cues reflect Lagos and Abuja environments. No cartoon exaggeration. Dignified, professional, warm.</div>
+        <div class="spec-row"><span class="spec-key">Style</span><span class="spec-val">Flat geometric, minimal detail</span></div>
+        <div class="spec-row"><span class="spec-key">Colour palette</span><span class="spec-val">Navy, Sage, Cream, Amber only</span></div>
+        <div class="spec-row"><span class="spec-key">Characters</span><span class="spec-val">Abstract silhouettes, varied skin tones</span></div>
+        <div class="spec-row"><span class="spec-key">AI elements</span><span class="spec-val">Subtle data flows, soft glows, document processing motifs</span></div>
+      </div>
+      <div>
+        <div class="card-label mb-16">Scenes to Illustrate</div>
+        <div class="card-grid card-grid-2" style="gap:8px">
+          <div class="illus-scene">
+            <div class="illus-preview" style="background:var(--sage-pale)">📱</div>
+            <div class="illus-title">Empty state — No filings yet</div>
+            <div class="illus-desc">Freelancer at desk, Macbook open, calm setting</div>
+          </div>
+          <div class="illus-scene">
+            <div class="illus-preview" style="background:#FFF8E8">📄</div>
+            <div class="illus-title">Document upload</div>
+            <div class="illus-desc">Files floating into a secure vault</div>
+          </div>
+          <div class="illus-scene">
+            <div class="illus-preview" style="background:#E8F2EF">✅</div>
+            <div class="illus-title">Filed successfully</div>
+            <div class="illus-desc">Person relaxed, phone showing confirmation</div>
+          </div>
+          <div class="illus-scene">
+            <div class="illus-preview" style="background:var(--navy)">🔍</div>
+            <div class="illus-title">AI processing</div>
+            <div class="illus-desc">Abstract data nodes, soft Sage glow, documents being analysed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGERY -->
+  <div class="label mb-16">Imagery Direction</div>
+  <div class="card-grid card-grid-3">
+    <div class="card">
+      <div class="card-label">Photography Style</div>
+      <div class="card-body">Documentary-style photography of Nigerian freelancers and remote workers in authentic environments — home offices, co-working spaces, cafés in Lagos. Never stock photo aesthetics. Real people, real settings, genuine expressions of concentration and calm accomplishment.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Lighting & Mood</div>
+      <div class="card-body">Warm, natural light. Golden hour tones. Soft shadows. No harsh flash or clinical brightness. The mood is settled confidence — not excitement or urgency. As if everything is already handled.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Representation</div>
+      <div class="card-body">Nigerian freelancers across genders, ages 24–40, across Lagos, Abuja, Ibadan, Port Harcourt. Diverse but never tokenistic. Always shown as capable, professional, and in control — never as confused or overwhelmed, even when the copy acknowledges those feelings.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section-divider" style="margin: 0 auto; display:block; width: calc(100% - 96px); max-width: 1004px;"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 06 DESIGN SYSTEM -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="system">
+<div class="section">
+  <span class="section-number">06 — Design System Foundations</span>
+  <h2 class="section-title">The building blocks</h2>
+  <p class="section-sub">The specific values, tokens, and component standards that ensure visual consistency across every surface Fileo appears on.</p>
+
+  <!-- BORDER RADIUS -->
+  <div class="label mb-16">Border Radius</div>
+  <div class="card mb-24">
+    <div class="radius-demo">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="radius-item" style="width:48px;height:48px;border-radius:4px;"></div>
+        <div class="radius-label" style="color:var(--text-secondary);font-size:11px">4px<br>xs</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="radius-item" style="width:64px;height:64px;border-radius:6px;"></div>
+        <div class="radius-label" style="color:var(--text-secondary);font-size:11px">6px<br>sm</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="radius-item" style="width:80px;height:80px;border-radius:10px;"></div>
+        <div class="radius-label" style="color:var(--text-secondary);font-size:11px">10px<br>md</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="radius-item" style="width:96px;height:96px;border-radius:16px;"></div>
+        <div class="radius-label" style="color:var(--text-secondary);font-size:11px">16px<br>lg</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="radius-item" style="width:112px;height:112px;border-radius:24px;"></div>
+        <div class="radius-label" style="color:var(--text-secondary);font-size:11px">24px<br>xl</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="radius-item" style="width:64px;height:64px;border-radius:9999px;"></div>
+        <div class="radius-label" style="color:var(--text-secondary);font-size:11px">999px<br>full</div>
+      </div>
+    </div>
+    <div class="mt-16">
+      <div class="spec-row"><span class="spec-key">xs — 4px</span><span class="spec-val">Tags, badges, small chips</span></div>
+      <div class="spec-row"><span class="spec-key">sm — 6px</span><span class="spec-val">Buttons, inputs, small tiles</span></div>
+      <div class="spec-row"><span class="spec-key">md — 10px</span><span class="spec-val">Upload zones, compact cards</span></div>
+      <div class="spec-row"><span class="spec-key">lg — 16px</span><span class="spec-val">Primary cards, panels, sections</span></div>
+      <div class="spec-row"><span class="spec-key">xl — 24px</span><span class="spec-val">Feature cards, modals, hero sections</span></div>
+      <div class="spec-row"><span class="spec-key">full — 999px</span><span class="spec-val">Pills, status badges, avatars</span></div>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="label mb-16">Spacing Scale</div>
+  <div class="card mb-24">
+    <div class="spacing-demo">
+      <div class="spacing-item"><div class="spacing-block" style="height:4px"></div><div class="spacing-label">4</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:8px"></div><div class="spacing-label">8</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:12px"></div><div class="spacing-label">12</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:16px"></div><div class="spacing-label">16</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:20px"></div><div class="spacing-label">20</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:24px"></div><div class="spacing-label">24</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:32px"></div><div class="spacing-label">32</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:40px"></div><div class="spacing-label">40</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:48px"></div><div class="spacing-label">48</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:64px"></div><div class="spacing-label">64</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:80px"></div><div class="spacing-label">80</div></div>
+    </div>
+  </div>
+
+  <!-- SHADOWS -->
+  <div class="label mb-16">Shadow Styles</div>
+  <div class="shadow-demo mb-32">
+    <div class="shadow-item" style="box-shadow:0 1px 3px rgba(11,22,40,0.06)">xs<br>Hover</div>
+    <div class="shadow-item" style="box-shadow:0 2px 8px rgba(11,22,40,0.08)">sm<br>Cards</div>
+    <div class="shadow-item" style="box-shadow:0 8px 24px rgba(11,22,40,0.10)">md<br>Modals</div>
+    <div class="shadow-item" style="box-shadow:0 16px 48px rgba(11,22,40,0.14)">lg<br>Overlays</div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="label mb-16">Button Styles</div>
+  <div class="card mb-24">
+    <div class="btn-demo">
+      <button class="btn-primary-demo">Primary action</button>
+      <button class="btn-secondary-demo">Secondary action</button>
+      <button class="btn-ghost-demo">Ghost / tertiary</button>
+      <button class="btn-destructive-demo">Destructive</button>
+    </div>
+    <div class="mt-16">
+      <div class="spec-row"><span class="spec-key">Height</span><span class="spec-val">44px (default) · 36px (compact) · 52px (large)</span></div>
+      <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">12px 24px (default)</span></div>
+      <div class="spec-row"><span class="spec-key">Border radius</span><span class="spec-val">8px (sm)</span></div>
+      <div class="spec-row"><span class="spec-key">Font</span><span class="spec-val">DM Sans · 14px · Weight 500</span></div>
+      <div class="spec-row"><span class="spec-key">Icon + label gap</span><span class="spec-val">8px</span></div>
+    </div>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="label mb-16">Input Field Styles</div>
+  <div class="card mb-24">
+    <input class="input-demo" placeholder="Default — placeholder state" readonly>
+    <input class="input-demo focused" value="Focused — active input state" readonly>
+    <input class="input-demo error" value="Error — invalid entry state" readonly>
+    <div class="spec-row"><span class="spec-key">Height</span><span class="spec-val">44px</span></div>
+    <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-val">12px 16px</span></div>
+    <div class="spec-row"><span class="spec-key">Border</span><span class="spec-val">0.5px · Default #D0CCC6 · Focus #4A7C6F · Error #C45E1A</span></div>
+    <div class="spec-row"><span class="spec-key">Focus ring</span><span class="spec-val">0 0 0 3px rgba(74,124,111,0.10)</span></div>
+    <div class="spec-row"><span class="spec-key">Font</span><span class="spec-val">DM Sans · 14px · Weight 400</span></div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="label mb-16">Card Styles</div>
+  <div class="card-grid card-grid-3 mb-16">
+    <div style="background:var(--warm-white);border:0.5px solid var(--border);border-radius:16px;padding:20px">
+      <div class="label mb-8">Default card</div>
+      <div style="font-size:13px;color:var(--text-secondary)">White background, 0.5px warm border, 16px radius, 24px padding.</div>
+    </div>
+    <div style="background:var(--sage-pale);border:0.5px solid #C5DDD8;border-radius:16px;padding:20px">
+      <div class="label mb-8" style="color:var(--sage)">Accent card</div>
+      <div style="font-size:13px;color:#2D5C52">Sage pale background, sage border. Used for positive states and callouts.</div>
+    </div>
+    <div style="background:var(--navy);border-radius:16px;padding:20px">
+      <div class="label mb-8" style="color:var(--sage-light)">Dark card</div>
+      <div style="font-size:13px;color:rgba(245,242,236,0.6)">Navy background. Used for hero sections, compliance cards, and brand moments.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section-divider" style="margin: 0 auto; display:block; width: calc(100% - 96px); max-width: 1004px;"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 07 MOODBOARD -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="moodboard">
+<div class="section">
+  <span class="section-number">07 — Moodboard Directions</span>
+  <h2 class="section-title">Three creative directions</h2>
+  <p class="section-sub">Three distinct visual territories explored before arriving at Fileo's final direction. Documented here to show the strategic thinking behind the chosen aesthetic.</p>
+
+  <!-- DIRECTION 1 -->
+  <div class="mood-card mb-16" style="background:#F5F0E8;border:0.5px solid #D8D0C4">
+    <div class="mood-title" style="color:#2A1F14">Direction 1 — Conservative / Trustworthy</div>
+    <div class="mood-sub" style="color:#5A4A38">Inspired by established Nigerian financial institutions and legal firms. Deep burgundy, dark mahogany, parchment tones. Traditional serif typography. The user feels they are dealing with an institution that has existed for decades.</div>
+    <div class="mood-swatches">
+      <div class="mood-swatch" style="background:#3D1C1C"></div>
+      <div class="mood-swatch" style="background:#7A4030"></div>
+      <div class="mood-swatch" style="background:#C4A882"></div>
+      <div class="mood-swatch" style="background:#F5EFE0"></div>
+      <div class="mood-swatch" style="background:#2A1F14"></div>
+    </div>
+    <div class="mood-attr">
+      <span class="mood-tag" style="background:rgba(61,28,28,0.1);color:#3D1C1C">Playfair Display · EB Garamond</span>
+      <span class="mood-tag" style="background:rgba(61,28,28,0.1);color:#3D1C1C">Heavy borders · Dense layout</span>
+      <span class="mood-tag" style="background:rgba(61,28,28,0.1);color:#3D1C1C">Institutional · Established · Formal</span>
+    </div>
+    <div class="mt-16" style="font-size:13px;color:#5A4A38;line-height:1.6"><strong>Rejected because:</strong> Too old-fashioned for an AI-native product targeting young freelancers. Creates distance rather than warmth. Signals bureaucracy, which is exactly what Fileo is removing.</div>
+  </div>
+
+  <!-- DIRECTION 2 -->
+  <div class="mood-card mb-16" style="background:#0A0A12;border:0.5px solid #1E1E2E">
+    <div class="mood-title" style="color:#E8E0FF">Direction 2 — Modern AI-Native</div>
+    <div class="mood-sub" style="color:rgba(232,224,255,0.6)">Inspired by AI-first products like Notion AI, Linear, and Perplexity. Dark mode first. Electric purple accents. Clean geometric sans-serif. Data visualization aesthetics. Feels cutting-edge and technically capable.</div>
+    <div class="mood-swatches">
+      <div class="mood-swatch" style="background:#7C3AED"></div>
+      <div class="mood-swatch" style="background:#A78BFA"></div>
+      <div class="mood-swatch" style="background:#06B6D4"></div>
+      <div class="mood-swatch" style="background:#1E1E2E"></div>
+      <div class="mood-swatch" style="background:#F8FAFC"></div>
+    </div>
+    <div class="mood-attr">
+      <span class="mood-tag" style="background:rgba(124,58,237,0.2);color:#A78BFA">Space Grotesk · Geist</span>
+      <span class="mood-tag" style="background:rgba(124,58,237,0.2);color:#A78BFA">Glassmorphism · Gradient meshes</span>
+      <span class="mood-tag" style="background:rgba(124,58,237,0.2);color:#A78BFA">Futuristic · Cold · Technical</span>
+    </div>
+    <div class="mt-16" style="font-size:13px;color:rgba(232,224,255,0.5);line-height:1.6"><strong>Rejected because:</strong> Purple gradients on dark backgrounds are the most overused aesthetic in AI products globally. Fileo would look identical to a hundred competitors. More critically, it feels cold and impersonal — the opposite of what an anxious user needs.</div>
+  </div>
+
+  <!-- DIRECTION 3 — CHOSEN -->
+  <div class="mood-card" style="background:var(--navy);border:2px solid var(--sage)">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(74,124,111,0.2);border:0.5px solid rgba(74,124,111,0.4);border-radius:20px;padding:4px 12px;margin-bottom:16px">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--sage)"></div>
+      <span style="font-size:11px;font-weight:500;color:var(--sage-light);text-transform:uppercase;letter-spacing:0.4px">Chosen Direction</span>
+    </div>
+    <div class="mood-title" style="color:var(--cream)">Direction 3 — Premium Fintech</div>
+    <div class="mood-sub" style="color:rgba(245,242,236,0.6)">Midnight navy, compliance sage, warm cream. Cormorant Garamond for brand authority, DM Sans for human warmth. Editorial without being cold. Premium without being exclusionary. Designed specifically for the Nigerian freelancer's dual need for trust and accessibility.</div>
+    <div class="mood-swatches">
+      <div class="mood-swatch" style="background:#0B1628"></div>
+      <div class="mood-swatch" style="background:#4A7C6F"></div>
+      <div class="mood-swatch" style="background:#F5F2EC"></div>
+      <div class="mood-swatch" style="background:#F0C070"></div>
+      <div class="mood-swatch" style="background:#8BBFB3"></div>
+    </div>
+    <div class="mood-attr">
+      <span class="mood-tag" style="background:rgba(74,124,111,0.2);color:var(--sage-light)">Cormorant Garamond · DM Sans</span>
+      <span class="mood-tag" style="background:rgba(74,124,111,0.2);color:var(--sage-light)">Generous whitespace · Warm surfaces</span>
+      <span class="mood-tag" style="background:rgba(74,124,111,0.2);color:var(--sage-light)">Calm · Authoritative · Distinctly Nigerian</span>
+    </div>
+    <div class="mt-16" style="font-size:13px;color:rgba(245,242,236,0.6);line-height:1.6"><strong>Chosen because:</strong> It is the only direction that simultaneously achieves trust (navy authority), calm (sage green), warmth (cream surfaces), and distinction (rare in Nigerian fintech). The serif-sans pairing signals both competence and humanity. It is unmistakably Fileo.</div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="brand-footer">
+  <div class="footer-logo">File<span>o</span></div>
+  <div class="footer-note">Brand Identity System v1.0 · Confidential · 2026</div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+</body>
+</html>

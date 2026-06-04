@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fileo — Continue Filing</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #F0EDE8;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.shell {
+  background: #FAFAF8;
+  border: 0.5px solid #E2DED8;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 480px;
+  min-height: 680px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 40px rgba(11,22,40,0.08);
+  position: relative;
+}
+
+/* NAV */
+.dash-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 0.5px solid #E2DED8;
+}
+
+.nav-left { display: flex; flex-direction: column; }
+.nav-greeting { font-size: 12px; color: #888; margin-bottom: 2px; }
+.nav-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #1A1A1A; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-icon-btn { width: 34px; height: 34px; border-radius: 50%; background: #F0EDE8; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.nav-icon-btn i { font-size: 16px; color: #555; }
+.nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: #0B1628; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #fff; cursor: pointer; }
+
+/* BODY */
+.dash-body { flex: 1; overflow-y: auto; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 14px; }
+
+/* DEADLINE BANNER */
+.deadline-banner {
+  background: #FFF8E8;
+  border: 0.5px solid #F0C070;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.deadline-banner i { font-size: 16px; color: #C45E1A; flex-shrink: 0; margin-top: 1px; }
+.deadline-banner-text strong { display: block; font-size: 13px; font-weight: 500; color: #7A3B0A; margin-bottom: 2px; }
+.deadline-banner-text span { font-size: 12px; color: #A05A20; line-height: 1.5; }
+
+/* STATUS CARD */
+.status-card {
+  background: linear-gradient(135deg, #0B1628 0%, #1A2E4A 100%);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(240, 192, 112, 0.2);
+  border: 0.5px solid rgba(240, 192, 112, 0.4);
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-bottom: 12px;
+}
+
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: #F0C070; }
+.status-tag span { font-size: 11px; font-weight: 500; color: #F0C070; text-transform: uppercase; letter-spacing: 0.4px; }
+
+.status-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #F5F2EC;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.status-sub { font-size: 12px; color: #8B9BAD; line-height: 1.5; margin-bottom: 20px; }
+
+/* PROGRESS BAR */
+.progress-section { margin-bottom: 4px; }
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.progress-label span { font-size: 12px; color: #8B9BAD; }
+.progress-label strong { font-size: 12px; color: #F5F2EC; font-weight: 500; }
+
+.progress-track {
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4A7C6F;
+  border-radius: 2px;
+  width: 40%;
+  transition: width 1s ease;
+}
+
+/* STEP INDICATORS */
+.steps-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.step-pill {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.step-pill.done { background: #4A7C6F; }
+.step-pill.current { background: #F0C070; }
+.step-pill.pending { background: rgba(255,255,255,0.12); }
+
+.steps-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.step-label-item { font-size: 10px; color: #8B9BAD; text-align: center; flex: 1; }
+.step-label-item.done { color: #4A7C6F; }
+.step-label-item.current { color: #F0C070; }
+
+/* CHECKLIST */
+.section-title { font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 10px; }
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 0.5px solid #E2DED8;
+  border-radius: 10px;
+  background: #FAFAF8;
+  margin-bottom: 8px;
+}
+
+.check-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.check-icon.done { background: #E8F2EF; }
+.check-icon.done i { font-size: 13px; color: #4A7C6F; }
+.check-icon.pending { background: #F5F5F3; border: 0.5px solid #E2DED8; }
+.check-icon.pending i { font-size: 13px; color: #999; }
+.check-icon.current { background: #FFF8E8; border: 0.5px solid #F0C070; }
+.check-icon.current i { font-size: 13px; color: #C45E1A; }
+
+.check-text strong { display: block; font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 2px; }
+.check-text span { font-size: 12px; color: #888; line-height: 1.4; }
+.check-text.muted strong { color: #999; }
+.check-text.muted span { color: #BBB; }
+
+.check-badge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.check-badge.done { background: #E8F2EF; color: #2D5C52; }
+.check-badge.next { background: #FFF8E8; color: #7A3B0A; }
+.check-badge.pending-tag { background: #F5F5F3; color: #888; }
+
+/* WHAT TO GATHER */
+.gather-card {
+  border: 0.5px solid #E2DED8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gather-header {
+  padding: 12px 16px;
+  background: #F5F5F3;
+  border-bottom: 0.5px solid #E2DED8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gather-header i { font-size: 15px; color: #4A7C6F; }
+.gather-header span { font-size: 13px; font-weight: 500; color: #1A1A1A; }
+
+.gather-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-bottom: 0.5px solid #E2DED8;
+  font-size: 13px;
+  color: #555;
+}
+
+.gather-item:last-child { border-bottom: none; }
+.gather-item i { font-size: 14px; color: #4A7C6F; flex-shrink: 0; }
+.gather-item span { flex: 1; }
+.gather-how { font-size: 11px; color: #888; cursor: pointer; text-decoration: underline; }
+
+/* FOOTER */
+.dash-footer {
+  padding: 16px 24px;
+  border-top: 0.5px solid #E2DED8;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #FAFAF8;
+}
+
+.btn-continue {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: #0B1628;
+  padding: 13px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-save {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #666;
+  background: transparent;
+  border: 0.5px solid #E2DED8;
+  padding: 11px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- NAV -->
+  <div class="dash-nav">
+    <div class="nav-left">
+      <span class="nav-greeting">Welcome back</span>
+      <span class="nav-name">Adaeze Okonkwo</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-icon-btn"><i class="ti ti-bell"></i></button>
+      <div class="nav-avatar">AO</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="dash-body">
+
+    <!-- DEADLINE BANNER -->
+    <div class="deadline-banner">
+      <i class="ti ti-alert-triangle"></i>
+      <div class="deadline-banner-text">
+        <strong>Filing deadline — March 31, 2026</strong>
+        <span>You have 47 days left. Every month you miss after the deadline adds ₦50,000 in penalties.</span>
+      </div>
+    </div>
+
+    <!-- STATUS CARD -->
+    <div class="status-card">
+      <div class="status-tag">
+        <div class="status-dot"></div>
+        <span>Filing in progress</span>
+      </div>
+      <div class="status-h">Your 2025 return<br>is waiting for you</div>
+      <div class="status-sub">You're 40% through. Pick up exactly where you left off — your progress is saved.</div>
+
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Progress</span>
+          <strong>40% complete</strong>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill"></div>
+        </div>
+
+        <div class="steps-row">
+          <div class="step-pill done"></div>
+          <div class="step-pill done"></div>
+          <div class="step-pill current"></div>
+          <div class="step-pill pending"></div>
+          <div class="step-pill pending"></div>
+          <div class="step-pill pending"></div>
+        </div>
+        <div class="steps-labels">
+          <div class="step-label-item done">Account</div>
+          <div class="step-label-item done">Verified</div>
+          <div class="step-label-item current">Upload</div>
+          <div class="step-label-item">Deductions</div>
+          <div class="step-label-item">Review</div>
+          <div class="step-label-item">Filed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div>
+      <div class="section-title">Where you are</div>
+
+      <div class="checklist-item">
+        <div class="check-icon done"><i class="ti ti-check"></i></div>
+        <div class="check-text">
+          <strong>Account created</strong>
+          <span>Name, email, phone confirmed</span>
+        </div>
+        <span class="check-badge done">Done</span>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon done"><i class="ti ti-check"></i></div>
+        <div class="check-text">
+          <strong>Identity verified</strong>
+          <span>NIN and BVN confirmed</span>
+        </div>
+        <span class="check-badge done">Done</span>
+      </div>
+
+      <div class="checklist-item" style="border-color:#F0C070">
+        <div class="check-icon current"><i class="ti ti-upload"></i></div>
+        <div class="check-text">
+          <strong>Upload documents</strong>
+          <span>You selected Payoneer and Grey — statements still needed</span>
+        </div>
+        <span class="check-badge next">Up next</span>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon pending"><i class="ti ti-receipt-tax"></i></div>
+        <div class="check-text muted">
+          <strong>Add deductions</strong>
+          <span>Rent, pension, health insurance</span>
+        </div>
+        <span class="check-badge pending-tag">Pending</span>
+      </div>
+
+      <div class="checklist-item">
+        <div class="check-icon pending"><i class="ti ti-eye-check"></i></div>
+        <div class="check-text muted">
+          <strong>Review and approve</strong>
+          <span>See your final return before filing</span>
+        </div>
+        <span class="check-badge pending-tag">Pending</span>
+      </div>
+
+    </div>
+
+    <!-- WHAT TO GATHER -->
+    <div>
+      <div class="section-title">What you still need to gather</div>
+      <div class="gather-card">
+        <div class="gather-header">
+          <i class="ti ti-clipboard-list"></i>
+          <span>Documents needed for your next step</span>
+        </div>
+        <div class="gather-item">
+          <i class="ti ti-brand-paypal"></i>
+          <span>Payoneer annual statement — 2025</span>
+          <span class="gather-how" onclick="alert('Log in to Payoneer → Reports → Annual Summary → Download PDF')">How to get this</span>
+        </div>
+        <div class="gather-item">
+          <i class="ti ti-building-bank"></i>
+          <span>Grey account statement — full year 2025</span>
+          <span class="gather-how" onclick="alert('Grey app → Account → Statement → Full year 2025')">How to get this</span>
+        </div>
+        <div class="gather-item">
+          <i class="ti ti-home"></i>
+          <span>Rent receipts or payment records</span>
+          <span class="gather-how" onclick="alert('Screenshots of bank transfers to your landlord, or official rent receipt if available')">How to get this</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="dash-footer">
+    <button class="btn-continue">
+      <i class="ti ti-arrow-right"></i>
+      Continue my filing
+    </button>
+    <button class="btn-save">
+      <i class="ti ti-bookmark"></i>
+      Save and come back later
+    </button>
+  </div>
+
+</div>
+
+</body>
+</html>

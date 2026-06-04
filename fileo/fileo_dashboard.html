@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fileo — Dashboard</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #F0EDE8;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.shell {
+  background: #FAFAF8;
+  border: 0.5px solid #E2DED8;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 480px;
+  min-height: 680px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 40px rgba(11,22,40,0.08);
+  position: relative;
+}
+
+/* NAV */
+.dash-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 0.5px solid #E2DED8;
+}
+
+.nav-left { display: flex; flex-direction: column; }
+.nav-greeting { font-size: 12px; color: #888; margin-bottom: 2px; }
+.nav-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #1A1A1A; }
+
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-icon-btn { width: 34px; height: 34px; border-radius: 50%; background: #F0EDE8; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.nav-icon-btn i { font-size: 16px; color: #555; }
+.nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: #0B1628; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #fff; cursor: pointer; }
+
+/* BODY */
+.dash-body { flex: 1; overflow-y: auto; padding: 20px 24px 100px; display: flex; flex-direction: column; gap: 16px; }
+
+/* COMPLIANCE BADGE */
+.compliance-card {
+  background: linear-gradient(135deg, #0B1628 0%, #1A2E4A 100%);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.compliance-main {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.compliance-left {}
+
+.compliance-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(74, 124, 111, 0.25);
+  border: 0.5px solid rgba(74, 124, 111, 0.5);
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-bottom: 12px;
+}
+
+.compliance-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4A7C6F;
+}
+
+.compliance-status span {
+  font-size: 11px;
+  font-weight: 500;
+  color: #8BBFB3;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.compliance-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #F5F2EC;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.compliance-sub {
+  font-size: 12px;
+  color: #8B9BAD;
+  line-height: 1.5;
+}
+
+.compliance-badge-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #0B1628;
+  background: #F5F2EC;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.compliance-badge-btn i { font-size: 13px; }
+
+.compliance-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.stat-item {
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.stat-item:not(:last-child) {
+  border-right: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #F5F2EC;
+  margin-bottom: 3px;
+}
+
+.stat-label { font-size: 11px; color: #8B9BAD; }
+
+/* NEXT ACTION CARD */
+.next-card {
+  background: #E8F2EF;
+  border: 0.5px solid #C5DDD8;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.next-card-left { display: flex; align-items: center; gap: 12px; }
+.next-card-icon { width: 36px; height: 36px; border-radius: 50%; background: #4A7C6F; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.next-card-icon i { font-size: 16px; color: #fff; }
+.next-card-title { font-size: 13px; font-weight: 500; color: #1A3D36; margin-bottom: 2px; }
+.next-card-sub { font-size: 12px; color: #4A7C6F; }
+
+.next-card-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: #4A7C6F;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* SECTION HEADERS */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+}
+
+.section-action {
+  font-size: 12px;
+  color: #4A7C6F;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* SEARCH BAR */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F5F5F3;
+  border: 0.5px solid #E2DED8;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+
+.search-bar i { font-size: 15px; color: #999; flex-shrink: 0; }
+.search-bar input { background: transparent; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #1A1A1A; width: 100%; }
+.search-bar input::placeholder { color: #999; }
+
+/* FILING HISTORY */
+.filing-item {
+  border: 0.5px solid #E2DED8;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: #FAFAF8;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.filing-item:hover { border-color: #4A7C6F; }
+
+.filing-item-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.filing-left { display: flex; align-items: center; gap: 12px; }
+
+.filing-year-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #0B1628;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.filing-year-badge span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #F5F2EC;
+}
+
+.filing-info-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin-bottom: 3px;
+}
+
+.filing-info-sub {
+  font-size: 12px;
+  color: #888;
+}
+
+.filing-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+.filing-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.filing-status.filed { background: #E8F2EF; color: #2D5C52; }
+.filing-status.processing { background: #FFF8E8; color: #7A3B0A; }
+.filing-status i { font-size: 11px; }
+
+.filing-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.filing-item-actions {
+  display: none;
+  padding: 0 16px 14px;
+  gap: 8px;
+}
+
+.filing-item-actions.open { display: flex; }
+
+.action-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 0.5px solid #E2DED8;
+  background: #F5F5F3;
+  color: #555;
+}
+
+.action-btn.primary { background: #0B1628; color: #fff; border-color: #0B1628; }
+.action-btn i { font-size: 13px; }
+
+/* DOCUMENTS */
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 0.5px solid #E2DED8;
+  border-radius: 10px;
+  background: #FAFAF8;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.doc-item:hover { border-color: #4A7C6F; }
+
+.doc-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.doc-icon.pdf { background: #FFE8E8; }
+.doc-icon.pdf i { font-size: 16px; color: #C45E1A; }
+.doc-icon.cert { background: #E8F2EF; }
+.doc-icon.cert i { font-size: 16px; color: #4A7C6F; }
+
+.doc-name { font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 2px; }
+.doc-meta { font-size: 11px; color: #888; }
+.doc-download { margin-left: auto; font-size: 18px; color: #999; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #FAFAF8;
+  border-top: 0.5px solid #E2DED8;
+  display: flex;
+  padding: 12px 0 16px;
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.nav-tab i { font-size: 20px; color: #999; }
+.nav-tab span { font-size: 10px; color: #999; font-weight: 500; }
+.nav-tab.active i { color: #0B1628; }
+.nav-tab.active span { color: #0B1628; }
+
+/* BADGE MODAL */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11,22,40,0.65);
+  display: none;
+  align-items: flex-end;
+  z-index: 20;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-sheet {
+  background: #FAFAF8;
+  border-radius: 16px 16px 0 0;
+  padding: 24px;
+  width: 100%;
+  border-top: 0.5px solid #E2DED8;
+}
+
+.modal-handle { width: 36px; height: 3px; background: #D0CCC6; border-radius: 2px; margin: 0 auto 20px; }
+
+.badge-card {
+  background: linear-gradient(135deg, #0B1628 0%, #1A2E4A 100%);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-card::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(74, 124, 111, 0.12);
+}
+
+.badge-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #F5F2EC;
+  margin-bottom: 16px;
+}
+
+.badge-logo span { color: #4A7C6F; }
+
+.badge-check {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #4A7C6F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.badge-check i { font-size: 26px; color: #fff; }
+
+.badge-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #F5F2EC;
+  margin-bottom: 6px;
+}
+
+.badge-name { font-size: 16px; font-weight: 500; color: #F5F2EC; margin-bottom: 4px; }
+.badge-year { font-size: 13px; color: #8B9BAD; margin-bottom: 16px; }
+
+.badge-meta {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 16px;
+  border-top: 0.5px solid rgba(255,255,255,0.1);
+}
+
+.badge-meta-item { text-align: center; }
+.badge-meta-label { font-size: 10px; color: #8B9BAD; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px; }
+.badge-meta-value { font-size: 12px; font-weight: 500; color: #F5F2EC; }
+
+.badge-disclaimer {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.modal-actions { display: flex; flex-direction: column; gap: 8px; }
+
+.btn-share {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: #0B1628;
+  padding: 13px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-close-modal {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #666;
+  background: transparent;
+  border: 0.5px solid #E2DED8;
+  padding: 11px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- NAV -->
+  <div class="dash-nav">
+    <div class="nav-left">
+      <span class="nav-greeting">Good morning</span>
+      <span class="nav-name">Adaeze Okonkwo</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-icon-btn"><i class="ti ti-bell"></i></button>
+      <div class="nav-avatar">AO</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="dash-body">
+
+    <!-- COMPLIANCE CARD -->
+    <div class="compliance-card">
+      <div class="compliance-main">
+        <div class="compliance-left">
+          <div class="compliance-status">
+            <div class="compliance-dot"></div>
+            <span>Tax compliant</span>
+          </div>
+          <div class="compliance-h">You're fully compliant<br>for 2025</div>
+          <div class="compliance-sub">Filed with LIRS · May 12, 2026<br>Reviewed by a certified tax professional</div>
+        </div>
+        <button class="compliance-badge-btn" onclick="openModal()">
+          <i class="ti ti-certificate"></i>
+          View badge
+        </button>
+      </div>
+      <div class="compliance-stats">
+        <div class="stat-item">
+          <div class="stat-value">2</div>
+          <div class="stat-label">Years filed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">₦185k</div>
+          <div class="stat-label">Total saved</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Penalties</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXT ACTION -->
+    <div class="next-card">
+      <div class="next-card-left">
+        <div class="next-card-icon"><i class="ti ti-calendar"></i></div>
+        <div>
+          <div class="next-card-title">2026 filing opens January 1st</div>
+          <div class="next-card-sub">We'll remind you when it's time</div>
+        </div>
+      </div>
+      <button class="next-card-btn">Set reminder</button>
+    </div>
+
+    <!-- FILING HISTORY -->
+    <div>
+      <div class="section-header">
+        <span class="section-title">Filing history</span>
+        <button class="section-action">
+          Filter <i class="ti ti-adjustments-horizontal"></i>
+        </button>
+      </div>
+
+      <div class="search-bar">
+        <i class="ti ti-search"></i>
+        <input type="text" placeholder="Search by year or amount..." />
+      </div>
+
+      <!-- 2025 Filing -->
+      <div class="filing-item" onclick="toggleFiling('f2025')">
+        <div class="filing-item-main">
+          <div class="filing-left">
+            <div class="filing-year-badge"><span>2025</span></div>
+            <div>
+              <div class="filing-info-title">Tax year 2025</div>
+              <div class="filing-info-sub">Filed May 12, 2026 · LIRS</div>
+            </div>
+          </div>
+          <div class="filing-right">
+            <div class="filing-status filed">
+              <i class="ti ti-check"></i> Filed
+            </div>
+            <div class="filing-amount">₦412,000</div>
+          </div>
+        </div>
+        <div class="filing-item-actions" id="f2025">
+          <button class="action-btn primary"><i class="ti ti-download"></i> Download receipt</button>
+          <button class="action-btn"><i class="ti ti-file-certificate"></i> Tax clearance</button>
+          <button class="action-btn"><i class="ti ti-eye"></i> View return</button>
+        </div>
+      </div>
+
+      <!-- 2024 Filing -->
+      <div class="filing-item" onclick="toggleFiling('f2024')">
+        <div class="filing-item-main">
+          <div class="filing-left">
+            <div class="filing-year-badge" style="background:#2A3F5A"><span>2024</span></div>
+            <div>
+              <div class="filing-info-title">Tax year 2024</div>
+              <div class="filing-info-sub">Filed March 8, 2025 · LIRS</div>
+            </div>
+          </div>
+          <div class="filing-right">
+            <div class="filing-status filed">
+              <i class="ti ti-check"></i> Filed
+            </div>
+            <div class="filing-amount">₦380,000</div>
+          </div>
+        </div>
+        <div class="filing-item-actions" id="f2024">
+          <button class="action-btn primary"><i class="ti ti-download"></i> Download receipt</button>
+          <button class="action-btn"><i class="ti ti-file-certificate"></i> Tax clearance</button>
+          <button class="action-btn"><i class="ti ti-eye"></i> View return</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div>
+      <div class="section-header">
+        <span class="section-title">Recent documents</span>
+        <button class="section-action">See all <i class="ti ti-chevron-right"></i></button>
+      </div>
+
+      <div class="doc-item">
+        <div class="doc-icon cert"><i class="ti ti-certificate"></i></div>
+        <div>
+          <div class="doc-name">Tax clearance certificate — 2025</div>
+          <div class="doc-meta">Issued May 14, 2026 · PDF</div>
+        </div>
+        <i class="ti ti-download doc-download"></i>
+      </div>
+
+      <div class="doc-item">
+        <div class="doc-icon pdf"><i class="ti ti-file-text"></i></div>
+        <div>
+          <div class="doc-name">Filed return — 2025</div>
+          <div class="doc-meta">Tax year Jan–Dec 2025 · PDF</div>
+        </div>
+        <i class="ti ti-download doc-download"></i>
+      </div>
+
+      <div class="doc-item">
+        <div class="doc-icon pdf"><i class="ti ti-receipt"></i></div>
+        <div>
+          <div class="doc-name">Payment receipt — 2025</div>
+          <div class="doc-meta">₦412,000 · Paid May 12, 2026 · PDF</div>
+        </div>
+        <i class="ti ti-download doc-download"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="nav-tab active">
+      <i class="ti ti-layout-dashboard"></i>
+      <span>Home</span>
+    </button>
+    <button class="nav-tab">
+      <i class="ti ti-file-text"></i>
+      <span>Returns</span>
+    </button>
+    <button class="nav-tab">
+      <i class="ti ti-files"></i>
+      <span>Documents</span>
+    </button>
+    <button class="nav-tab">
+      <i class="ti ti-user"></i>
+      <span>Profile</span>
+    </button>
+  </div>
+
+  <!-- BADGE MODAL -->
+  <div class="modal-overlay" id="badgeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+
+      <div class="badge-card">
+        <div class="badge-logo">File<span>o</span></div>
+        <div class="badge-check"><i class="ti ti-shield-check"></i></div>
+        <div class="badge-title">Tax Compliant</div>
+        <div class="badge-name">Adaeze Okonkwo</div>
+        <div class="badge-year">Tax Year 2025 · Nigeria</div>
+        <div class="badge-meta">
+          <div class="badge-meta-item">
+            <div class="badge-meta-label">Filed with</div>
+            <div class="badge-meta-value">LIRS</div>
+          </div>
+          <div class="badge-meta-item">
+            <div class="badge-meta-label">Filed on</div>
+            <div class="badge-meta-value">May 12, 2026</div>
+          </div>
+          <div class="badge-meta-item">
+            <div class="badge-meta-label">Reviewed by</div>
+            <div class="badge-meta-value">CITN-certified</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="badge-disclaimer">This badge confirms that your 2025 personal income tax return was prepared by Fileo and filed with the Lagos Internal Revenue Service by a CITN-certified tax professional on your behalf.</p>
+
+      <div class="modal-actions">
+        <button class="btn-share"><i class="ti ti-share"></i> Share or download badge</button>
+        <button class="btn-close-modal" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleFiling(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function openModal() {
+  document.getElementById('badgeModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('badgeModal').classList.remove('open');
+}
+</script>
+
+</body>
+</html>

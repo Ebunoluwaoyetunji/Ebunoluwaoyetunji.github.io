@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fileo — Review Edge Cases</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #F0EDE8;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.shell {
+  background: #FAFAF8;
+  border: 0.5px solid #E2DED8;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 480px;
+  min-height: 620px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 8px 40px rgba(11,22,40,0.08);
+}
+
+.ob-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 0.5px solid #E2DED8;
+}
+.ob-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: #1A1A1A; }
+.ob-logo span { color: #4A7C6F; }
+.ob-step-label { font-size: 12px; color: #888; }
+
+.ob-progress { padding: 12px 24px; border-bottom: 0.5px solid #E2DED8; }
+.progress-track { height: 3px; background: #E2DED8; border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: #4A7C6F; border-radius: 2px; transition: width 0.4s ease; }
+
+.ob-body { flex: 1; padding: 28px 24px 20px; overflow-y: auto; display: flex; flex-direction: column; }
+.ob-screen { display: none; flex-direction: column; flex: 1; }
+.ob-screen.active { display: flex; }
+
+.screen-tag { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: #4A7C6F; margin-bottom: 8px; }
+.screen-h { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: #1A1A1A; line-height: 1.2; letter-spacing: -0.3px; margin-bottom: 6px; }
+.screen-sub { font-size: 13px; color: #666; line-height: 1.7; margin-bottom: 20px; }
+
+/* REVIEW HERO */
+.review-hero { background: linear-gradient(135deg, #0B1628 0%, #1A2E4A 100%); border-radius: 12px; overflow: hidden; margin-bottom: 12px; }
+.hero-top { padding: 16px 20px; text-align: center; border-bottom: 0.5px solid rgba(255,255,255,0.08); }
+.hero-top-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: #8B9BAD; margin-bottom: 4px; }
+.hero-top-value { font-size: 13px; font-weight: 500; color: #F5F2EC; }
+.hero-split { display: grid; grid-template-columns: 1fr 1fr; }
+.hero-col { padding: 18px 20px; text-align: center; }
+.hero-col:first-child { border-right: 0.5px solid rgba(255,255,255,0.08); }
+.col-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+.col-label.saved { color: #8BBFB3; }
+.col-label.owed { color: #F0C070; }
+.col-amount { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; letter-spacing: -0.5px; line-height: 1; margin-bottom: 4px; }
+.col-amount.saved { color: #4A7C6F; }
+.col-amount.owed { color: #F5F2EC; }
+.col-desc { font-size: 11px; line-height: 1.4; }
+.col-desc.saved { color: #8BBFB3; }
+.col-desc.owed { color: #8B9BAD; }
+
+/* SUMMARY */
+.summary-card { border: 0.5px solid #E2DED8; border-radius: 12px; overflow: hidden; margin-bottom: 12px; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; border-bottom: 0.5px solid #E2DED8; font-size: 13px; }
+.summary-row:last-child { border-bottom: none; }
+.summary-row.total { background: #F5F5F3; }
+.row-label { color: #666; }
+.row-label.bold { font-weight: 500; color: #1A1A1A; }
+.row-value { font-weight: 500; color: #1A1A1A; }
+.row-value.green { color: #4A7C6F; }
+.row-value.large { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; }
+
+/* CHANGE OPTIONS */
+.change-option { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 0.5px solid #E2DED8; border-radius: 12px; cursor: pointer; background: #F5F5F3; margin-bottom: 8px; transition: border-color 0.15s; }
+.change-option:hover { border-color: #4A7C6F; }
+.change-option-icon { width: 36px; height: 36px; border-radius: 50%; background: #FAFAF8; border: 0.5px solid #E2DED8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.change-option-icon i { font-size: 16px; color: #0B1628; }
+.change-option-text strong { display: block; font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 2px; }
+.change-option-text span { font-size: 12px; color: #666; line-height: 1.4; }
+.change-arrow { margin-left: auto; font-size: 14px; color: #999; }
+
+/* EDIT SCREEN */
+.back-icon { width: 56px; height: 56px; border-radius: 50%; background: #FFF0E8; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.back-icon i { font-size: 24px; color: #C45E1A; }
+.edit-banner { display: flex; align-items: flex-start; gap: 8px; background: #FFF8E8; border: 0.5px solid #F0C070; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #7A3B0A; line-height: 1.5; }
+.edit-banner i { font-size: 14px; color: #C45E1A; flex-shrink: 0; margin-top: 1px; }
+
+/* SUCCESS */
+.success-center { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; padding: 20px 0; }
+.success-icon { width: 72px; height: 72px; border-radius: 50%; background: #4A7C6F; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.success-icon i { font-size: 32px; color: #fff; }
+.success-h { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: #1A1A1A; letter-spacing: -0.3px; margin-bottom: 10px; line-height: 1.2; }
+.success-sub { font-size: 13px; color: #666; line-height: 1.7; max-width: 300px; margin-bottom: 24px; }
+
+.timeline { width: 100%; border: 0.5px solid #E2DED8; border-radius: 12px; overflow: hidden; text-align: left; margin-bottom: 16px; }
+.timeline-step { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 0.5px solid #E2DED8; }
+.timeline-step:last-child { border-bottom: none; }
+.tl-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tl-icon.done { background: #E8F2EF; }
+.tl-icon.done i { font-size: 13px; color: #4A7C6F; }
+.tl-icon.pending { background: #F5F5F3; }
+.tl-icon.pending i { font-size: 13px; color: #999; }
+.tl-text strong { display: block; font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 2px; }
+.tl-text span { font-size: 12px; color: #666; }
+
+/* FOOTERS */
+.ob-footer { padding: 14px 24px; border-top: 0.5px solid #E2DED8; display: flex; flex-direction: column; gap: 8px; background: #FAFAF8; }
+.ob-footer.row { flex-direction: row; justify-content: space-between; align-items: center; }
+
+.btn-approve { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: #fff; background: #0B1628; padding: 13px 24px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+.btn-change { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; background: transparent; border: 0.5px solid #E2DED8; padding: 11px 24px; border-radius: 8px; cursor: pointer; width: 100%; }
+.btn-back { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.btn-primary { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: #fff; background: #0B1628; padding: 11px 22px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.btn-secondary { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; background: transparent; border: 0.5px solid #E2DED8; padding: 11px 24px; border-radius: 8px; cursor: pointer; width: 100%; }
+.btn-download { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: #0B1628; background: #F5F5F3; border: 0.5px solid #E2DED8; padding: 13px 24px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+
+/* MODAL */
+.modal-overlay { position: absolute; inset: 0; background: rgba(11,22,40,0.65); display: none; align-items: flex-end; z-index: 20; backdrop-filter: blur(2px); }
+.modal-overlay.open { display: flex; }
+.modal-sheet { background: #FAFAF8; border-radius: 16px 16px 0 0; padding: 24px; width: 100%; border-top: 0.5px solid #E2DED8; }
+.modal-handle { width: 36px; height: 3px; background: #D0CCC6; border-radius: 2px; margin: 0 auto 20px; }
+.modal-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.modal-icon.confirm { background: #E8F2EF; }
+.modal-icon.confirm i { font-size: 22px; color: #4A7C6F; }
+.modal-h { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: #1A1A1A; text-align: center; letter-spacing: -0.3px; margin-bottom: 8px; }
+.modal-sub { font-size: 13px; color: #666; text-align: center; line-height: 1.7; margin-bottom: 16px; }
+.modal-note { display: flex; gap: 8px; background: #FFF8E8; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; align-items: flex-start; }
+.modal-note i { font-size: 14px; color: #C45E1A; flex-shrink: 0; margin-top: 1px; }
+.modal-note p { font-size: 12px; color: #7A3B0A; line-height: 1.6; }
+.modal-actions { display: flex; flex-direction: column; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="ob-nav">
+    <div class="ob-logo">File<span>o</span></div>
+    <span class="ob-step-label" id="stepLabel">Review your return · 6 of 6</span>
+  </nav>
+  <div class="ob-progress">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:95%"></div>
+    </div>
+  </div>
+
+  <div class="ob-body">
+
+    <!-- REVIEW -->
+    <div class="ob-screen active" id="screen-review">
+      <div class="screen-tag">Review your return</div>
+      <h2 class="screen-h">Here's your final return — ready to file.</h2>
+      <p class="screen-sub">Review everything before you approve. Nothing is submitted until you confirm.</p>
+      <div class="review-hero">
+        <div class="hero-top">
+          <div class="hero-top-label">Total income declared</div>
+          <div class="hero-top-value">₦5,280,000 across 4 platforms · Tax year 2025</div>
+        </div>
+        <div class="hero-split">
+          <div class="hero-col">
+            <div class="col-label saved">You saved</div>
+            <div class="col-amount saved">₦185,000</div>
+            <div class="col-desc saved">through deductions</div>
+          </div>
+          <div class="hero-col">
+            <div class="col-label owed">Tax to pay</div>
+            <div class="col-amount owed">₦412,000</div>
+            <div class="col-desc owed">final amount owed to LIRS</div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-row"><span class="row-label">Total income</span><span class="row-value">₦5,280,000</span></div>
+        <div class="summary-row"><span class="row-label">Deductions applied</span><span class="row-value green">−₦185,000</span></div>
+        <div class="summary-row"><span class="row-label">Tax-free allowance</span><span class="row-value green">−₦800,000</span></div>
+        <div class="summary-row"><span class="row-label">Taxable income</span><span class="row-value">₦4,295,000</span></div>
+        <div class="summary-row total"><span class="row-label bold">Tax owed</span><span class="row-value large">₦412,000</span></div>
+      </div>
+    </div>
+
+    <!-- CHANGE NAVIGATOR -->
+    <div class="ob-screen" id="screen-change">
+      <div class="screen-tag">Make a change</div>
+      <h2 class="screen-h">What would you like to change?</h2>
+      <p class="screen-sub">We'll take you directly to the right section. Everything else stays saved.</p>
+      <div class="change-option" onclick="goToEdit('income')">
+        <div class="change-option-icon"><i class="ti ti-currency-naira"></i></div>
+        <div class="change-option-text"><strong>My income figures</strong><span>Edit platform amounts or remove a source</span></div>
+        <i class="ti ti-chevron-right change-arrow"></i>
+      </div>
+      <div class="change-option" onclick="goToEdit('deductions')">
+        <div class="change-option-icon"><i class="ti ti-receipt-tax"></i></div>
+        <div class="change-option-text"><strong>My deductions</strong><span>Update rent, pension, or health insurance amounts</span></div>
+        <i class="ti ti-chevron-right change-arrow"></i>
+      </div>
+      <div class="change-option" onclick="goToEdit('documents')">
+        <div class="change-option-icon"><i class="ti ti-files"></i></div>
+        <div class="change-option-text"><strong>My uploaded documents</strong><span>Replace or add a document</span></div>
+        <i class="ti ti-chevron-right change-arrow"></i>
+      </div>
+      <div class="change-option" onclick="goToEdit('question')">
+        <div class="change-option-icon"><i class="ti ti-message-dots"></i></div>
+        <div class="change-option-text"><strong>I have a question first</strong><span>Chat with a certified tax professional before submitting</span></div>
+        <i class="ti ti-chevron-right change-arrow"></i>
+      </div>
+    </div>
+
+    <!-- EDIT CONFIRMATION -->
+    <div class="ob-screen" id="screen-edit">
+      <div style="text-align:center">
+        <div class="back-icon"><i class="ti ti-edit"></i></div>
+        <h2 class="screen-h" style="text-align:center; margin-bottom:8px" id="editTitle">Editing income figures</h2>
+        <p class="screen-sub" style="text-align:center; margin-bottom:16px" id="editDesc">You're being taken back to update your income. Your other information stays saved.</p>
+      </div>
+      <div class="edit-banner">
+        <i class="ti ti-alert-triangle"></i>
+        After editing, you'll return to this review screen to re-approve before anything is filed.
+      </div>
+      <div class="summary-card">
+        <div class="summary-row"><span class="row-label">Your progress is saved</span><span class="row-value green">✓</span></div>
+        <div class="summary-row"><span class="row-label">You'll return here after editing</span><span class="row-value green">✓</span></div>
+        <div class="summary-row"><span class="row-label">Nothing filed until you re-approve</span><span class="row-value green">✓</span></div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="ob-screen" id="screen-success">
+      <div class="success-center">
+        <div class="success-icon"><i class="ti ti-check"></i></div>
+        <h2 class="success-h">Your return has been approved</h2>
+        <p class="success-sub">A certified tax professional is reviewing your return. You'll receive confirmation by email once it's filed with LIRS.</p>
+        <div class="timeline">
+          <div class="timeline-step">
+            <div class="tl-icon done"><i class="ti ti-check"></i></div>
+            <div class="tl-text"><strong>Approved by you</strong><span>Just now</span></div>
+          </div>
+          <div class="timeline-step">
+            <div class="tl-icon pending"><i class="ti ti-clock"></i></div>
+            <div class="tl-text"><strong>Professional review</strong><span>Usually under 2 hours</span></div>
+          </div>
+          <div class="timeline-step">
+            <div class="tl-icon pending"><i class="ti ti-file-check"></i></div>
+            <div class="tl-text"><strong>Filed with LIRS</strong><span>Within 24 hours of review</span></div>
+          </div>
+          <div class="timeline-step">
+            <div class="tl-icon pending"><i class="ti ti-mail"></i></div>
+            <div class="tl-text"><strong>Confirmation email with receipt</strong><span>Sent to your registered email</span></div>
+          </div>
+        </div>
+        <p style="font-size:12px; color:#888; text-align:center">You're done. We'll handle everything from here.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTERS -->
+  <div class="ob-footer" id="footer-review">
+    <button class="btn-approve" onclick="showModal('modal-confirm')">
+      <i class="ti ti-shield-check"></i> Approve and submit my return
+    </button>
+    <button class="btn-change" onclick="showScreen('change','footer-change')">I want to make a change first</button>
+  </div>
+
+  <div class="ob-footer row" id="footer-change" style="display:none">
+    <button class="btn-back" onclick="showScreen('review','footer-review')">
+      <i class="ti ti-arrow-left"></i> Back to review
+    </button>
+  </div>
+
+  <div class="ob-footer row" id="footer-edit" style="display:none">
+    <button class="btn-back" onclick="showScreen('change','footer-change')">
+      <i class="ti ti-arrow-left"></i> Back
+    </button>
+    <button class="btn-primary" onclick="showScreen('review','footer-review')">
+      Go to edit <i class="ti ti-arrow-right"></i>
+    </button>
+  </div>
+
+  <div class="ob-footer" id="footer-success" style="display:none">
+    <button class="btn-download"><i class="ti ti-download"></i> Download my filed return</button>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-icon confirm"><i class="ti ti-shield-check"></i></div>
+      <h3 class="modal-h">Ready to submit?</h3>
+      <p class="modal-sub">Once you approve, your return goes to a certified tax professional for review. You won't be able to edit after this point.</p>
+      <div class="modal-note">
+        <i class="ti ti-alert-triangle"></i>
+        <p>You are approving a tax return that will be officially filed with the Lagos Internal Revenue Service on your behalf.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-approve" onclick="submitReturn()">
+          <i class="ti ti-check"></i> Yes, submit my return
+        </button>
+        <button class="btn-secondary" onclick="closeModal('modal-confirm')">Not yet — let me review again</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showScreen(id, footerId) {
+  document.querySelectorAll('.ob-screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ob-footer').forEach(f => f.style.display = 'none');
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById(footerId).style.display = 'flex';
+}
+
+function showModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function submitReturn() {
+  closeModal('modal-confirm');
+  showScreen('success', 'footer-success');
+  document.getElementById('stepLabel').textContent = 'Filed · Done ✓';
+  document.getElementById('progressFill').style.width = '100%';
+}
+
+const editContent = {
+  income: { title: 'Editing income figures', desc: 'You\'re being taken back to update your income. Your deductions and other information stay saved.' },
+  deductions: { title: 'Editing deductions', desc: 'You\'re being taken back to update your rent, pension, or health insurance. Your income figures stay saved.' },
+  documents: { title: 'Editing uploaded documents', desc: 'You\'re being taken back to replace or add a document. Everything else stays saved.' },
+  question: { title: 'Connecting you to a tax professional', desc: 'A certified professional will answer your question before your return is submitted. Usually under 30 minutes.' }
+};
+
+function goToEdit(type) {
+  const c = editContent[type];
+  document.getElementById('editTitle').textContent = c.title;
+  document.getElementById('editDesc').textContent = c.desc;
+  showScreen('edit', 'footer-edit');
+}
+</script>
+
+</body>
+</html>
