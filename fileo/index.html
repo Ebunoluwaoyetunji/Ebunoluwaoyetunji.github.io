@@ -47,6 +47,16 @@ body {
   height: 56px;
   border-bottom: 0.5px solid rgba(255,255,255,0.08);
 }
+.cs-nav-back {
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.cs-nav-back:hover { opacity: 1; }
 
 .cs-nav-logo {
   font-family: 'Cormorant Garamond', serif;
@@ -767,7 +777,7 @@ body {
 
 <!-- NAV -->
 <nav class="cs-nav">
-  <div class="cs-nav-logo">File<span>o</span></div>
+  <a class="cs-nav-back" href="../index.html#work">← Back to Work</a>
   <ul class="cs-nav-links">
     <li><a href="#overview">Overview</a></li>
     <li><a href="#research">Research</a></li>
