@@ -33,7 +33,27 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
 }
+.iframe-wrap {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
 
+.iframe-wrap iframe {
+  width: 100%;
+  border: none;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .iframe-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .iframe-wrap iframe {
+    min-width: 375px;
+  }
+}
 /* NAV */
 .cs-nav {
   position: sticky;
@@ -1397,12 +1417,12 @@ body {
 
   <!-- LANDING PAGE -->
   <div class="mb-48">
-    <div class="label mb-8">Screen 01 — Landing Page</div>
-    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The full scrollable landing page. Notice how each section answers one question in the user's decision process — from "what is this" to "is it safe" to "how much does it cost."</p>
-    <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08)">
-      <iframe src="fileo_landing_page.html" width="100%" height="900" frameborder="0" scrolling="yes" style="display:block"></iframe>
-    </div>
+  <div class="label mb-8">Screen 01 — Landing Page</div>
+  <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;max-width:600px">The full scrollable landing page. Notice how each section answers one question in the user's decision process — from "what is this" to "is it safe" to "how much does it cost."</p>
+  <div style="border:0.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,0.08);width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <iframe src="fileo_landing_page.html" width="100%" height="900" frameborder="0" scrolling="yes" style="display:block;min-width:320px"></iframe>
   </div>
+</div>
 
   <!-- ONBOARDING -->
   <div class="mb-48">
