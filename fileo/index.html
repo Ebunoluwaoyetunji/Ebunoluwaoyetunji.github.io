@@ -1564,6 +1564,19 @@ body {
     
   </div>
 </div>
+<script>
+  function resizeIframe(iframe) {
+    iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+  }
+
+  document.querySelectorAll('iframe').forEach(function(iframe) {
+    iframe.addEventListener('load', function() {
+      try {
+        resizeIframe(iframe);
+      } catch(e) {}
+    });
+  });
+</script>
 
 </body>
 </html>
