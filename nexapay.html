@@ -1,129 +1,197 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Nexapay — Ebunoluwa Oyetunji</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Caveat:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0b2020;--bg2:#0e2828;--bg3:#081818;
-  --teal:#3db89e;--teal-light:#5dd4bb;--teal-dim:#1f6e5a;
-  --warm:#ede8e0;--warm-dim:#a09890;--text:#ddd8d0;--muted:#6a8f8a;
-  --line:rgba(61,184,158,0.12);
-  --amber:#c8883a;--gold:#c4a040;--slate:#4a7aaa;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:22px 72px;background:rgba(11,32,32,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--warm);text-decoration:none}
-.nav-logo span{font-style:italic;color:var(--teal-light)}
-.nav-links{display:flex;gap:40px;list-style:none}
-.nav-links a{font-size:11px;font-weight:500;letter-spacing:0.12em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.2s}
-.nav-links a:hover{color:var(--teal-light)}
-.btn{display:inline-block;padding:13px 30px;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;font-family:'Inter',sans-serif;transition:all 0.25s}
-.btn-primary{background:var(--teal);color:#081818;border:1px solid var(--teal)}
-.btn-primary:hover{background:var(--teal-light)}
-.btn-outline{border:1px solid rgba(61,184,158,0.35);color:var(--teal-light)}
-.btn-outline:hover{border-color:var(--teal);background:rgba(61,184,158,0.07)}
-footer{background:var(--bg3);padding:32px 72px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line)}
-footer span{font-size:11px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
-footer a{color:var(--teal);text-decoration:none;font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
-
-/* CASE STUDY */
-.cs-hero{padding:160px 72px 80px;background:var(--bg2);position:relative;overflow:hidden}
-.cs-hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(61,184,158,0.06) 0%,transparent 70%)}
-.cs-back{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:40px;transition:color 0.2s}
-.cs-tag{font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px}
-.cs-title{font-family:'Playfair Display',serif;font-size:clamp(44px,5.5vw,72px);font-weight:700;line-height:1.05;letter-spacing:-0.025em;color:var(--warm);margin-bottom:20px}
-.cs-title em{font-style:italic;font-weight:400}
-.cs-sub{font-size:16px;font-weight:300;color:var(--muted);max-width:560px;line-height:1.8;margin-bottom:48px}
-.cs-meta{display:flex;gap:48px;flex-wrap:wrap}
-.cs-meta-label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.cs-meta-val{font-size:14px;font-weight:400;color:var(--warm)}
-.cs-section{padding:80px 72px;border-bottom:1px solid var(--line)}
-.cs-section-alt{background:var(--bg2)}
-.cs-row{display:grid;grid-template-columns:1fr 2fr;gap:60px;align-items:start}
-.cs-row-label{font-family:'Caveat',cursive;font-size:18px;margin-bottom:8px}
-.cs-row-head{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--warm);line-height:1.35;margin-bottom:4px}
-.cs-row-body{font-size:15px;font-weight:300;color:var(--warm-dim);line-height:1.9}
-.cs-row-body p{margin-bottom:16px}
-
-/* SCREENS ROW — consistent fixed width per image, auto-scroll */
-.screens-wrap{overflow:hidden;position:relative;padding:40px 0}
-.screens-wrap::before,.screens-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
-.screens-wrap::before{left:0;background:linear-gradient(to right,var(--fade-bg,#0e2828),transparent)}
-.screens-wrap::after{right:0;background:linear-gradient(to left,var(--fade-bg,#0e2828),transparent)}
-.screens-row{display:flex;gap:20px;overflow-x:auto;padding:8px 40px;scrollbar-width:none;cursor:grab}
-.screens-row::-webkit-scrollbar{display:none}
-.screens-row:active{cursor:grabbing}
-
-/* MOBILE screens — consistent 320px wide */
-.screens-row.mobile img{
-  width:320px;
-  height:auto;
-  flex-shrink:0;
-  border-radius:20px;
-  box-shadow:0 16px 48px rgba(0,0,0,0.5);
-  object-fit:contain;
-}
-/* DESKTOP screens — consistent 480px wide */
-.screens-row.desktop img{
-  width:480px;
-  height:auto;
-  flex-shrink:0;
-  border-radius:12px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.45);
-  object-fit:contain;
-}
-
-.next-project{padding:80px 72px;background:var(--bg3);display:flex;justify-content:space-between;align-items:center}
-.next-label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.next-name{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--warm)}
-
-@media(max-width:768px){
-  nav{padding:16px 20px}.nav-links{display:none}
-  .cs-hero{padding:120px 20px 60px}
-  .cs-section{padding:60px 20px}
-  .cs-row{grid-template-columns:1fr}
-  .screens-row.mobile img{width:260px}
-  .screens-row.desktop img{width:320px}
-  .next-project{padding:60px 20px;flex-direction:column;gap:24px;text-align:center}
-  footer{padding:24px 20px;flex-direction:column;gap:12px;text-align:center}
-}
-
-.cs-tag{color:var(--teal)}
-.cs-title em{color:var(--teal-light)}
-.cs-row-label{color:var(--teal)}
-.cs-back:hover{color:var(--teal-light)}
-</style></head><body>
-<nav>
-  <a class="nav-logo" href="index.html">Ebun<span>oluwa</span></a>
-  <ul class="nav-links">
-    <li><a href="index.html#work">Work</a></li>
-    <li><a href="index.html#about">About</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
-  </ul>
-</nav>
-
 <div class="cs-hero">
   <a href="index.html" class="cs-back">← Back to Work</a>
-  <p class="cs-tag">01 · Fintech · Mobile App</p>
-  <h1 class="cs-title">Making a financial decision<br>feel <em>less like a form.</em></h1>
-  <p class="cs-sub">Nexapay is a live fintech platform designed to make financial access feel straightforward. I was responsible for designing the full product experience — including the most complex journey on the platform: the account tier upgrade flow.</p>
+
+  <p class="cs-tag">01 · Fintech · Mobile & Web</p>
+
+  <h1 class="cs-title">
+    Designing a clearer<br>
+    <em>account upgrade experience.</em>
+  </h1>
+
+  <p class="cs-sub">
+    NexaPay is a fintech payment platform for payments and other financial services. I joined the existing design team as a second designer, working within an established design system across specific product and marketing experiences.
+  </p>
+
   <div class="cs-meta">
-    <div><div class="cs-meta-label">Role</div><div class="cs-meta-val">UI/UX Designer</div></div>
-    <div><div class="cs-meta-label">Duration</div><div class="cs-meta-val">Dec 2024 – Feb 2026</div></div>
-    <div><div class="cs-meta-label">Deliverables</div><div class="cs-meta-val">50+ screens · Design system · Prototype</div></div>
-    <div><div class="cs-meta-label">Status</div><div class="cs-meta-val">Live · 50+ users at launch</div></div>
+
+    <div>
+      <div class="cs-meta-label">Role</div>
+      <div class="cs-meta-val">UI/UX Designer</div>
+    </div>
+
+    <div>
+      <div class="cs-meta-label">Duration</div>
+      <div class="cs-meta-val">Dec 2024 – Feb 2026</div>
+    </div>
+
+    <div>
+      <div class="cs-meta-label">Focus</div>
+      <div class="cs-meta-val">KYC · Account Upgrade · Mobile · Web</div>
+    </div>
+
+    <div>
+      <div class="cs-meta-label">Contribution</div>
+      <div class="cs-meta-val">Product Design · Mobile · Website</div>
+    </div>
+
   </div>
 </div>
+
+
+<div class="cs-section">
+
+  <div class="cs-row">
+
+    <div>
+      <p class="cs-row-label" style="color:var(--teal)">Context</p>
+
+      <h2 class="cs-row-head">
+        Working within an existing product and design system.
+      </h2>
+    </div>
+
+    <div class="cs-row-body">
+
+      <p>
+        I joined NexaPay as a second designer, working alongside the existing designer and within an established design system.
+      </p>
+
+      <p>
+        My work focused on extending the product across mobile, improving the KYC and account upgrade experience, and designing the NexaPay marketing website.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="cs-section cs-section-alt">
+
+  <div class="cs-row">
+
+    <div>
+      <p class="cs-row-label" style="color:var(--teal)">The Challenge</p>
+
+      <h2 class="cs-row-head">
+        Making a requirement heavy account upgrade feel manageable.
+      </h2>
+    </div>
+
+    <div class="cs-row-body">
+
+      <p>
+        Each NexaPay account tier came with different limits and benefits. Users who needed higher limits or additional benefits had to upgrade by providing several pieces of information and documents.
+      </p>
+
+      <p>
+        The challenge was finding a way to collect these requirements without overwhelming users.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
 
 <div class="cs-section">
   <div class="cs-row">
-    <div><p class="cs-row-label" style="color:var(--teal)">The Problem</p><h2 class="cs-row-head">Users didn't understand the value of upgrading — or why their data was needed.</h2></div>
-    <div class="cs-row-body"><p>When I analysed the account upgrade journey, the core friction wasn't the steps themselves — it was that users arrived at the flow without understanding the value exchange. They were being asked to submit personal documents (NIN slip, selfie) with no clear sense of what they'd get in return.</p><p>The compliance requirement felt like a wall, not a gate to something better. My job was to reframe it — and to do that, I had to understand both what users needed and what the regulations actually required.</p></div>
+
+    <div>
+      <p class="cs-row-label" style="color:var(--teal)">Research</p>
+
+      <h2 class="cs-row-head">
+        Looking at familiar fintech patterns.
+      </h2>
+    </div>
+
+    <div class="cs-row-body">
+
+      <p>
+        I conducted secondary research by looking at how fintech products such as Raven and OPay approach account upgrades and KYC requirements.
+      </p>
+
+      <p>
+        While the individual experiences differed, I found that the overall upgrade patterns were fairly consistent. I used these patterns as a reference and adapted them to fit NexaPay.
+      </p>
+
+    </div>
+
   </div>
 </div>
+
+
+<div class="cs-section cs-section-alt">
+
+  <div class="cs-row">
+
+    <div>
+      <p class="cs-row-label" style="color:var(--teal)">Design Approach</p>
+
+      <h2 class="cs-row-head">
+        Breaking the upgrade into manageable steps.
+      </h2>
+    </div>
+
+    <div class="cs-row-body">
+
+      <p>
+        I mapped the requirements into a clear, progressive flow so users could complete the process step by step rather than facing everything at once.
+      </p>
+
+      <p>
+        Once the flow was defined, I translated each step into the interface using NexaPay's existing design system.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="cs-section">
+  <div class="cs-row">
+
+    <div>
+      <p class="cs-row-label" style="color:var(--teal)">KYC & Account Upgrade</p>
+
+      <h2 class="cs-row-head">
+        Designing the experience around progressive completion.
+      </h2>
+    </div>
+
+    <div class="cs-row-body">
+
+      <p>
+        Rather than presenting every requirement at once, I structured the experience into smaller stages so users could focus on what was needed at each point.
+      </p>
+
+      <p>
+        The goal was to make the process feel clear and manageable while maintaining consistency with the existing NexaPay experience.
+      </p>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- IMAGE SECTION STARTS HERE -->
+
+<div class="cs-section cs-section-alt">
+  <p style="font-family:'Caveat',cursive;font-size:18px;color:var(--teal);margin-bottom:8px">
+    KYC & Account Upgrade
+  </p>
+
+  <p style="font-size:12px;color:var(--muted);margin-bottom:0;letter-spacing:0.08em">
+    Hover to pause · Drag to explore
+  </p>
+
+  <div class="screens-wrap" style="--fade-bg:#0e2828">
+    <div class="screens-row mobile">
 
 <div class="cs-section cs-section-alt">
   <p style="font-family:'Caveat',cursive;font-size:18px;color:var(--teal);margin-bottom:8px">The Tier Upgrade Flow</p>
