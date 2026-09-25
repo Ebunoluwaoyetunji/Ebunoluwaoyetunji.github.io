@@ -115,10 +115,15 @@ h1 em{font-style:italic;font-weight:400;color:var(--teal-light)}
 .device-phone img{display:block;width:100%;height:100%;border-radius:14px;object-fit:cover;object-position:top}
 
 /* Nexapay + Fileo: 3 tilted phones */
-.thumb.nex .device-phone,.thumb.fil .device-phone{margin:0 -10px}
-.thumb.nex .device-phone:nth-child(1),.thumb.fil .device-phone:nth-child(1){transform:rotateY(14deg) rotateZ(-5deg) translateY(8px);z-index:1}
-.thumb.nex .device-phone:nth-child(2),.thumb.fil .device-phone:nth-child(2){transform:translateY(-6px) scale(1.05);z-index:2}
-.thumb.nex .device-phone:nth-child(3),.thumb.fil .device-phone:nth-child(3){transform:rotateY(-14deg) rotateZ(5deg) translateY(8px);z-index:1}
+.thumb.nex .device-phone{margin:0 -10px}
+.thumb.nex .device-phone:nth-child(1){transform:rotateY(14deg) rotateZ(-5deg) translateY(8px);z-index:1}
+.thumb.nex .device-phone:nth-child(2){transform:translateY(-6px) scale(1.05);z-index:2}
+.thumb.nex .device-phone:nth-child(3){transform:rotateY(-14deg) rotateZ(5deg) translateY(8px);z-index:1}
+
+/* Fileo: own rules (not shared with Nexapay) — bigger, evenly spaced, review screen centered+forward, uniform frame + hairline edge on all three */
+.thumb.fil{gap:20px;height:345px}
+.thumb.fil .device-phone{width:125px;height:255px;margin:0;transform:none;z-index:1;box-shadow:0 26px 44px -16px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.12)}
+.thumb.fil .device-phone:nth-child(2){width:138px;height:281px;z-index:2;box-shadow:0 30px 54px -14px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.14)}
 
 /* Whimsy: transparent laptop render, zoomed in close on a warm gold-to-black gradient matching the brand */
 .thumb.whi{padding:10px;overflow:hidden;background:radial-gradient(ellipse 120% 100% at 50% 18%,#40300f 0%,#140f09 74%)}
@@ -280,7 +285,8 @@ footer a{color:var(--teal);text-decoration:none;font-size:11px;letter-spacing:0.
   .stats{grid-template-columns:1fr 1fr}.stat{border-bottom:1px solid var(--line)}
   .work-intro{padding:64px 20px 40px}.work-intro-grid{grid-template-columns:1fr}
   .projects{grid-template-columns:1fr}.pcard{padding:36px 20px}
-  .thumb{height:auto;flex-wrap:wrap}.thumb.fol,.thumb.bou{height:180px}.thumb.nex .device-phone,.thumb.fil .device-phone{width:74px;height:152px;margin:0 -6px}
+  .thumb{height:auto;flex-wrap:wrap}.thumb.fol,.thumb.bou{height:180px}.thumb.nex .device-phone{width:74px;height:152px;margin:0 -6px}
+  .thumb.fil{gap:8px;padding:14px;height:262px}.thumb.fil .device-phone{width:88px;height:180px}.thumb.fil .device-phone:nth-child(2){width:97px;height:198px}
   .process-section{padding:64px 20px}.process-step{grid-template-columns:60px 1fr;gap:16px}
   .skills-section{padding:64px 20px}
   .stair:nth-child(1) .stair-bar,.stair:nth-child(2) .stair-bar,.stair:nth-child(3) .stair-bar,.stair:nth-child(4) .stair-bar{margin-left:0}
@@ -424,11 +430,11 @@ footer a{color:var(--teal);text-decoration:none;font-size:11px;letter-spacing:0.
   <p class="pcard-desc">An AI-native tax filing app for Nigerian freelancers and remote workers, now in active development in React Native/Expo. The hardest part: designing a high-stakes, jargon-heavy legal process so clearly that users never feel like they're doing it alone.</p>
   <div class="pcard-chips"><span class="chip">16 screens</span><span class="chip">In development</span><span class="chip">React Native</span><span class="chip">Mobile</span></div>
   <div class="thumb fil">
-    <div class="device-frame device-phone"><img src="assets/thumbs/fileo-1.png" alt="Fileo splash screen"></div>
     <div class="device-frame device-phone"><img src="assets/thumbs/fileo-2.png" alt="Fileo home dashboard"></div>
     <div class="device-frame device-phone"><img src="assets/thumbs/fileo-3.png" alt="Fileo tax return review"></div>
+    <div class="device-frame device-phone"><img src="assets/thumbs/fileo-1.png" alt="Fileo splash screen"></div>
   </div>
-  <a href="fileo/index.html" class="pcard-link" style="margin-top:20px">Read Case Study →</a>
+  <a href="fileo/index.html" class="pcard-link" style="margin-top:32px">Read Case Study →</a>
 </div>
 
 </div>
