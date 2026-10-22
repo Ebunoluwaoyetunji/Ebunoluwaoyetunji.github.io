@@ -1,0 +1,26 @@
+{
+  "name": "ebun-portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "images": "node scripts/optimise-images.mjs",
+    "placeholder-notes": "node scripts/make-placeholder-notes.mjs",
+    "check": "vite build && vite preview --host",
+    "pages": "vite build && node scripts/assemble-site.mjs"
+  },
+  "dependencies": {
+    "gsap": "3.15.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.4",
+    "hersheytext": "2.0.0",
+    "sharp": "0.35.5",
+    "vite": "5.4.21"
+  }
+}

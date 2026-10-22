@@ -1,0 +1,1029 @@
+/* Homepage. Pure white, near-black, vermilion as the only accent.
+   Italiana: big headings, project names, footer words. Body: a plain sans
+   (look.js). Courier Prime: small facts only. Set from look.js. */
+:root {
+  --paper: #f8f6f1; /* warm paper, just off white (was #ffffff; TEMPORARY options in src/lib/paper.js) */
+  --ink: #141414;
+  --muted: #55554f;
+  --rule: #d9d9d3;
+  --accent: #d2220f;
+  --pen: var(--accent);
+  --display: 'Italiana', serif;
+  --body: 'IBM Plex Sans', system-ui, sans-serif;
+  --facts: 'Courier Prime', 'Courier New', monospace;
+
+  --edge: clamp(16px, 4.5vw, 64px);
+  --gap: clamp(24px, 4vw, 56px);
+  --margin-col: 240px;
+  --bar-height: 52px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { color: var(--accent); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection { background: var(--accent); color: var(--paper); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px; top: -100px;
+  z-index: 50; /* above the sticky top bar */
+  background: var(--paper);
+  padding: 8px 12px;
+}
+.skip-link:focus { top: 12px; }
+
+.wrap {
+  max-width: calc(1240px + var(--edge) * 2);
+  padding-inline: var(--edge);
+}
+
+/* Small facts: dates, roles, labels. */
+.facts {
+  font-family: var(--facts);
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+/* Content Ebun still needs to supply. */
+.todo {
+  display: inline-block;
+  font-family: var(--facts);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--ink);
+  border: 1px dashed currentColor;
+  padding: 2px 8px;
+}
+.topbar .todo,
+.footer .todo { color: var(--paper); }
+
+/* 1. Black top bar */
+.topbar {
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 32px;
+  min-height: var(--bar-height);
+  padding: 12px var(--edge);
+  font-size: 0.9375rem;
+}
+/* Sticky (TopBar.jsx): fixed over a space of its full height. At the top of
+   the page it moves with the page; further down it slides away when the reader
+   scrolls down and comes back slim when they scroll up. */
+.topbar-space { height: var(--bar-height); }
+.topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 40; transition: transform 0.2s ease; }
+.topbar--natural { transform: translateY(var(--natural-shift, 0px)); transition: none; }
+.topbar--shown { transform: none; }
+.topbar--hidden { transform: translateY(-100%); }
+.topbar--slim { min-height: 0; padding-block: 6px; }
+.topbar--slim .topbar__role { display: none; }
+@media (prefers-reduced-motion: reduce) { .topbar { transition: none; } }
+/* Links to a section land below the slim bar (and the case study's section bar). */
+html { scroll-padding-top: calc(var(--bar-slim-height, 0px) + var(--section-bar-height, 0px) + 8px); }
+.topbar a { text-decoration: none; }
+.topbar a:hover { color: var(--paper); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.topbar__who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 0; }
+.topbar__name { font-weight: 500; }
+.topbar__role { opacity: 0.75; }
+.topbar__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Phones: name and role stacked, and a Menu button instead of the links.
+   (The width matches PHONE in src/components/TopBar.jsx.) */
+.topbar__menu-button { display: none; }
+@media (max-width: 640px) {
+  .topbar { flex-wrap: nowrap; }
+  .topbar__who { flex-direction: column; gap: 0; }
+  .topbar__nav { display: none; }
+  .topbar__menu-button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-right: -8px;
+    padding: 0 8px;
+    border: 0;
+    background: none;
+    color: var(--paper);
+    font: inherit;
+    cursor: pointer;
+  }
+}
+/* The phone menu: full screen under the bar, the links as big still words. */
+.phone-menu {
+  position: fixed;
+  top: var(--bar-height); /* set exactly by script when it opens */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  overflow-y: auto;
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(24px, 5vh, 48px) var(--edge) clamp(24px, 4vh, 40px);
+}
+.phone-menu__nav { display: grid; grid-template-rows: 1fr auto; align-content: center; min-height: 100%; }
+.phone-menu__nav .wordstack { align-self: center; }
+.phone-menu .todo { color: var(--paper); }
+
+/* 2. Hero: only the heading, left aligned, as big as fits the first screen */
+.hero {
+  position: relative;
+  min-height: calc(100svh - var(--bar-height));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* the heading fits the width, never pushes it */
+  align-content: center;
+  padding: clamp(24px, 5vh, 64px) var(--edge);
+}
+/* The butterfly: one small vermilion pen drawing that rests on a letter. */
+.butterfly {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  color: var(--accent);
+  pointer-events: none;
+  will-change: transform;
+}
+.butterfly__part { position: absolute; inset: 0; }
+.butterfly__part svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* Wings fold toward the body and open again, around the body's line. */
+.butterfly__wing { transform-origin: 50% 55%; }
+.butterfly[data-wings='rest'] .butterfly__wing--left { animation: wing-left var(--rest-flap, 3.6s) ease-in-out infinite alternate; }
+.butterfly[data-wings='rest'] .butterfly__wing--right { animation: wing-right var(--rest-flap, 3.6s) ease-in-out infinite alternate; }
+.butterfly[data-wings='fly'] .butterfly__wing--left { animation: wing-left var(--fly-flap, 0.55s) ease-in-out infinite alternate; }
+.butterfly[data-wings='fly'] .butterfly__wing--right { animation: wing-right var(--fly-flap, 0.55s) ease-in-out infinite alternate; }
+@keyframes wing-left { from { transform: scaleX(1); } to { transform: scaleX(0.3) skewY(-4deg); } }
+@keyframes wing-right { from { transform: scaleX(1); } to { transform: scaleX(0.3) skewY(4deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .butterfly__wing { animation: none !important; }
+}
+
+/* TEMPORARY: the butterfly drawing switch. Remove once one is picked. */
+
+/* The piano switch: off until the visitor turns it on. */
+.sound-switch {
+  position: absolute;
+  right: var(--edge);
+  bottom: 14px;
+  min-height: 28px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.sound-switch:hover { color: var(--ink); }
+.sound-switch[aria-pressed='true'] { color: var(--ink); border-color: var(--accent); }
+.sound-switch__state { color: var(--ink); }
+@media (pointer: coarse) { .sound-switch { min-height: 44px; bottom: 6px; } }
+
+/* Touch screens: a finger sliding sideways parts the hero letters, so the
+   heading keeps up/down scrolling and pinch zoom but not sideways panning,
+   and a long press does not select the text. */
+.spread-area { touch-action: pan-y pinch-zoom; }
+@media (pointer: coarse) {
+  .spread-area { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+}
+
+/* The big Spread lines. Size is set by script (see motion.js). */
+.big {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-kerning: normal;
+  cursor: default;
+}
+.big__lines { display: block; }
+.big__line {
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  position: relative;
+  padding-block: 0.04em;
+}
+.big--center .big__line { margin-inline: auto; }
+.l { display: inline-block; position: relative; white-space: pre; }
+.l__glyph { display: inline-block; will-change: transform; }
+.l__copy {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  color: transparent;
+  text-shadow: 0 0 var(--copy-blur, 0.012em) var(--copy-colour, var(--accent));
+}
+.big--copies-accent { --copy-colour: var(--accent); }
+.big--copies-text { --copy-colour: currentColor; }
+
+/* Sections, with thin rules between them */
+.section {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(64px, 10vw, 144px);
+}
+.section__title {
+  margin: 0 0 clamp(32px, 5vw, 64px);
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1;
+}
+
+/* Frames: every screen hangs in the same canvas. A thin dark edge, a pale
+   mount, and the screen centred inside, never cropped or stretched.
+   Shape and colours come from look.js. */
+.canvas {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  width: 100%;
+  aspect-ratio: var(--frame-aspect, 16 / 10);
+  border: 1.5px solid var(--frame-edge, #1c1c1c);
+  background: var(--frame-mount, #f4f4f1);
+  /* The side mount is wider than the top and bottom by the frame's own ratio,
+     so the window inside is the same shape as the frame: a desktop screen of
+     that shape fills the width exactly. */
+  padding: calc(var(--frame-mount-size, 0.045) * 100%) calc(var(--frame-mount-size, 0.045) * var(--frame-ratio, 1.6) * 100%);
+}
+.canvas__window {
+  container-type: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: calc(var(--frame-screen-gap, 0.03) * 100%); /* same basis as the 100cqw below */
+  min-width: 0;
+  min-height: 0;
+}
+/* Each screen is as large as fits, at its own shape. */
+.canvas__fit {
+  flex: none;
+  position: relative;
+  aspect-ratio: var(--ratio);
+  width: min(
+    calc((100cqw - (var(--n) - 1) * var(--frame-screen-gap, 0.03) * 100cqw) / var(--n)),
+    calc(100cqh * var(--ratio))
+  );
+}
+.canvas__fit img { display: block; width: 100%; height: 100%; }
+.canvas__label { color: var(--muted); text-align: center; padding: 8px; }
+/* Frames with an edge (Boulote): a thin light border and soft shadow on each
+   screen, so a white screen separates from the tint. */
+.canvas--edge .canvas__fit { box-shadow: 0 0 0 1px rgba(16, 32, 48, 0.1), 0 10px 22px -16px rgba(16, 32, 48, 0.35); }
+/* A frame that opens its screen: zoom cursor, and a small hint in the corner. */
+.canvas--zoom { position: relative; cursor: zoom-in; }
+.canvas__hint {
+  position: absolute; right: 10px; bottom: 8px; z-index: 1;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92); color: var(--ink);
+  font-size: 0.75rem; line-height: 1.4; pointer-events: none;
+}
+@media (max-width: 640px) { .canvas--phones .canvas__hint { top: 8px; bottom: auto; } }
+/* Phone frames (the Fileo crops): every phone the same height, evenly spaced on the brand fill. */
+.canvas--phones { position: relative; }
+.canvas--phones .canvas__window { justify-content: space-evenly; column-gap: 0; }
+.canvas--phones .canvas__fit {
+  width: min(calc(var(--h) * 100cqh * var(--ratio)), calc(100cqw / var(--n)));
+}
+.canvas__fit video { display: block; width: 100%; height: 100%; }
+/* The pause/play button sits in the corner of the frame, clear of the phone. */
+.canvas__fit--video { position: static; }
+.canvas__play {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--ink);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.canvas__dots { display: none; }
+/* Small screens: the frame stands upright and shows one phone at a time, to swipe. */
+@media (max-width: 640px) {
+  .canvas--phones { aspect-ratio: 4 / 5; --frame-ratio: 0.8; }
+  .canvas--phones .canvas__window { justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .canvas--phones .canvas__window::-webkit-scrollbar { display: none; }
+  .canvas--phones .canvas__fit { flex: 0 0 100cqw; width: 100cqw; height: 100cqh; aspect-ratio: auto; display: grid; place-items: center; scroll-snap-align: center; }
+  .canvas--phones .canvas__fit > img,
+  .canvas--phones .canvas__fit > video { width: min(100cqw, calc(var(--h) * 100cqh * var(--ratio))); height: auto; aspect-ratio: var(--ratio); }
+  /* A screen that opens full screen sits inside its button: size the button the same way. */
+  .canvas--phones .canvas__fit > .canvas__zoom { width: min(100cqw, calc(var(--h) * 100cqh * var(--ratio))); height: auto; aspect-ratio: var(--ratio); }
+  .canvas--phones .canvas__fit > .canvas__zoom img { width: 100%; height: 100%; }
+  /* One half of a two-phone image (ScreenSlot, split). */
+  .canvas__half { object-fit: cover; }
+  .canvas__half--left { object-position: left center; }
+  .canvas__half--right { object-position: right center; }
+  .canvas--phones .canvas__dots { display: flex; justify-content: center; gap: 4px; position: absolute; left: 0; right: 0; bottom: 2px; }
+  .canvas__dot { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
+  .canvas__dot::before { content: ''; display: block; width: 8px; height: 8px; margin: auto; border-radius: 50%; border: 1px solid var(--ink); }
+  .canvas__dot[aria-current='true']::before { background: var(--ink); }
+}
+/* Only on the gallery wall: a very soft shadow, so the frames look hung. */
+.canvas--hung { box-shadow: 0 24px 36px -28px rgba(0, 0, 0, 0.3), 0 4px 10px -8px rgba(0, 0, 0, 0.16); }
+
+/* The lens magnifier (src/motion/useLens.js): mouse only, over framed screens. */
+.lens {
+  position: fixed; left: 0; top: 0; z-index: 60;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background-color: var(--paper);
+  background-repeat: no-repeat;
+  box-shadow: 0 10px 28px -10px rgba(20, 20, 20, 0.45), 0 0 0 4px rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.lens.is-on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .lens { transition: none; } }
+
+/* 3. Selected work */
+.project {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--gap);
+  align-items: start;
+  padding-block: clamp(40px, 6vw, 80px);
+  border-top: 1px solid var(--rule);
+}
+.project:first-child { border-top: 0; padding-top: 0; }
+.project--notes { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+@media (max-width: 1100px) {
+  .project,
+  .project--notes { grid-template-columns: minmax(0, 1fr); }
+}
+.project__name {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+  line-height: 1;
+}
+.project__name a { text-decoration: none; }
+.project__name a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.project__line { margin: 0.8em 0 0; max-width: 40ch; font-size: 1.125rem; }
+.project__facts { display: grid; gap: 6px; margin: 1.5em 0 0; }
+.project__facts div { display: grid; grid-template-columns: 7ch 1fr; gap: 12px; }
+.project__facts dt { color: var(--muted); }
+.project__facts dd { margin: 0; }
+.status { display: inline-block; border: 1px solid var(--ink); padding: 1px 8px; }
+.project__highlights { margin: 1.5em 0 0; padding: 0; list-style: none; max-width: 44ch; }
+.project__highlights li { position: relative; padding-left: 20px; margin-top: 0.5em; }
+.project__highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(0.8em - 1px);
+  width: 10px;
+  height: 2px;
+  background: var(--accent);
+}
+.project__more { margin: 1.5em 0 0; }
+.project__more a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+
+/* Pen notes beside the Fileo screen (when switched on) */
+.annotated { margin: 0; container-type: inline-size; }
+.annotated__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--margin-col);
+  column-gap: var(--gap);
+  align-items: start;
+}
+.annotated--phone .annotated__row { grid-template-columns: min(400px, 100%) var(--margin-col); }
+.annotated__screen { position: relative; border: 1px solid var(--rule); background: #fff; }
+.annotated__screen img { width: 100%; }
+.canvas .annotated__screen { border: 0; }
+.canvas .annotated__screen img { height: 100%; }
+.annotated__marks,
+.annotated__marks svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.annotated__notes { position: relative; list-style: none; margin: 0; padding: 0; }
+.note { position: absolute; left: 0; top: var(--top, 0); max-width: 100%; }
+.note__words svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+.note__sentence { margin: 4px 0 0; max-width: 28ch; font-size: 0.9375rem; line-height: 1.45; }
+.annotated svg :is(path, line, polyline, polygon, circle, ellipse, rect) { stroke: var(--pen); }
+.annotated__caption,
+.annotated__tools { margin-top: 12px; }
+.annotated__tools { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+@container (max-width: 640px) {
+  .annotated__row,
+  .annotated--phone .annotated__row { display: block; }
+  .annotated__notes { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+  .note { position: static; }
+}
+.redraw { font: inherit; color: var(--accent); background: none; border: 1px solid currentColor; padding: 6px 12px; cursor: pointer; }
+
+/* 4. Gallery wall: frames hung in one row on a white wall */
+.gallery { border-top: 1px solid var(--rule); background: var(--paper); }
+.gallery__title { margin: 0; font-weight: 400; }
+
+/* With a mouse: the page holds while the wall slides sideways. */
+.gallery--walk { position: relative; }
+.gallery__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* the long wall must never widen the stage */
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(20px, 4vh, 40px) 0 clamp(20px, 4vh, 36px);
+  overflow: clip;
+}
+.gallery--walk .gallery__title { padding-inline: var(--edge); }
+.gallery__wall { display: flex; align-items: center; min-width: 0; overflow: clip; }
+.gallery__rail {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--frame-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  will-change: transform;
+}
+.gallery__card { flex: none; width: calc(var(--frame-height) * var(--frame-ratio, 1.6)); }
+
+/* The museum label under each frame. */
+.wall-label { display: grid; gap: 2px; margin: 18px 0 0; max-width: 36ch; }
+.wall-label a { display: grid; gap: 2px; text-decoration: none; }
+.wall-label a:hover .wall-label__what { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; color: var(--ink); }
+.wall-label__what { color: var(--ink); }
+.wall-label__meta { color: var(--muted); }
+
+.gallery__dots { display: flex; justify-content: center; gap: 4px; margin-top: clamp(10px, 2vh, 20px); }
+.gallery__dot { width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; position: relative; }
+.gallery__dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--ink);
+}
+.gallery__dot[aria-current='true']::after { background: var(--accent); border-color: var(--accent); }
+
+/* Touch screens: a row to swipe. Reduced motion: a still grid. */
+.gallery--swipe,
+.gallery--grid { padding-block: clamp(48px, 8vw, 96px); }
+.gallery--swipe .gallery__title,
+.gallery--grid .gallery__title { padding-inline: var(--edge); margin-bottom: 24px; }
+.gallery__list { margin: 0; padding: 0 var(--edge) 12px; list-style: none; }
+.gallery--swipe .gallery__list { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; }
+.gallery--swipe .gallery__item { flex: none; width: 80vw; scroll-snap-align: center; }
+.gallery--grid .gallery__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px 28px; }
+
+/* 5. Journey: one vermilion pen line down the page, stops beside it */
+.journey { position: relative; container-type: inline-size; }
+.journey__line { position: absolute; left: 0; top: 0; width: 100%; overflow: visible; pointer-events: none; }
+.journey__path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: var(--journey-stroke, 2.2px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.journey__dot { fill: var(--paper); stroke: #bdbdb8; stroke-width: 1.5; }
+.journey__dot.is-reached { fill: var(--accent); stroke: var(--accent); }
+.journey__stops {
+  position: relative;
+  display: grid;
+  gap: clamp(64px, 10vh, 120px);
+  margin: 0;
+  padding: 24px 0 48px;
+  list-style: none;
+}
+/* All text shows from the start in light grey and turns black when the line
+   reaches its stop. No fading in, no sliding. */
+.stop { display: grid; gap: 4px; width: calc(50% - 44px); color: #737373; /* 4.74:1 on white */ transition: color 0.35s ease; }
+.stop.is-reached { color: var(--ink); }
+.stop--left { text-align: right; }
+.stop--right { margin-left: calc(50% + 44px); }
+.stop__role { font-weight: 500; }
+.stop__line { max-width: 44ch; }
+.stop--left .stop__line { margin-left: auto; }
+.journey--still .stop { transition: none; }
+/* Narrow: every stop on one side of the line. */
+@container (max-width: 759px) {
+  .stop,
+  .stop--left,
+  .stop--right { width: auto; margin-left: 36px; text-align: left; }
+  .stop--left .stop__line { margin-left: 0; }
+}
+
+/* 6. About */
+.about { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.about__block p { margin: 0 0 1em; max-width: 52ch; }
+.about__label { margin: 0 0 16px; font-weight: 400; color: var(--muted); }
+@media (max-width: 760px) {
+  .about { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* The page change between the homepage and a case study
+   (src/lib/frameTransition.js): the project's frame moves and grows into the
+   case study's top frame, the top bar stays still, and the rest cross-fades. Off with
+   reduced motion; browsers without page transitions just open the page. */
+/* The switch and the rules for it (frame, top bar, cross-fade, timing) are
+   in each page's HTML, so they are there from the very first moment. */
+.project__frame-link { display: block; color: inherit; text-decoration: none; }
+
+/* Case study pages (src/case/). White page, the project name big with
+   Spread, screens in the same hung frames as the homepage, and the story in
+   one readable column. */
+.case__head { padding-top: 8px; }
+.case__kicker { margin: 0 0 8px; color: var(--muted); }
+.case__tagline {
+  max-width: 30ch;
+  margin: clamp(12px, 2vw, 24px) 0 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  line-height: 1.3;
+}
+.case__visuals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+  padding-block: clamp(24px, 4vw, 56px) clamp(32px, 5vw, 64px);
+}
+@media (max-width: 800px) {
+  .case__visuals { grid-template-columns: minmax(0, 1fr); }
+}
+/* One frame at the top: wide, but not the whole page. */
+.case__visuals--one { grid-template-columns: minmax(0, 1fr); }
+.case__visuals--one .case__screen { max-width: 980px; }
+/* Three frames at the top (Boulote): in a row on laptops, one under another on phones. */
+@media (min-width: 801px) { .case__visuals--three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.case__visuals-todo { grid-column: 1 / -1; margin: 0; }
+.case__caption { margin-top: 8px; color: var(--muted); }
+/* "Try the demo": the link, a note in the typewriter font, and a QR code on laptops. */
+.case__demo { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; }
+.case__demo-text { margin: 0; display: grid; gap: 4px; }
+.case__demo-text a { font-size: 1.25rem; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.case__demo-note { color: var(--muted); }
+.case__qr { margin: 0; display: flex; align-items: center; gap: 12px; }
+.case__qr img { display: block; width: 96px; height: 96px; image-rendering: pixelated; }
+.case__qr figcaption { color: var(--muted); max-width: 12ch; }
+@media (min-width: 801px) { .case__visuals:not(.case__visuals--one) .case__demo { grid-column: 2; } }
+@media (max-width: 640px) { .case__qr { display: none; } }
+.case__screen { margin: 0; }
+.case__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px 32px;
+  margin: 0;
+  padding-bottom: clamp(48px, 7vw, 96px);
+}
+.case__facts dt { color: var(--muted); }
+.case__facts dd { margin: 0; }
+.case__section {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(56px, 8vw, 120px);
+  scroll-margin-top: 16px;
+}
+.case__flow > .case__section:first-child { border-top: 0; padding-top: 0; }
+
+/* The article: the guide in the left margin, the sections beside it. */
+.case__article {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  column-gap: var(--gap);
+  padding-top: clamp(48px, 7vw, 96px);
+}
+@media (max-width: 899px) {
+  .case__article { grid-template-columns: minmax(0, 1fr); padding-top: 0; }
+  .case__section { scroll-margin-top: 16px; } /* the section bar is in html's scroll-padding-top */
+  .case__flow > .case__section:first-child { padding-top: clamp(40px, 8vw, 64px); }
+}
+
+/* The guide (src/case/Guide.jsx). Grey for sections ahead: #737373, 4.74:1 on white. */
+.guide__list { margin: 0; padding: 0; list-style: none; }
+.guide__item a { text-decoration: none; color: #737373; }
+.guide__item--passed a { color: var(--ink); }
+.guide__item--current a {
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.guide__item a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); }
+.guide--wide {
+  position: sticky;
+  top: calc(var(--header-offset, 0px) + 32px); /* under the top bar when it shows */
+  transition: top 0.2s ease;
+  align-self: start;
+  font-size: 0.9375rem;
+}
+.guide--wide .guide__line { position: absolute; left: 0; top: 0; width: 24px; overflow: visible; }
+.guide--wide .guide__list { display: grid; gap: 22px; padding-left: 30px; }
+.guide--wide .guide__item { position: relative; line-height: 1.3; }
+.guide__dot-at { position: absolute; left: -30px; top: 0.65em; width: 1px; height: 1px; }
+.guide__path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: var(--journey-stroke, 2.2px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.guide__dot { fill: var(--paper); stroke: #bdbdb8; stroke-width: 1.5; }
+.guide__dot--passed { fill: var(--ink); stroke: var(--ink); }
+.guide__dot--current { fill: var(--accent); stroke: var(--accent); r: 5.5px; }
+/* Narrow screens: a slim bar that sticks to the top of the screen. */
+.guide--bar {
+  position: sticky;
+  top: var(--header-offset, 0px); /* right under the top bar when it shows, at the top when it hides */
+  transition: top 0.2s ease;
+  z-index: 30;
+  margin-inline: calc(var(--edge) * -1);
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+@media (prefers-reduced-motion: reduce) { .guide--wide, .guide--bar { transition: none; } }
+.guide__toggle {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px var(--edge) 10px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.guide__label { color: var(--muted); }
+.guide__now { flex: 1; font-weight: 500; }
+.guide__more { color: var(--muted); }
+.guide__progress { display: block; height: 2px; margin-bottom: -1px; }
+.guide__fill { display: block; height: 100%; background: var(--accent); transform-origin: left center; transform: scaleX(0); }
+.guide__panel { padding: 4px var(--edge) 16px; border-top: 1px solid var(--rule); }
+.guide__panel .guide__list { display: grid; gap: 2px; }
+.guide__panel .guide__item a { display: block; padding: 8px 0; }
+/* Groups inside a section ("For the company"): smaller and indented under it. */
+.guide__item--sub { font-size: 0.875em; padding-left: 14px; }
+.guide__dot--sub { r: 3px; }
+.guide__dot--current.guide__dot--sub { r: 4.5px; }
+.case__group { margin: 2.5em 0 0.25em; font-size: clamp(1.35rem, 2.4vw, 1.75rem); font-weight: 500; line-height: 1.25; }
+.case__body > .case__group:first-child { margin-top: 0; }
+.case__ol { padding-left: 1.4em; }
+.case__ol li { margin-bottom: 0.4em; }
+.guide__panel .guide__dot-at { display: none; }
+
+/* "Short on time?": three lines and a jump to the result. */
+.short {
+  max-width: 68ch;
+  margin-bottom: clamp(16px, 3vw, 32px);
+  padding: 20px 24px;
+  border: 1px solid var(--ink);
+}
+.short__title { margin: 0 0 12px; font-size: 1.125rem; font-weight: 500; }
+.short__lines { margin: 0; }
+.short__lines div { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 4px 16px; padding: 8px 0; border-top: 1px solid var(--rule); }
+.short__lines dt { color: var(--muted); padding-top: 3px; }
+.short__lines dd { margin: 0; }
+@media (max-width: 640px) {
+  .short__lines div { grid-template-columns: minmax(0, 1fr); }
+}
+.short__jump { margin: 12px 0 0; }
+.short__jump a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+
+/* The goal in one or two lines, at the top of The goal. */
+.case__goal { margin: 0 0 2em; padding-bottom: 1.5em; border-bottom: 1px solid var(--rule); }
+.case__goal-label { margin: 0 0 6px !important; color: var(--muted); }
+.case__goal-text { margin: 0 0 6px !important; font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.4; }
+.case__todo { margin: 0.5em 0 1.5em; }
+
+/* A turning point: one large line between two sections, with Ebun's
+   handwritten signpost under it. */
+.turn {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding-block: clamp(48px, 8vw, 112px);
+  border-top: 1px solid var(--rule);
+}
+.turn__line {
+  grid-column: 2;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.75rem, 3.6vw, 3rem);
+  line-height: 1.15;
+  text-align: center;
+}
+.turn__signpost { grid-column: 2; justify-self: center; margin: 0; font-size: 0.875rem; min-width: 0; max-width: 100%; } /* a wide signpost shrinks to fit a phone, keeping its shape */
+.signpost { display: block; max-width: 100%; color: var(--pen); }
+.signpost svg { display: block; width: 100%; height: 100%; overflow: visible; }
+@media (max-width: 899px) {
+  .turn { grid-template-columns: minmax(0, 1fr); }
+  .turn__line, .turn__signpost { grid-column: 1; }
+}
+
+/* The way on, at the end. */
+.case__end {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px 48px;
+  padding-block: clamp(48px, 7vw, 96px);
+  border-top: 1px solid var(--rule);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+}
+.case__end a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.case__next .facts { display: block; font-size: 0.8125rem; color: var(--muted); }
+
+.case__body { max-width: 68ch; }
+.case__body p { margin: 0 0 1em; }
+.case__h3 {
+  margin: 2.2em 0 0.6em;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.case__body > .case__h3:first-child,
+.cut:first-child > .case__h3:nth-child(2) { margin-top: 0; }
+.case__label { display: block; margin-bottom: 4px; color: var(--muted); }
+.case__list { margin: 0 0 1.2em; padding-left: 1.2em; }
+.case__list li { margin-bottom: 0.5em; }
+.case__quote { margin: 1.5em 0 2em; padding-left: 20px; border-left: 2px solid var(--accent); }
+.case__quote blockquote { margin: 0; }
+.case__quote blockquote p { margin: 0 0 0.6em; font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.4; }
+.case__quote figcaption { color: var(--muted); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 2em 0;
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 640px) {
+  .stats { grid-template-columns: minmax(0, 1fr); }
+}
+.stat { border-top: 1px solid var(--ink); padding-top: 12px; }
+.stat__value { display: block; font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.1; }
+.stat__text { display: block; margin-top: 6px; }
+.stat__source { display: block; margin-top: 6px; color: var(--muted); }
+.items { margin: 0 0 1.5em; padding: 0; list-style: none; }
+.item { border-top: 1px solid var(--rule); padding: 1em 0 0.2em; }
+.item__title { font-weight: 500; margin-bottom: 0.3em !important; }
+.profiles { margin: 1em 0 1.5em; }
+.draft { border: 1px dashed var(--muted); padding: 12px 16px; }
+.draft__label { display: block; margin-bottom: 6px; color: var(--muted); }
+.draft__list { margin: 0; }
+.draft__list li { margin-bottom: 0.6em; }
+
+/* Figures (Boulote's hand-drawn maps): each keeps its shape. In a row they
+   share one height (each grows by its width / height), across the text column. */
+.figures { display: flex; gap: 16px; margin: 1.5em 0 2em; align-items: flex-start; }
+.figures__item { flex: var(--ratio) 1 0; min-width: 0; margin: 0; }
+.figures__open { display: block; width: 100%; padding: 0; border: 1px solid var(--rule); background: none; cursor: zoom-in; }
+.figures__open img { display: block; width: 100%; height: auto; }
+.figures__open:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.figures__caption { margin-top: 8px; color: var(--muted); }
+@media (max-width: 640px) {
+  .figures { flex-direction: column; gap: 24px; }
+  .figures__item { flex: none; width: 100%; }
+}
+.figures__dialog {
+  max-width: 100vw; max-height: 100dvh; width: 100vw; height: 100dvh;
+  margin: 0; padding: 16px; border: 0; background: rgba(20, 20, 20, 0.92);
+  display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: zoom-out;
+}
+.figures__dialog[open] { display: flex; }
+.figures__dialog::backdrop { background: transparent; }
+.figures__dialog img { max-width: 100%; max-height: calc(100dvh - 96px); width: auto; height: auto; object-fit: contain; }
+.figures__dialog-caption { margin: 0; color: #f8f6f1; }
+.figures__close { position: absolute; top: 12px; right: 12px; min-width: 44px; min-height: 44px; padding: 0 14px; border: 1px solid #f8f6f1; border-radius: 22px; background: transparent; color: #f8f6f1; cursor: pointer; }
+html:has(.figures__dialog[open]) { overflow: hidden; }
+
+/* Two frames side by side (Boulote, Method), stacked on phones. */
+.case__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 1.5em 0 2em; }
+.case__pair .case__screen { margin: 0; }
+/* Wide frames (Boulote): on laptops the screen frames run past the text column,
+   up to the full width of the content beside the guide. */
+@media (min-width: 900px) {
+  .case--wide-frames .case__flow { container-type: inline-size; }
+  .case--wide-frames .case__body > .case__screen,
+  .case--wide-frames .case__body > .case__pair,
+  .case--wide-frames .case__body > .case__grid,
+  .case--wide-frames .decision > .case__screen,
+  .case--wide-frames .decision > .decision__screens { width: 100cqw; max-width: none; }
+}
+@media (max-width: 640px) { .case__pair { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+.case__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 1.5em 0 2em; }
+.case__grid .case__screen { margin: 0; }
+@media (max-width: 640px) { .case__grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+
+/* A frame that opens its whole screen (ScreenSlot zoom). */
+.canvas__zoom { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.canvas__zoom img { display: block; width: 100%; height: 100%; }
+.canvas__zoom:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* The whole screen, scrollable, over the page (Lightbox.jsx). */
+.lightbox {
+  max-width: 100vw; max-height: 100dvh; width: 100vw; height: 100dvh;
+  margin: 0; padding: 56px 0 32px; border: 0; background: rgba(20, 20, 20, 0.94);
+  overflow-y: auto; overscroll-behavior: contain; cursor: zoom-out;
+}
+.lightbox__page { min-height: 100%; }
+.lightbox::backdrop { background: transparent; }
+.lightbox img { display: block; width: 100%; height: auto; margin: 0 auto; cursor: auto; } /* max-width: the real size, set from the image */
+.lightbox__close { position: fixed; top: 12px; right: 12px; z-index: 1; min-width: 44px; min-height: 44px; padding: 0 14px; border: 1px solid #f8f6f1; border-radius: 22px; background: rgba(20, 20, 20, 0.9); color: #f8f6f1; cursor: pointer; }
+html:has(.lightbox[open]) { overflow: hidden; }
+.case__note { margin: -0.75em 0 1.5em; color: var(--muted); font-size: 0.875rem; }
+.profile { border-top: 1px solid var(--rule); padding: 1.2em 0 0.4em; }
+.profile--primary { border-top: 2px solid var(--ink); }
+.profile__name { margin: 0; font-size: 1.125rem; font-weight: 500; }
+.profile__role { margin: 2px 0 0.6em !important; color: var(--muted); }
+.profile__quote { font-size: 1.125rem; }
+.profile__pains { margin: 0 0 1em; padding-left: 1.2em; font-size: 0.9375rem; }
+.case__table-wrap { overflow-x: auto; margin: 1.5em 0; }
+.case__table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.case__table caption { caption-side: top; text-align: left; margin-bottom: 8px; color: var(--muted); }
+.case__table th, .case__table td { text-align: left; vertical-align: top; padding: 10px 16px 10px 0; border-bottom: 1px solid var(--rule); }
+.case__table thead th { font-weight: 500; border-bottom-color: var(--ink); }
+.case__table tbody th { font-weight: 500; }
+.decision { margin-top: 3em; }
+.decision .case__screen,
+.case__body > .case__screen { margin: 1em 0 1.5em; }
+.steps { margin: 0 0 1.5em; padding-left: 1.4em; }
+.step { margin-bottom: 1em; }
+.step__note { color: var(--muted); }
+/* Stacked, so the phones stay big (full width each). */
+.decision__screens { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin: 1em 0 1.5em; }
+.decision__screens .case__screen { margin: 0 !important; }
+@media (max-width: 640px) { .decision__screens { grid-template-columns: minmax(0, 1fr); } }
+
+/* Short read / Full read. Each option at least 44px tall. */
+.case__switch { padding-bottom: clamp(8px, 2vw, 16px); }
+.read-switch { display: inline-flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--ink); }
+.read-switch button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.read-switch button[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+.read-switch__time { opacity: 0.75; margin-left: 4px; }
+.read-switch--compact { display: flex; width: 100%; }
+.read-switch--compact button { flex: 1; }
+.guide__extra { padding: 8px var(--edge) 10px; border-top: 1px solid var(--rule); }
+/* Shown only once the page's own switch is out of view (Guide.jsx). It keeps
+   its space while hidden, so the bar never changes height. */
+.guide__extra { opacity: 0; visibility: hidden; transition: opacity 0.15s ease, visibility 0s linear 0.15s; }
+.guide__extra.is-shown { opacity: 1; visibility: visible; transition: opacity 0.15s ease, visibility 0s; }
+@media (prefers-reduced-motion: reduce) { .guide__extra, .guide__extra.is-shown { transition: none; } }
+@media (min-width: 900px) { .guide__extra { display: none; } }
+.case__more { margin: clamp(40px, 6vw, 72px) 0 0; }
+.case__more-button {
+  min-height: 52px;
+  padding: 0 24px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+.case__more-button .facts { margin-left: 8px; opacity: 0.75; }
+
+
+/* 7. Footer: a black, full-screen section with four big words */
+.footer {
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: clamp(32px, 6vh, 64px) var(--edge) clamp(24px, 4vh, 40px);
+}
+.footer__menu { position: relative; display: grid; align-content: center; }
+/* Ebun's handwritten notes beside the footer words (decoration only). */
+.footer-notes { position: absolute; inset: 0; pointer-events: none; }
+.footer-notes--hidden { display: none; }
+.footer-note { position: absolute; color: var(--footer-note-ink, #e8492f); transform-origin: center; }
+.footer-note svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.wordstack { margin: 0; padding: 0; list-style: none; }
+.wordstack__row {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(246, 246, 243, 0.12);
+  overflow: visible;
+}
+.wordstack__row:last-child { border-bottom: 1px solid rgba(246, 246, 243, 0.12); }
+.w {
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1.08;
+  white-space: nowrap;
+  color: var(--paper);
+  text-decoration: none;
+  padding-block: 0.02em;
+}
+.w:hover { color: var(--paper); }
+.w:focus-visible { outline-offset: -2px; }
+.w__letters { display: inline-block; white-space: nowrap; }
+.w__letter { display: inline-block; position: relative; white-space: pre; will-change: transform; }
+.w__glow {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  text-shadow: 0 0 var(--glow-size, 0.12em) var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+.footer__small {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 32px;
+  margin: clamp(24px, 4vh, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.footer__small a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.footer__small a:hover { color: var(--paper); }
+
+/* Frame-rate readout (only with ?fps) */
+.fps {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 10;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 10px;
+}
+
+/* The 404 page (404.html, src/NotFound.jsx). */
+.not-found {
+  margin-inline: auto;
+  padding-block: clamp(64px, 12vh, 140px);
+  min-height: 60vh;
+}
+.not-found__title {
+  margin: 0 0 24px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 1;
+}
+.not-found__text { margin: 0 0 12px; font-size: 1.125rem; max-width: 36em; }
+.not-found__label { margin: 48px 0 12px; font-weight: 400; color: var(--muted); }
+.not-found__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 1.125rem; }

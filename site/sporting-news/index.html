@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sporting News, a case study by Ebunoluwa Oyetunji</title>
+    <meta name="description" content="Sporting News: taking a print sports magazine online, with an admin dashboard to run the business behind it. A case study by Ebunoluwa Oyetunji, UI/UX and product designer." />
+    <link rel="canonical" href="https://ebunoluwaoyetunji.github.io/sporting-news/" />
+    <meta name="theme-color" content="#f8f6f1" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Link previews (LinkedIn, WhatsApp and others). Cards: public/share/, made by scripts/make-share-cards.mjs. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ebunoluwa Oyetunji" />
+    <meta property="og:title" content="Sporting News, a case study by Ebunoluwa Oyetunji" />
+    <meta property="og:description" content="Sporting News: taking a print sports magazine online, with an admin dashboard to run the business behind it. A case study by Ebunoluwa Oyetunji, UI/UX and product designer." />
+    <meta property="og:url" content="https://ebunoluwaoyetunji.github.io/sporting-news/" />
+    <meta property="og:image" content="https://ebunoluwaoyetunji.github.io/share/sporting-news.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sporting News, a case study by Ebunoluwa Oyetunji" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Italiana: big headings. Courier Prime: small facts. IBM Plex Sans: body text. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400&family=IBM+Plex+Sans:wght@400;500&family=Italiana&display=swap"
+    />
+    <!-- Page changes between the homepage and a case study (src/lib/frameTransition.js): the frame moves
+         and grows, the top bar stays still, the rest cross-fades. Here in the page itself so it is on from the
+         first moment. Off with reduced motion. Test it on the built site (npm run check), not the dev server. -->
+    <style>
+      @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
+      ::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root),
+      ::view-transition-group(case-frame), ::view-transition-old(case-frame), ::view-transition-new(case-frame) {
+        animation-duration: 0.45s; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      ::view-transition-old(case-frame), ::view-transition-new(case-frame) { height: 100%; object-fit: contain; }
+      .topbar { view-transition-name: topbar; }
+      ::view-transition-group(topbar), ::view-transition-new(topbar) { animation: none; }
+      ::view-transition-old(topbar) { display: none; }
+      .case__visuals .case__screen:first-child .canvas { view-transition-name: case-frame; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- blocking="render": the first paint waits for the page, so the frame can move between pages. -->
+    <script type="module" blocking="render" src="/src/case/sporting-news.jsx"></script>
+  </body>
+</html>
