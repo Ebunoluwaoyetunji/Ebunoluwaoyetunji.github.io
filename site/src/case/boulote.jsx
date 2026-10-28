@@ -1,16 +1,10 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { flushSync } from 'react-dom';
 import CaseStudy from './CaseStudy.jsx';
 import boulote from '../content/case-studies/boulote.js';
+import { loadSignposts, signpostsOf } from '../content/signposts/index.js';
+import { later, start } from '../lib/start.jsx';
 import '../styles.css';
 import '../lib/paper.js'; // TEMPORARY: background options
 
-// Render at once (the script blocks the first paint, see boulote/index.html),
-// so the page change from the homepage finds the top frame there.
-const root = createRoot(document.getElementById('root'));
-flushSync(() => root.render(
-  <React.StrictMode>
-    <CaseStudy study={boulote} />
-  </React.StrictMode>,
-));
+// The page is pre-rendered (boulote/index.html): the scripts take over the page; once the
+// page has loaded, the Full read's signposts download in the background.
+start(<CaseStudy study={boulote} />).then(() => later(() => loadSignposts(signpostsOf(boulote))));

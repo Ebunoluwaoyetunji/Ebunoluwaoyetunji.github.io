@@ -4,15 +4,17 @@
 //      (site/public);
 //   2. the old pages kept as they are, from the repo root: /nexapay.html,
 //      /whimsy.html, the old Fileo prototypes (/fileo/fileo_*.html) and
-//      /assets/thumbs/. The old root index.html, fileo/index.html,
+//      /assets/thumbs/, with the GoatCounter tags added to the copied pages
+//      (the files at the repo root are not changed). The old root index.html, fileo/index.html,
 //      boulote.html, folowr.html and fileo_case_study.html are NOT copied: the
 //      new site (or a redirect) takes those addresses.
 // It stops if a file would overwrite another. Run by .github/workflows/deploy.yml;
 // locally: npm run pages.
 
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { goatcounterTags } from '../src/lib/goatcounter.js';
 
 const site = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const repo = resolve(site, '..');
@@ -31,6 +33,12 @@ for (const path of old) {
   const to = join(out, path);
   if (existsSync(to)) throw new Error(`${path} is already in the new site; not overwriting it.`);
   mkdirSync(dirname(to), { recursive: true });
-  cpSync(join(repo, path), to);
+  if (!path.endsWith('.html')) { cpSync(join(repo, path), to); continue; }
+  // The old pages count visits too (GoatCounter, src/lib/goatcounter.js), added
+  // to the published copy only: the file at the repo root stays as it is.
+  const html = readFileSync(join(repo, path), 'utf8');
+  const at = html.search(/<\/head>/i);
+  if (at < 0) throw new Error(`${path}: no </head>`);
+  writeFileSync(to, `${html.slice(0, at)}${goatcounterTags()}\n${html.slice(at)}`);
 }
 console.log(`site/_site: the new site plus ${old.length} old files (${old.filter((p) => p.endsWith('.html')).join(', ')}, assets/thumbs).`);

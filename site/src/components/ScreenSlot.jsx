@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import useLens from '../motion/useLens.js';
+import useMedia from '../motion/useMedia.js';
+import whenLoaded from '../lib/whenLoaded.js';
 import Lightbox from './Lightbox.jsx';
 import look from '../content/look.js';
 
@@ -37,27 +39,22 @@ export function imagesOf(screen) {
 // (split: true, the before and after crops) becomes two slides there, one half
 // each, so its phones are as big as every other phone.
 const SMALL = '(max-width: 640px)';
-function useSmall() {
-  const [small, setSmall] = useState(() => typeof window !== 'undefined' && window.matchMedia(SMALL).matches);
-  useEffect(() => {
-    const m = window.matchMedia(SMALL);
-    const on = () => setSmall(m.matches);
-    m.addEventListener('change', on);
-    return () => m.removeEventListener('change', on);
-  }, []);
-  return small;
-}
+const useSmall = () => useMedia(SMALL);
 // Touch screens get "Tap to view full screen".
 const TOUCH = '(hover: none)';
-function useTouch() {
-  const [touch, setTouch] = useState(() => typeof window !== 'undefined' && window.matchMedia(TOUCH).matches);
-  useEffect(() => {
-    const m = window.matchMedia(TOUCH);
-    const on = () => setTouch(m.matches);
-    m.addEventListener('change', on);
-    return () => m.removeEventListener('change', on);
-  }, []);
-  return touch;
+const useTouch = () => useMedia(TOUCH);
+
+// Smaller copies of each screen (scripts/make-image-sizes.mjs: <name>-800.webp
+// and <name>-1400.webp, made when the file is wider than that), so a frame
+// loads the size it shows at. The full file stays the largest choice (sharp on
+// big, dense screens) and is what the lens and "View full screen" use.
+export const SIZE_STEPS = [800, 1400];
+export function srcSetOf(image) {
+  const width = image.fileWidth || image.width;
+  if (image.srcSet || !width || !/\.webp$/.test(image.src || '')) return image.srcSet;
+  const steps = SIZE_STEPS.filter((w) => w < width);
+  if (!steps.length) return undefined;
+  return [...steps.map((w) => `${image.src.replace(/\.webp$/, `-${w}.webp`)} ${w}w`), `${image.src} ${width}w`].join(', ');
 }
 const ExpandIcon = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
@@ -66,8 +63,8 @@ const ExpandIcon = () => (
 );
 
 const halves = (img) => [
-  { ...img, width: img.width / 2, half: 'left', key: `${img.src}#left` },
-  { ...img, width: img.width / 2, half: 'right', alt: '', key: `${img.src}#right` },
+  { ...img, width: img.width / 2, fileWidth: img.width, half: 'left', key: `${img.src}#left` },
+  { ...img, width: img.width / 2, fileWidth: img.width, half: 'right', alt: '', key: `${img.src}#right` },
 ];
 
 // A muted, looping video that plays only while its frame is on screen, loads
@@ -77,23 +74,32 @@ function VideoFit({ image }) {
   const ref = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [userPaused, setUserPaused] = useState(false);
-  const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const descId = useRef(`video-${Math.random().toString(36).slice(2, 8)}`).current;
+  const reduced = useMedia('(prefers-reduced-motion: reduce)');
+  const descId = `video-${useId()}`;
 
   useEffect(() => {
     const v = ref.current;
     let loaded = false;
-    const load = () => { if (!loaded) { loaded = true; v.src = image.video; } };
+    // Never part of the page's first load: the video downloads once the page
+    // has finished loading (and its frame is near, or the visitor presses Play).
+    let pageLoaded = false;
+    let wanted = false;
+    const load = () => {
+      wanted = true;
+      if (!loaded && pageLoaded) { loaded = true; v.src = image.video; if (!reduced && !v.dataset.userPaused && v.dataset.inView) v.play().catch(() => {}); }
+    };
+    const cancelWait = whenLoaded(() => { pageLoaded = true; if (wanted) load(); });
     const near = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) load(); }, { rootMargin: '600px 0px' });
     const seen = new IntersectionObserver((es) => {
       const on = es.some((e) => e.isIntersecting);
-      if (on && !reduced && !v.dataset.userPaused) { load(); v.play().catch(() => {}); } else if (!on) v.pause();
+      if (on) v.dataset.inView = '1'; else delete v.dataset.inView;
+      if (on && !reduced && !v.dataset.userPaused) { load(); if (loaded) v.play().catch(() => {}); } else if (!on) v.pause();
     }, { threshold: 0.4 });
     near.observe(v); seen.observe(v);
     const onPlay = () => setPlaying(true);
     const onPause = () => setPlaying(false);
     v.addEventListener('play', onPlay); v.addEventListener('pause', onPause);
-    return () => { near.disconnect(); seen.disconnect(); v.removeEventListener('play', onPlay); v.removeEventListener('pause', onPause); };
+    return () => { cancelWait(); near.disconnect(); seen.disconnect(); v.removeEventListener('play', onPlay); v.removeEventListener('pause', onPause); };
   }, [image.video, reduced]);
 
   const toggle = () => {
@@ -119,7 +125,7 @@ function VideoFit({ image }) {
   );
 }
 
-function Fit({ image, lens, eager, phones, onOpen }) {
+function Fit({ image, lens, eager, hold, sizes, phones, onOpen }) {
   const known = image.width && image.height ? image.width / image.height : null;
   const [ratio, setRatio] = useState(known);
   const onLoad = (e) => {
@@ -133,14 +139,16 @@ function Fit({ image, lens, eager, phones, onOpen }) {
   const picture = image.video ? null : (
     <img
       ref={imgRef}
-      src={image.src}
-      srcSet={image.srcSet}
-      sizes={image.sizes}
+      src={hold ? undefined : image.src}
+      srcSet={hold ? undefined : srcSetOf(image)}
+      sizes={image.sizes || (eager ? sizes : `auto, ${sizes}`)}
       width={image.width}
       height={image.height}
       alt={image.alt || ''}
       className={image.half ? `canvas__half canvas__half--${image.half}` : undefined}
       loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      data-lens={image.src}
       decoding="async"
       onLoad={onLoad}
     />
@@ -160,12 +168,18 @@ function Fit({ image, lens, eager, phones, onOpen }) {
 }
 
 // lens: the lens magnifier on the screens (mouse only; useLens.js).
+// eager: the first frame on screen when the page opens (loads at once, first);
+// every other frame waits until it is near.
+// hold: true until the screens may download (the gallery wall, until it is
+// near); the frames keep their size meanwhile.
+// sizes: about how wide the frame shows, for the browser's choice of file
+// (lazy frames also measure themselves: sizes="auto" where supported).
 // hung: adds the soft shadow for the gallery wall.
 // screen.fill: a background colour for the mount and the space between
 // images (the images' own brand background), with no gap between them.
 // screen.hidden: no real image yet, so the frame is not shown at all.
 // zoom: images with `full` open the whole screen (case studies only).
-export default function ScreenSlot({ screen, lens = false, hung = false, eager = false, zoom = false }) {
+export default function ScreenSlot({ screen, lens = false, hung = false, eager = false, hold = false, zoom = false, sizes = '(max-width: 640px) 100vw, 60vw' }) {
   const windowRef = useRef(null);
   const [at, setAt] = useState(0);
   const [open, setOpen] = useState(null);
@@ -192,7 +206,7 @@ export default function ScreenSlot({ screen, lens = false, hung = false, eager =
     <div className={`canvas${hung ? ' canvas--hung' : ''}${phones ? ' canvas--phones' : ''}${screen.edge ? ' canvas--edge' : ''}${zoomable ? ' canvas--zoom' : ''}`} style={style} onClick={onFrameClick}>
       <div className="canvas__window" ref={windowRef} style={{ '--n': images.length || 1 }} onScroll={phones && images.length > 1 ? onScroll : undefined}>
         {images.length ? (
-          images.map((img) => <Fit key={img.key || img.src || img.video} image={img} lens={lens} eager={eager} phones={phones} onOpen={zoom ? (im, from) => setOpen({ ...im.full, alt: im.alt, from }) : null} />)
+          images.map((img) => <Fit key={img.key || img.src || img.video} image={img} lens={lens} eager={eager} hold={hold} sizes={sizes} phones={phones} onOpen={zoom ? (im, from) => setOpen({ ...im.full, alt: im.alt, from }) : null} />)
         ) : (
           <span className="facts canvas__label">{screen.label}</span>
         )}

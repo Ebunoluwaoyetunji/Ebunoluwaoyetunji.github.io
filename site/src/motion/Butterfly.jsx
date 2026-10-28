@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef } from 'react';
-import { butterflyParts } from '../content/butterfly/index.js';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { butterflyParts, loadButterfly } from '../content/butterfly/index.js';
 
 // One butterfly in the hero. It flies in on load and lands on top of a
 // letter. While resting its wings open and close slowly. When the mouse comes
@@ -29,9 +29,20 @@ const offsetOf = (glyph) => {
 const FOOT_X = 0.5;
 const FOOT_Y = 0.82;
 
-export default function Butterfly({ headingId, font, option, settings: s, mode }) {
+// It is not in the pre-rendered HTML: it appears once its drawing has loaded,
+// after the page has started (it flies in, so nothing jumps).
+export default function Butterfly(props) {
+  const [parts, setParts] = useState(null);
+  useEffect(() => {
+    let live = true;
+    loadButterfly(props.option).then(() => { if (live) setParts(butterflyParts(props.option)); });
+    return () => { live = false; };
+  }, [props.option]);
+  return parts ? <ButterflyDrawing {...props} parts={parts} /> : null;
+}
+
+function ButterflyDrawing({ headingId, font, settings: s, mode, parts }) {
   const ref = useRef(null);
-  const parts = butterflyParts(option);
 
   useLayoutEffect(() => {
     const el = ref.current;

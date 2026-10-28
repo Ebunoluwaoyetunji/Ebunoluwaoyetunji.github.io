@@ -12,6 +12,7 @@ import Todo from '../components/Todo.jsx';
 import Block, { DraftLabels } from './Blocks.jsx';
 import Guide from './Guide.jsx';
 import Signpost from '../motion/Signpost.jsx';
+import { setRootVars } from '../lib/rootVars.js';
 
 // A case study page, laid out from its content file in the template order
 // (DESIGN.md, "Case study template", updates 10 and 11): the frames first,
@@ -93,7 +94,10 @@ function ReadSwitch({ read, onChange, times, compact = false }) {
 export default function CaseStudy({ study }) {
   const effects = useEffectsAllowed();
   const still = useReducedMotion();
-  const [read, setRead] = useState(readFromUrl);
+  // The pre-rendered HTML is the Short read. A link to the Full read
+  // (?read=full) switches as soon as the page starts.
+  const [read, setRead] = useState('short');
+  useLayoutEffect(() => { setRead(readFromUrl()); }, []);
   const times = useMemo(() => ({ short: minutes(countWords(study.short?.sections)), full: minutes(countWords(study.sections)) }), [study]);
   const sections = read === 'short' && study.short ? study.short.sections : study.sections;
   const guideSections = useMemo(() => sections.flatMap(({ id, title, blocks }) => [
@@ -111,22 +115,9 @@ export default function CaseStudy({ study }) {
     if (toArticle) requestAnimationFrame(() => document.querySelector('.case__article')?.scrollIntoView());
   };
 
-  // CSS variables before the first paint, so frames have their shape when the page changes.
-  useLayoutEffect(() => {
-    const root = document.documentElement.style;
-    root.setProperty('--accent', look.accent);
-    root.setProperty('--display', look.display);
-    root.setProperty('--facts', look.facts);
-    root.setProperty('--body', look.body);
-    root.setProperty('--footer-note-ink', look.footerNoteInk);
-    const [fw, fh] = look.frame.aspect.split('/').map(Number);
-    root.setProperty('--frame-aspect', look.frame.aspect);
-    root.setProperty('--frame-ratio', String(fw / fh));
-    root.setProperty('--frame-edge', look.frame.edge);
-    root.setProperty('--frame-mount', look.frame.mount);
-    root.setProperty('--frame-mount-size', String(look.frame.mountSize));
-    root.setProperty('--frame-screen-gap', String(look.frame.screenGap));
-  }, []);
+  // CSS variables (also in the pre-rendered HTML, so frames have their shape
+  // when the page changes).
+  useLayoutEffect(setRootVars, []);
 
   return (
     <>
@@ -139,7 +130,13 @@ export default function CaseStudy({ study }) {
         <div className={`case__visuals wrap${({ 1: ' case__visuals--one', 3: ' case__visuals--three' })[study.visuals.filter((v) => !v.hidden).length] || ''}`}>
           {study.visuals.filter((v) => !v.hidden).map((v, i) => (
             <figure key={i} className="case__screen">
-              <ScreenSlot screen={v} lens eager={i === 0} zoom />
+              <ScreenSlot
+                screen={v}
+                lens
+                eager={i === 0}
+                zoom
+                sizes={study.visuals.filter((x) => !x.hidden).length === 3 ? '(max-width: 640px) 100vw, 33vw' : '(max-width: 640px) 100vw, 90vw'}
+              />
               {v.caption && <figcaption className="facts case__caption">{v.caption}</figcaption>}
             </figure>
           ))}

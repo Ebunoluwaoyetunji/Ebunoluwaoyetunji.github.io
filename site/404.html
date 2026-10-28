@@ -10,13 +10,11 @@
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Italiana: big headings. Courier Prime: small facts. IBM Plex Sans: body text. -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400&family=IBM+Plex+Sans:wght@400;500&family=Italiana&display=swap"
-    />
+    <!-- Fonts are self-hosted (src/fonts.css, public/fonts/). Italiana: big headings. IBM Plex Sans: body
+         text. Courier Prime: small facts. The three used on the first screen load first. -->
+    <link rel="preload" href="/fonts/italiana-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/courier-prime-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <div id="root"></div>

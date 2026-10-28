@@ -8,7 +8,8 @@ import { useEffect } from 'react';
 // - The lens appears after the mouse rests on the image for DELAY ms, follows
 //   it, and fades out when it leaves. The image itself never changes.
 // - Inside, the image shows at ZOOM times its size on screen, drawn from the
-//   image file itself (full resolution, never resized), so it stays sharp.
+//   full image file (data-lens; frames show a smaller copy), so it stays sharp.
+//   The full file downloads the first time the mouse arrives on the image.
 // - A press hides it at once, so the page change and "View full screen" start
 //   from a clean image. Scrolling hides it too.
 // - Keyboard users get nothing extra; nothing else depends on it.
@@ -42,6 +43,12 @@ export default function useLens(ref, on = true) {
     let timer = 0;
     let shown = false;
     let last = null;
+    // The full file (data-lens), not the smaller copy the frame shows. It is
+    // fetched the first time the mouse arrives, so it is ready by the time
+    // the lens appears.
+    const full = () => img.dataset.lens || img.currentSrc || img.src;
+    let fetched = false;
+    const fetchFull = () => { if (!fetched) { fetched = true; new Image().src = full(); } };
 
     const place = (e) => {
       const L = theLens();
@@ -51,7 +58,7 @@ export default function useLens(ref, on = true) {
       if (x < 0 || y < 0 || x > r.width || y > r.height) { hide(); return; }
       const R = SIZE / 2;
       L.style.transform = `translate(${e.clientX - R}px, ${e.clientY - R}px)`;
-      L.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
+      L.style.backgroundImage = `url("${full()}")`;
       L.style.backgroundSize = `${r.width * ZOOM}px ${r.height * ZOOM}px`;
       L.style.backgroundPosition = `${R - x * ZOOM}px ${R - y * ZOOM}px`;
     };
@@ -78,12 +85,14 @@ export default function useLens(ref, on = true) {
 
     const onEnter = (e) => {
       if (e.pointerType !== 'mouse' || !mouse.matches || !img.complete || !img.naturalWidth) return;
+      fetchFull();
       last = e;
       clearTimeout(timer);
       timer = setTimeout(show, DELAY);
     };
     const onMove = (e) => {
       if (e.pointerType !== 'mouse' || !mouse.matches) return;
+      fetchFull();
       last = e;
       if (shown) place(e);
       else { clearTimeout(timer); timer = setTimeout(show, DELAY); }

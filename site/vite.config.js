@@ -2,19 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
 
-// The page scripts block the first paint (blocking="render"), so the page
-// change between the homepage and a case study finds its frame on the first
-// frame. Vite drops the attribute when it builds, so put it back.
-const renderBlockingEntry = () => ({
-  name: 'render-blocking-entry',
-  transformIndexHtml: {
-    order: 'post',
-    handler: (html) => html.replace(/<script type="module" crossorigin src=/g, '<script type="module" blocking="render" crossorigin src='),
-  },
-});
-
+// `npm run build` builds the pages, then a server copy of the app
+// (src/entry-server.jsx) that scripts/prerender.mjs uses to write each page's
+// full HTML, so words, headings, facts and frames show before any script runs.
+// The scripts then take over the page that is already there (hydrate).
 export default defineConfig({
-  plugins: [react(), renderBlockingEntry()],
+  plugins: [react()],
   base: '/',
   build: {
     rollupOptions: {

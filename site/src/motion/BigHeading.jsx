@@ -63,7 +63,15 @@ export default function BigHeading({ as: Tag = 'h1', id, lines, font, copies = 0
   }, [font.family, font.weight, lines.join('|'), copies, maxScreenShare, maxFontSize]);
 
   return (
-    <Tag id={id} ref={ref} className={`big ${className}`} style={{ fontFamily: font.family, fontWeight: font.weight }}>
+    <Tag
+      id={id}
+      ref={ref}
+      className={`big ${className}`}
+      style={{ fontFamily: font.family, fontWeight: font.weight }}
+      // For the inline script that sizes the heading before the page's scripts load (src/lib/fitScript.js).
+      data-fit-share={maxScreenShare}
+      data-fit-max={Number.isFinite(maxFontSize) ? maxFontSize : undefined}
+    >
       <span className="visually-hidden">{lines.join(' ')}</span>
       <span className="big__lines" aria-hidden="true">
         {lines.map((line) => (

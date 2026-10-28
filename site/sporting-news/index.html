@@ -21,13 +21,11 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Sporting News, a case study by Ebunoluwa Oyetunji" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Italiana: big headings. Courier Prime: small facts. IBM Plex Sans: body text. -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400&family=IBM+Plex+Sans:wght@400;500&family=Italiana&display=swap"
-    />
+    <!-- Fonts are self-hosted (src/fonts.css, public/fonts/). Italiana: big headings. IBM Plex Sans: body
+         text. Courier Prime: small facts. The three used on the first screen load first. -->
+    <link rel="preload" href="/fonts/italiana-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/courier-prime-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Page changes between the homepage and a case study (src/lib/frameTransition.js): the frame moves
          and grows, the top bar stays still, the rest cross-fades. Here in the page itself so it is on from the
          first moment. Off with reduced motion. Test it on the built site (npm run check), not the dev server. -->
@@ -46,7 +44,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- blocking="render": the first paint waits for the page, so the frame can move between pages. -->
-    <script type="module" blocking="render" src="/src/case/sporting-news.jsx"></script>
+    <script type="module" src="/src/case/sporting-news.jsx"></script>
   </body>
 </html>

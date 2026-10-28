@@ -9,5 +9,8 @@ const tones = {
   white: '#FFFFFF',
 };
 
-const pick = new URLSearchParams(location.search).get('paper');
-if (tones[pick]) document.documentElement.style.setProperty('--paper', tones[pick]);
+// (Only in the browser: the pages are also pre-rendered in Node.)
+if (typeof window !== 'undefined') {
+  const pick = new URLSearchParams(location.search).get('paper');
+  if (tones[pick]) document.documentElement.style.setProperty('--paper', tones[pick]);
+}

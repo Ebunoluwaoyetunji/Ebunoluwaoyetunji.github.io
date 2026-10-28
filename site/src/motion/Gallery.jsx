@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { approach, createTicker } from './ticker.js';
+import useMedia from './useMedia.js';
 import ScreenSlot from '../components/ScreenSlot.jsx';
 import motion from '../content/motion.js';
 import { Text } from '../components/Todo.jsx';
@@ -10,20 +11,11 @@ import { Text } from '../components/Todo.jsx';
 //         slides sideways, as if walking past the frames.
 // 'swipe' on touch screens: a row to swipe.
 // 'grid'  with reduced motion: a still grid.
+// The pre-rendered HTML has the swipe row (useMedia.js); the scripts switch it.
 function useMode() {
-  const get = () => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'grid';
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) return 'walk';
-    return 'swipe';
-  };
-  const [mode, setMode] = useState(get);
-  useEffect(() => {
-    const qs = ['(prefers-reduced-motion: reduce)', '(hover: hover) and (pointer: fine)'].map((q) => window.matchMedia(q));
-    const update = () => setMode(get());
-    qs.forEach((q) => q.addEventListener('change', update));
-    return () => qs.forEach((q) => q.removeEventListener('change', update));
-  }, []);
-  return mode;
+  const reduced = useMedia('(prefers-reduced-motion: reduce)');
+  const mouse = useMedia('(hover: hover) and (pointer: fine)');
+  return reduced ? 'grid' : mouse ? 'walk' : 'swipe';
 }
 
 // Optional rests: each frame can pause in the middle for part of its share
@@ -56,6 +48,17 @@ function WallLabel({ item, onFocus }) {
 
 export default function Gallery({ id, title, items, settings: s }) {
   const mode = useMode();
+  // The wall's screens download only once the gallery is about a screen away
+  // (its frames keep their size meanwhile), never with the page's first load.
+  const [near, setNear] = useState(false);
+  const watchRef = useRef(null);
+  useEffect(() => {
+    const el = watchRef.current;
+    if (near || !el) return undefined;
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) setNear(true); }, { rootMargin: '100% 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near, mode]);
   const sectionRef = useRef(null);
   const railRef = useRef(null);
   const posRef = useRef({ shown: 0, target: 0 });
@@ -143,12 +146,12 @@ export default function Gallery({ id, title, items, settings: s }) {
 
   if (mode !== 'walk') {
     return (
-      <section id={id} className={`gallery gallery--${mode}`} aria-labelledby={`${id}-title`}>
+      <section id={id} ref={watchRef} className={`gallery gallery--${mode}`} aria-labelledby={`${id}-title`}>
         <h2 className="facts gallery__title" id={`${id}-title`}>{title}</h2>
         <ul className="gallery__list">
           {items.map((item, i) => (
             <li key={i} className="gallery__item">
-              <ScreenSlot screen={item} hung lens />
+              <ScreenSlot screen={item} hung lens hold={!near} sizes="(max-width: 640px) 85vw, 50vw" />
               <WallLabel item={item} />
             </li>
           ))}
@@ -160,7 +163,7 @@ export default function Gallery({ id, title, items, settings: s }) {
   return (
     <section
       id={id}
-      ref={sectionRef}
+      ref={(el) => { sectionRef.current = el; watchRef.current = el; }}
       className="gallery gallery--walk"
       style={{ height: `${(1 + s.scrollLength) * 100}vh` }}
       aria-labelledby={`${id}-title`}
@@ -171,7 +174,7 @@ export default function Gallery({ id, title, items, settings: s }) {
           <ul className="gallery__rail" ref={railRef}>
             {items.map((item, i) => (
               <li key={i} className="gallery__card" aria-current={i === current ? 'true' : undefined}>
-                <ScreenSlot screen={item} hung lens />
+                <ScreenSlot screen={item} hung lens hold={!near} sizes="(max-width: 640px) 85vw, 50vw" />
                 <WallLabel item={item} onFocus={() => goTo(i, false)} />
               </li>
             ))}

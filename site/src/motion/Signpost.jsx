@@ -1,6 +1,5 @@
-import { useLayoutEffect, useMemo, useRef } from 'react';
-import { gsap } from 'gsap';
-import { signpost } from '../content/signposts/index.js';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { loadSignposts, signpost } from '../content/signposts/index.js';
 import motion from '../content/motion.js';
 
 // One of Ebun's handwritten signposts under a turning point, in the pen's
@@ -12,11 +11,25 @@ import motion from '../content/motion.js';
 //
 // signpost: { file, text } from the case study's `turns`. still: reduced motion.
 // settings: motion.signposts.
+//
+// Each drawing is its own small download (src/content/signposts/index.js):
+// the case study page fetches its own in the background after it starts, and
+// a signpost that is not there yet loads it itself, then draws.
 
 export default function Signpost({ signpost: sp, still }) {
+  const [svg, setSvg] = useState(() => signpost(sp.file));
+  useEffect(() => {
+    let live = true;
+    if (!signpost(sp.file)) loadSignposts([sp.file]).then(() => { if (live) setSvg(signpost(sp.file)); });
+    else setSvg(signpost(sp.file));
+    return () => { live = false; };
+  }, [sp.file]);
+  return svg ? <Drawing sp={sp} svg={svg} still={still} /> : <p className="turn__signpost"><span className="visually-hidden">{sp.text}</span></p>;
+}
+
+function Drawing({ sp, svg, still }) {
   const ref = useRef(null);
   const s = motion.signposts;
-  const svg = useMemo(() => signpost(sp.file), [sp.file]);
   const [w, h] = useMemo(() => /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(svg).slice(1).map(Number), [svg]);
 
   useLayoutEffect(() => {
@@ -30,7 +43,10 @@ export default function Signpost({ signpost: sp, still }) {
     let armed = true; // true once fully off screen (and at the start): the next entry draws it
     ready();
 
-    const draw = () => {
+    // GSAP downloads only when a signpost first comes into view.
+    let live = true;
+    const draw = () => import('gsap').then(({ gsap }) => {
+      if (!live || armed) return; // left the screen again before GSAP arrived
       // Measured now, at the size it is shown.
       const svgEl = el.querySelector('svg');
       const scale = svgEl.getBoundingClientRect().width / svgEl.viewBox.baseVal.width;
@@ -43,7 +59,7 @@ export default function Signpost({ signpost: sp, still }) {
         if (i < strokes.length - 1) tl.to({}, { duration: s.pauseStroke });
       });
       tl.set(strokes, { clearProps: 'strokeDasharray,strokeDashoffset,opacity' });
-    };
+    });
 
     const io = new IntersectionObserver((entries) => {
       const e = entries[entries.length - 1];
@@ -56,7 +72,7 @@ export default function Signpost({ signpost: sp, still }) {
       }
     }, { threshold: [0, s.startWhenVisible] });
     io.observe(el);
-    return () => { io.disconnect(); tl?.kill(); clear(); };
+    return () => { live = false; io.disconnect(); tl?.kill(); clear(); };
   }, [still, s]);
 
   return (

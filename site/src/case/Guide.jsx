@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { sampler, seeded, smooth } from '../lib/penLine.js';
+import useMedia from '../motion/useMedia.js';
 
 // The guide on case study pages: the only scroll motion there.
 //
@@ -30,7 +31,9 @@ import { sampler, seeded, smooth } from '../lib/penLine.js';
 
 export default function Guide({ sections, still, settings: s, barExtra = null, barExtraAfter = null }) {
   const wideQuery = `(min-width: ${s.wideFrom}px)`;
-  const [wide, setWide] = useState(() => window.matchMedia(wideQuery).matches);
+  // The pre-rendered HTML has the narrow bar; on wide screens CSS hides it
+  // until the scripts swap in the margin guide (styles.css, .guide--bar).
+  const wide = useMedia(wideQuery);
   const [current, setCurrent] = useState(-1);
   const [open, setOpen] = useState(false);
   const listRef = useRef(null);
@@ -88,12 +91,8 @@ export default function Guide({ sections, still, settings: s, barExtra = null, b
     if (extraRef.current) extraRef.current.inert = !extraShown;
   }, [extraShown, wide]);
 
-  useEffect(() => {
-    const mq = window.matchMedia(wideQuery);
-    const update = () => { setWide(mq.matches); setOpen(false); };
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, [wideQuery]);
+  // Switching between the bar and the margin guide closes the list.
+  useEffect(() => { setOpen(false); }, [wide]);
 
   useLayoutEffect(() => {
     const article = rootRef.current?.closest('.case__article');

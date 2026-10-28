@@ -1,21 +1,14 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { flushSync } from 'react-dom';
 import App from './App.jsx';
 import home from './content/home.js';
 import { casePages } from './content/case-studies/index.js';
 import { setupFrameTransitions } from './lib/frameTransition.js';
+import { start } from './lib/start.jsx';
 import './styles.css';
 import './lib/paper.js'; // TEMPORARY: background options
 
-// Before the first render, so the page change can find its frame.
+// Opening a case study names the clicked frame, so it grows into the case
+// study's top frame. (Coming back is handled by an inline script in the
+// pre-rendered page: src/lib/frameTransition.js, revealScript.)
 setupFrameTransitions(casePages, home.projects);
 
-// Render at once (the script blocks the first paint, see index.html), so a
-// page change coming back from a case study finds the homepage frames there.
-const root = createRoot(document.getElementById('root'));
-flushSync(() => root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-));
+start(<App />);

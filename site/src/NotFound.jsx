@@ -5,6 +5,7 @@ import motion from './content/motion.js';
 import TopBar from './components/TopBar.jsx';
 import SiteFooter from './components/SiteFooter.jsx';
 import useEffectsAllowed from './motion/useEffectsAllowed.js';
+import { setRootVars } from './lib/rootVars.js';
 
 // The page GitHub Pages shows for any address that does not exist (404.html).
 // It can sit at any depth (/a/b/c), so every link here starts with "/".
@@ -21,14 +22,7 @@ const CASES = [
 export default function NotFound() {
   const effects = useEffectsAllowed();
 
-  useLayoutEffect(() => {
-    const root = document.documentElement.style;
-    root.setProperty('--accent', look.accent);
-    root.setProperty('--display', look.display);
-    root.setProperty('--facts', look.facts);
-    root.setProperty('--body', look.body);
-    root.setProperty('--footer-note-ink', look.footerNoteInk);
-  }, []);
+  useLayoutEffect(setRootVars, []);
 
   return (
     <>

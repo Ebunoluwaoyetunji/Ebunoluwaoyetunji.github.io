@@ -1,4 +1,5 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { setRootVars } from './lib/rootVars.js';
 import home from './content/home.js';
 import look from './content/look.js';
 import motion from './content/motion.js';
@@ -24,26 +25,14 @@ export default function App() {
   // The hero Spread too: with a mouse, or with a finger on touch screens.
   const still = useReducedMotion();
   const butterflyMode = still ? 'still' : effects ? 'full' : 'touch';
-  const showFps = new URLSearchParams(window.location.search).has('fps');
+  // ?fps: a frame-rate readout (read after the page has started, as the
+  // pre-rendered HTML has no web address).
+  const [showFps, setShowFps] = useState(false);
+  useEffect(() => { setShowFps(new URLSearchParams(window.location.search).has('fps')); }, []);
 
-  // Before the first paint, so frames have their shape when the page changes.
-  useLayoutEffect(() => {
-    const root = document.documentElement.style;
-    root.setProperty('--accent', look.accent);
-    root.setProperty('--display', look.display);
-    root.setProperty('--facts', look.facts);
-    root.setProperty('--body', look.body);
-    root.setProperty('--footer-note-ink', look.footerNoteInk);
-    // Frames (look.js) and the Journey line width (motion.js).
-    const [fw, fh] = look.frame.aspect.split('/').map(Number);
-    root.setProperty('--frame-aspect', look.frame.aspect);
-    root.setProperty('--frame-ratio', String(fw / fh));
-    root.setProperty('--frame-edge', look.frame.edge);
-    root.setProperty('--frame-mount', look.frame.mount);
-    root.setProperty('--frame-mount-size', String(look.frame.mountSize));
-    root.setProperty('--frame-screen-gap', String(look.frame.screenGap));
-    root.setProperty('--journey-stroke', `${motion.journey.strokeWidth}px`);
-  }, []);
+  // Frames (look.js) and the Journey line width (motion.js). Also in the
+  // pre-rendered HTML, so frames have their shape before any script runs.
+  useLayoutEffect(setRootVars, []);
 
   return (
     <>

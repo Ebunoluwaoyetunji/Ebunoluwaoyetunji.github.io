@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
+import { srcSetOf } from '../components/ScreenSlot.jsx';
 
 // A row of pictures that keep their own shape, each with its caption under it
 // (the Boulote hand-drawn maps). Side by side across the text column on a
 // laptop, one under another on a phone; in a row they share one height.
 // A click or tap opens one larger; Escape, a tap or the Close button closes it.
 //
-// items: [{ src, alt, width, height, caption }]
+// items: [{ src, alt, width, height, caption }]. In the row each loads a
+// smaller copy (scripts/make-image-sizes.mjs); the larger view loads the original.
 
 export default function Figures({ items }) {
   const [open, setOpen] = useState(null);
@@ -34,7 +36,7 @@ export default function Figures({ items }) {
               className="figures__open"
               onClick={(e) => { opener.current = e.currentTarget; setOpen(i); }}
             >
-              <img src={it.src} alt={it.alt} width={it.width} height={it.height} loading="lazy" decoding="async" />
+              <img src={it.src} srcSet={srcSetOf(it)} sizes="auto, (max-width: 640px) 100vw, 40vw" alt={it.alt} width={it.width} height={it.height} loading="lazy" decoding="async" />
               <span className="visually-hidden"> (opens larger)</span>
             </button>
             <figcaption className="facts figures__caption">{it.caption}</figcaption>

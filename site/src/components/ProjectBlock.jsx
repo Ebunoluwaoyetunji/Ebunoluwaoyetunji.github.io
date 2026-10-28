@@ -1,7 +1,10 @@
-import AnnotatedScreen from './AnnotatedScreen.jsx';
+import { lazy, Suspense } from 'react';
 import ScreenSlot, { imagesOf } from './ScreenSlot.jsx';
 import { Text, isTodo } from './Todo.jsx';
 import motion from '../content/motion.js';
+
+// The pen notes (and GSAP, which draws them) download only when they are switched on.
+const AnnotatedScreen = lazy(() => import('./AnnotatedScreen.jsx'));
 
 // One project in Selected work: facts and highlights beside its framed screen.
 // All four frames are the same wide canvas (see ScreenSlot).
@@ -41,7 +44,9 @@ export default function ProjectBlock({ project: p, effects }) {
 
       <div className="project__screen">
         {withNotes ? (
-          <AnnotatedScreen screen={images[0]} notes={p.notes} trigger="scroll" tools={false} framed />
+          <Suspense fallback={<ScreenSlot screen={screen} />}>
+            <AnnotatedScreen screen={images[0]} notes={p.notes} trigger="scroll" tools={false} framed />
+          </Suspense>
         ) : p.href ? (
           // The frame opens the case study too. Keyboard and screen reader users
           // have the name and "Read the case study" links, so it is not a tab stop.

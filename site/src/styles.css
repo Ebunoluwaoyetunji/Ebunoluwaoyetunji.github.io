@@ -1,3 +1,5 @@
+@import './fonts.css';
+
 /* Homepage. Pure white, near-black, vermilion as the only accent.
    Italiana: big headings, project names, footer words. Body: a plain sans
    (look.js). Courier Prime: small facts only. Set from look.js. */
@@ -15,8 +17,9 @@
   --edge: clamp(16px, 4.5vw, 64px);
   --gap: clamp(24px, 4vw, 56px);
   --margin-col: 240px;
-  --bar-height: 52px;
+  --bar-height: 52px; /* measured again by TopBar.jsx; these defaults match it, so nothing moves */
 }
+@media (max-width: 640px) { :root { --bar-height: 68px; } }
 
 *,
 *::before,
@@ -687,6 +690,9 @@ html { scroll-padding-top: calc(var(--bar-slim-height, 0px) + var(--section-bar-
   border-bottom: 1px solid var(--rule);
 }
 @media (prefers-reduced-motion: reduce) { .guide--wide, .guide--bar { transition: none; } }
+/* The pre-rendered page has the bar; on wide screens it waits hidden until the
+   scripts put the guide in the margin (motion.guide.wideFrom). */
+@media (min-width: 900px) { .guide--bar { display: none; } }
 .guide__toggle {
   display: flex;
   align-items: baseline;

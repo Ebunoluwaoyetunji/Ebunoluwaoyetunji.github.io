@@ -14,8 +14,9 @@
 //     or a gallery label);
 //   - when coming back from a case study: the frame it was opened from, or
 //     else that project's frame.
-// Call setupFrameTransitions() before the page first renders, so the
-// browser's "pagereveal" event is not missed.
+// setupFrameTransitions() handles leaving the homepage; revealScript, inlined
+// in the homepage's HTML, handles coming back (it must run before the page
+// first shows, so the browser's "pagereveal" event is not missed).
 
 const NAME = 'case-frame';
 const KEY = 'case-frame-from'; // sessionStorage: which homepage frame opened which case study
@@ -84,20 +85,42 @@ export function setupFrameTransitions(casePages, projects) {
     nameFrame(frameOf(source));
   });
 
-  // Coming back from a case study: name the frame it came from.
+  // Coming back from a case study is handled by revealScript (below), which
+  // is written into the homepage's HTML: the browser's "pagereveal" comes
+  // before the page's scripts have loaded.
+}
+
+// Coming back from a case study: name the frame it came from. Self-contained
+// (it runs as a small inline script in the pre-rendered homepage, before
+// anything else), so it repeats the few lines it needs from above.
+function onReveal(casePages, projects) {
+  const norm = (path) => (path.endsWith('/') ? path : `${path}/`);
+  const clear = () => document.querySelectorAll('[data-case-frame]').forEach((el) => {
+    el.style.viewTransitionName = '';
+    delete el.dataset.caseFrame;
+  });
   window.addEventListener('pagereveal', (e) => {
     clear();
     if (!e.viewTransition) return;
     const from = window.navigation?.activation?.from?.url;
-    if (!from || !isCase(new URL(from))) return;
-    const path = norm(new URL(from).pathname);
+    if (!from) return;
+    const url = new URL(from);
+    if (url.origin !== window.location.origin || !casePages.includes(norm(url.pathname))) return;
+    const path = norm(url.pathname);
     let source = null;
-    try { source = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch { /* use the project frame */ }
+    try { source = JSON.parse(sessionStorage.getItem('case-frame-from') || 'null'); } catch { /* use the project frame */ }
     if (!source || source.path !== path) {
       const project = projects.find((p) => p.href && norm(p.href) === path);
       source = project ? { kind: 'project', id: project.id } : null;
     }
-    nameFrame(frameOf(source));
+    let el = null;
+    if (source?.kind === 'project') el = document.querySelector(`.project[data-project="${source.id}"] .project__screen .canvas`);
+    else if (source) el = document.querySelectorAll('.gallery__card, .gallery__item')[source.index]?.querySelector('.canvas') || null;
+    if (el) { el.style.viewTransitionName = 'case-frame'; el.dataset.caseFrame = ''; }
     e.viewTransition.finished.finally(clear);
   });
 }
+
+// The inline script for the homepage's <head> (scripts/prerender.mjs).
+export const revealScript = (casePages, projects) =>
+  `(${onReveal.toString()})(${JSON.stringify(casePages)},${JSON.stringify(projects.map((p) => ({ id: p.id, href: p.href })))});`;

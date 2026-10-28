@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { footerNote } from '../content/footer-notes/index.js';
+import { footerNote, loadFooterNotes } from '../content/footer-notes/index.js';
 
 // Ebun's handwritten notes beside the four footer words. Decoration only:
 // hidden from screen readers (the links already have names).
@@ -31,7 +30,18 @@ export default function FooterNotes({ words, spread, settings: s, animate }) {
   useLayoutEffect(() => {
     const layer = ref.current;
     const menu = layer.parentElement;
+    // The drawings download once the footer is about a screen away (never with
+    // the page's first load), then the notes are placed.
+    let ready = false;
+    let live = true;
+    const near = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      near.disconnect();
+      loadFooterNotes(words.filter((w) => w.note).map((w) => w.note.file)).then(() => { if (live) { ready = true; place(); } });
+    }, { rootMargin: '100% 0px' });
+    near.observe(menu);
     const place = () => {
+      if (!ready) return;
       const base = menu.getBoundingClientRect();
       const links = [...menu.querySelectorAll('.wordstack .w')];
       if (!links.length) return;
@@ -82,7 +92,7 @@ export default function FooterNotes({ words, spread, settings: s, animate }) {
     ro.observe(menu);
     menu.querySelectorAll('.wordstack, .wordstack .w').forEach((el) => ro.observe(el));
     window.addEventListener('resize', place);
-    return () => { ro.disconnect(); window.removeEventListener('resize', place); };
+    return () => { live = false; near.disconnect(); ro.disconnect(); window.removeEventListener('resize', place); };
   }, [words, spread, s]);
 
   // Draw once when the footer comes into view.
@@ -93,33 +103,43 @@ export default function FooterNotes({ words, spread, settings: s, animate }) {
     const strokes = notes.map((n) => [...n.querySelectorAll(STROKES)]);
     strokes.flat().forEach((el) => { el.style.opacity = '0'; });
 
-    const tl = gsap.timeline({ paused: true });
-    strokes.forEach((list, ni) => {
-      list.forEach((el, i) => {
-        const length = el.getTotalLength();
-        const svg = el.ownerSVGElement;
-        const scale = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
-        const duration = Math.min(s.longestStroke, Math.max(s.shortestStroke, (length * scale) / s.speed));
-        tl.set(el, { strokeDasharray: `${length} ${length}`, strokeDashoffset: length, opacity: 1 });
-        tl.to(el, { strokeDashoffset: 0, duration, ease: 'sine.inOut' });
-        if (i < list.length - 1) tl.to({}, { duration: s.pauseStroke });
+    // GSAP downloads only now, when there is something to draw.
+    let tl = null;
+    let seen = false;
+    let live = true;
+    const play = () => { if (tl && seen) { drawn.current = true; tl.play(); } };
+    import('gsap').then(({ gsap }) => {
+      if (!live) return;
+      tl = gsap.timeline({ paused: true });
+      strokes.forEach((list, ni) => {
+        list.forEach((el, i) => {
+          const length = el.getTotalLength();
+          const svg = el.ownerSVGElement;
+          const scale = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
+          const duration = Math.min(s.longestStroke, Math.max(s.shortestStroke, (length * scale) / s.speed));
+          tl.set(el, { strokeDasharray: `${length} ${length}`, strokeDashoffset: length, opacity: 1 });
+          tl.to(el, { strokeDashoffset: 0, duration, ease: 'sine.inOut' });
+          if (i < list.length - 1) tl.to({}, { duration: s.pauseStroke });
+        });
+        if (ni < strokes.length - 1) tl.to({}, { duration: s.pauseNote });
       });
-      if (ni < strokes.length - 1) tl.to({}, { duration: s.pauseNote });
+      tl.set(strokes.flat(), { clearProps: 'strokeDasharray,strokeDashoffset,opacity' });
+      play();
     });
-    tl.set(strokes.flat(), { clearProps: 'strokeDasharray,strokeDashoffset,opacity' });
 
     const io = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
-        drawn.current = true;
-        tl.play();
+        seen = true;
+        play();
         io.disconnect();
       }
     }, { threshold: s.startWhenVisible });
     io.observe(layer.closest('footer') || layer);
     return () => {
+      live = false;
       io.disconnect();
       if (!drawn.current) {
-        tl.kill();
+        tl?.kill();
         strokes.flat().forEach((el) => { el.style.opacity = ''; el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; });
       }
     };
