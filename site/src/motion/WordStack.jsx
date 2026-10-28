@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import SpreadWord from './SpreadWord.jsx';
+import { whenIdle } from '../lib/whenLoaded.js';
 
 // Big words stacked and centred, one per row, with faint rules between them.
 // All words share one font size: as big as the window height allows
@@ -27,11 +28,17 @@ export default function WordStack({ words, settings: s, active, font }) {
       const byHeight = window.innerHeight * s.maxScreenShare;
       setSize(Math.floor(Math.min(byWidth, byHeight, s.maxFontSize)));
     };
-    document.fonts.load(`400 100px ${font}`).then(fit, fit);
-    const ro = new ResizeObserver(fit);
+    // Sized in a quiet moment once the font is ready (the footer is far below
+    // the first screen; the menu is opened by hand), so the page's start stays short.
+    let cancelIdle = () => {};
+    const later = () => { if (!cancelled) cancelIdle = whenIdle(fit, 300); };
+    document.fonts.load(`400 100px ${font}`).then(later, later);
+    // Fit again only when the width really changed (it also reports once when it starts watching).
+    let lastWidth = el.clientWidth;
+    const ro = new ResizeObserver(() => { if (el.clientWidth === lastWidth) return; lastWidth = el.clientWidth; fit(); });
     ro.observe(el);
     window.addEventListener('resize', fit);
-    return () => { cancelled = true; ro.disconnect(); window.removeEventListener('resize', fit); };
+    return () => { cancelled = true; cancelIdle(); ro.disconnect(); window.removeEventListener('resize', fit); };
   }, [words, s, font]);
 
   return (

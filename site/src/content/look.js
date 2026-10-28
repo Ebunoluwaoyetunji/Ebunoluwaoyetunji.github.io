@@ -6,10 +6,10 @@
 export default {
   accent: '#D2220F', // vermilion, the only accent
   footerNoteInk: '#E8492F', // lighter vermilion for the handwriting on the black footer (4.76:1)
-  display: "'Italiana', serif",
-  facts: "'Courier Prime', 'Courier New', monospace",
+  display: "'Italiana', 'Italiana Fallback', serif",
+  facts: "'Courier Prime', 'Courier Prime Fallback', 'Courier New', monospace",
 
-  body: "'IBM Plex Sans', system-ui, sans-serif",
+  body: "'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif",
 
   // Every screen hangs in the same frame, like a canvas: a thin dark edge,
   // a pale mount, then the screen in the middle. One shape for all frames.

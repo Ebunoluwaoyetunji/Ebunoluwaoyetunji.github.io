@@ -6,5 +6,9 @@ import '../styles.css';
 import '../lib/paper.js'; // TEMPORARY: background options
 
 // The page is pre-rendered (boulote/index.html): the scripts take over the page; once the
-// page has loaded, the Full read's signposts download in the background.
-start(<CaseStudy study={boulote} />).then(() => later(() => loadSignposts(signpostsOf(boulote))));
+// page has loaded, the Full read's signposts and GSAP (which draws them) download quietly.
+start(<CaseStudy study={boulote} />).then(() => later(() => {
+  // Both optional: if a download fails or the visitor leaves, nothing breaks.
+  loadSignposts(signpostsOf(boulote)).catch(() => {});
+  import('gsap').catch(() => {}); // ready before the first signpost comes into view, so it draws at once
+}));

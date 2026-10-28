@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { sampler, seeded, smooth } from '../lib/penLine.js';
+import { curveSampler, seeded, smooth } from '../lib/penLine.js';
 import useMedia from '../motion/useMedia.js';
 
 // The guide on case study pages: the only scroll motion there.
@@ -133,10 +133,10 @@ export default function Guide({ sections, still, settings: s, barExtra = null, b
       });
       pts.push([x + (rand() - 0.5) * s.wobble, endY]);
       path.setAttribute('d', smooth(pts));
-      line = { ...sampler(path), endY };
+      line = { ...curveSampler(pts, path.getTotalLength()), endY };
       path.style.strokeDasharray = `${line.total} ${line.total}`;
       svg.querySelectorAll('.guide__dot').forEach((dot, i) => {
-        const p = path.getPointAtLength(line.lengthAt(dotYs[i]));
+        const p = line.pointAt(line.lengthAt(dotYs[i]));
         dot.setAttribute('cx', p.x.toFixed(1));
         dot.setAttribute('cy', p.y.toFixed(1));
       });

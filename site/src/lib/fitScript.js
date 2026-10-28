@@ -3,18 +3,21 @@
 // (BigHeading.jsx) before the first paint, the same way BigHeading does, so
 // they show at their real size before the page's scripts load: once at once
 // (with whatever font is ready), and again when Italiana arrives.
-// BigHeading takes over when the scripts run.
+// One measurement at the current size is enough (widths grow in step with the
+// size), so each fit costs one layout. BigHeading takes over when the scripts run.
 function fitBigHeadings() {
   const fit = () => {
     document.querySelectorAll('.big[data-fit-share]').forEach((el) => {
-      el.style.fontSize = '100px';
+      if (!el.style.fontSize) el.style.fontSize = '100px';
+      const now = parseFloat(el.style.fontSize);
       let widest = 0;
       el.querySelectorAll('.big__line').forEach((l) => { widest = Math.max(widest, l.scrollWidth); });
       if (!widest) return;
-      const byWidth = ((100 * el.clientWidth) / widest) * 0.985;
-      const byHeight = (100 * window.innerHeight * Number(el.dataset.fitShare || 1)) / el.scrollHeight;
+      const byWidth = ((now * el.clientWidth) / widest) * 0.985;
+      const byHeight = (now * window.innerHeight * Number(el.dataset.fitShare || 1)) / el.scrollHeight;
       const max = Number(el.dataset.fitMax) || Infinity;
-      el.style.fontSize = `${Math.floor(Math.min(byWidth, byHeight, max))}px`;
+      const size = Math.floor(Math.min(byWidth, byHeight, max));
+      if (size !== now) el.style.fontSize = `${size}px`;
     });
   };
   fit();

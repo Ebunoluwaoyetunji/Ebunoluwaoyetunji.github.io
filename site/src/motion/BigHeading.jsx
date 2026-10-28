@@ -20,15 +20,20 @@ export default function BigHeading({ as: Tag = 'h1', id, lines, font, copies = 0
     const el = ref.current;
     let cancelled = false;
 
+    // Letter widths and line heights grow in step with the font size, so one
+    // measurement at the current size is enough (one layout, not two). The
+    // pre-rendered page has already sized it (src/lib/fitScript.js), so on a
+    // first run the size usually stays as it is and nothing is written.
     const fit = () => {
       if (cancelled) return;
-      el.style.fontSize = '100px';
+      if (!el.style.fontSize) el.style.fontSize = '100px';
+      const now = parseFloat(el.style.fontSize);
       const lineEls = [...el.querySelectorAll('.big__line')];
       const widest = Math.max(...lineEls.map((l) => l.scrollWidth));
-      const byWidth = ((100 * el.clientWidth) / widest) * 0.985;
-      const byHeight = (100 * window.innerHeight * maxScreenShare) / el.scrollHeight;
+      const byWidth = ((now * el.clientWidth) / widest) * 0.985;
+      const byHeight = (now * window.innerHeight * maxScreenShare) / el.scrollHeight;
       const size = Math.floor(Math.min(byWidth, byHeight, maxFontSize));
-      el.style.fontSize = `${size}px`;
+      if (size !== now) el.style.fontSize = `${size}px`;
       layoutRef.current?.({
         heading: el,
         fontSize: size,

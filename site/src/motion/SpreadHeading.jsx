@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { whenIdle } from '../lib/whenLoaded.js';
 import BigHeading from './BigHeading.jsx';
 import { approach, createTicker, falloff } from './ticker.js';
 
@@ -12,6 +13,10 @@ import { approach, createTicker, falloff } from './ticker.js';
 // the letters around it, and a tap parts them for a moment (touchHold).
 // Up and down swipes still scroll the page (touch-action: pan-y).
 export default function SpreadHeading({ lines, font, active, as, id, settings: s, className = '' }) {
+  // The faded copies are not in the pre-rendered page (they are hidden until
+  // the letters move): they are added once the page has started and is idle.
+  const [withCopies, setWithCopies] = useState(false);
+  useEffect(() => (active ? whenIdle(() => setWithCopies(true)) : undefined), [active]);
   const state = useRef(null); // measured letters and their positions
   const pointer = useRef({ line: -1, x: 0 });
   const ticker = useRef(null);
@@ -151,7 +156,7 @@ export default function SpreadHeading({ lines, font, active, as, id, settings: s
       id={id}
       lines={lines}
       font={font}
-      copies={active ? s.copies : 0}
+      copies={active && withCopies ? s.copies : 0}
       onLayout={onLayout}
       maxScreenShare={s.maxScreenShare}
       maxFontSize={s.maxFontSize}

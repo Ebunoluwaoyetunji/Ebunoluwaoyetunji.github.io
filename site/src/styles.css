@@ -10,9 +10,9 @@
   --rule: #d9d9d3;
   --accent: #d2220f;
   --pen: var(--accent);
-  --display: 'Italiana', serif;
-  --body: 'IBM Plex Sans', system-ui, sans-serif;
-  --facts: 'Courier Prime', 'Courier New', monospace;
+  --display: 'Italiana', 'Italiana Fallback', serif;
+  --body: 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif;
+  --facts: 'Courier Prime', 'Courier Prime Fallback', 'Courier New', monospace;
 
   --edge: clamp(16px, 4.5vw, 64px);
   --gap: clamp(24px, 4vw, 56px);

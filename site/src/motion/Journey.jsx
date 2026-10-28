@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Text } from '../components/Todo.jsx';
-import { seeded, smooth } from '../lib/penLine.js';
+import { curveSampler, seeded, smooth } from '../lib/penLine.js';
 
 // The Journey: one continuous vermilion path down the page, drawn like a pen
 // stroke with gentle curves. The stops sit beside it, alternating sides on a
@@ -23,7 +23,8 @@ export default function Journey({ stops, settings: s, still }) {
     const path = pathRef.current;
     const items = [...root.querySelectorAll('.stop')];
     const dots = [...svg.querySelectorAll('.journey__dot')];
-    let samples = []; // [length, y] along the path, for finding how far to draw
+    let line = null; // the path's sampler (src/lib/penLine.js): how far to draw for a height
+    let built = { w: 0, h: 0 };
     let total = 0;
     let stopYs = [];
     let raf = 0;
@@ -32,6 +33,7 @@ export default function Journey({ stops, settings: s, still }) {
     const build = () => {
       const w = root.clientWidth;
       const h = root.scrollHeight;
+      built = { w, h };
       svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
       svg.style.height = `${h}px`;
       const oneSide = w < s.oneSideBelow;
@@ -54,37 +56,22 @@ export default function Journey({ stops, settings: s, still }) {
       });
       pts.push([x0 + (rand() - 0.5) * amp, h]);
       path.setAttribute('d', smooth(pts));
-      total = path.getTotalLength();
-      samples = [];
-      for (let l = 0; l <= total; l += 4) samples.push([l, path.getPointAtLength(l).y]);
-      samples.push([total, path.getPointAtLength(total).y]);
+      line = curveSampler(pts, path.getTotalLength());
+      total = line.total;
       path.style.strokeDasharray = `${total} ${total}`;
       // Put each dot exactly on the line, level with its stop's date.
       stopYs.forEach((y, i) => {
-        const l = lengthAt(y);
-        const p = path.getPointAtLength(l);
+        const p = line.pointAt(line.lengthAt(y));
         dots[i].setAttribute('cx', p.x.toFixed(1));
         dots[i].setAttribute('cy', p.y.toFixed(1));
       });
     };
 
-    // The path length at which the line reaches height y (the path only goes down).
-    const lengthAt = (y) => {
-      if (!samples.length || y <= samples[0][1]) return 0;
-      if (y >= samples[samples.length - 1][1]) return total;
-      let lo = 0, hi = samples.length - 1;
-      while (hi - lo > 1) {
-        const mid = (lo + hi) >> 1;
-        if (samples[mid][1] < y) lo = mid; else hi = mid;
-      }
-      const [l0, y0] = samples[lo], [l1, y1] = samples[hi];
-      return l0 + ((y - y0) / Math.max(0.001, y1 - y0)) * (l1 - l0);
-    };
-
     const draw = () => {
       raf = 0;
+      if (!line) return;
       const y = still ? Infinity : window.innerHeight * s.penAt - root.getBoundingClientRect().top;
-      const drawn = still ? total : lengthAt(y);
+      const drawn = still ? total : line.lengthAt(y);
       path.style.strokeDashoffset = (total - drawn).toFixed(1);
       items.forEach((el, i) => {
         const reached = still || stopYs[i] <= y;
@@ -97,7 +84,12 @@ export default function Journey({ stops, settings: s, still }) {
     build();
     draw();
     window.addEventListener('scroll', onScroll, { passive: true });
-    const ro = new ResizeObserver(() => { build(); draw(); });
+    // Rebuild only when the size really changed (it also reports once when it
+    // starts watching, right after the build above).
+    const ro = new ResizeObserver(() => {
+      if (root.clientWidth === built.w && root.scrollHeight === built.h) return;
+      build(); draw();
+    });
     ro.observe(root);
     return () => {
       cancelAnimationFrame(raf);

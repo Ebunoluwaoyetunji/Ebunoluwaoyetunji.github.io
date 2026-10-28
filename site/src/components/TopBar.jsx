@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import WordStack from '../motion/WordStack.jsx';
+import { whenIdle } from '../lib/whenLoaded.js';
 
 // The black top bar. On laptops: name, role and the links in one row.
 // On phones (PHONE below): name and role, and a Menu button that opens a
@@ -56,11 +57,22 @@ export default function TopBar({ home, wordSettings, font }) {
       root.setProperty('--bar-height', `${full}px`);
       root.setProperty('--bar-slim-height', `${slim}px`);
     };
-    measure();
-    const ro = new ResizeObserver(() => { if (modeRef.current === 'natural') measure(); });
+    // When the page starts: read the full height only (the CSS defaults in
+    // styles.css already match it, so usually nothing is written and nothing
+    // moves). Switching the slim style on and off to measure it waits for a
+    // quiet moment, so the start stays short.
+    if (!el.classList.contains('topbar--slim')) {
+      const full = el.offsetHeight;
+      heights.current = { full, slim: heights.current.slim || full };
+      if (getComputedStyle(document.documentElement).getPropertyValue('--bar-height').trim() !== `${full}px`) root.setProperty('--bar-height', `${full}px`);
+    }
+    const cancelIdle = whenIdle(measure);
+    // Measure again only when the full height really changed (it also reports
+    // once when it starts watching).
+    const ro = new ResizeObserver(() => { if (modeRef.current === 'natural' && el.offsetHeight !== heights.current.full) measure(); });
     ro.observe(el);
     window.addEventListener('resize', measure);
-    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+    return () => { cancelIdle(); ro.disconnect(); window.removeEventListener('resize', measure); };
   }, []);
 
   // Which state, from the scroll position and direction.

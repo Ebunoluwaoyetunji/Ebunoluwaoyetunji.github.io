@@ -37,7 +37,7 @@ export default function FooterNotes({ words, spread, settings: s, animate }) {
     const near = new IntersectionObserver((es) => {
       if (!es.some((e) => e.isIntersecting)) return;
       near.disconnect();
-      loadFooterNotes(words.filter((w) => w.note).map((w) => w.note.file)).then(() => { if (live) { ready = true; place(); } });
+      loadFooterNotes(words.filter((w) => w.note).map((w) => w.note.file)).then(() => { if (live) { ready = true; place(); } }).catch(() => {}); // no notes if they cannot load
     }, { rootMargin: '100% 0px' });
     near.observe(menu);
     const place = () => {
@@ -125,7 +125,7 @@ export default function FooterNotes({ words, spread, settings: s, animate }) {
       });
       tl.set(strokes.flat(), { clearProps: 'strokeDasharray,strokeDashoffset,opacity' });
       play();
-    });
+    }).catch(() => { strokes.flat().forEach((el) => { el.style.opacity = ''; }); }); // GSAP could not load: show the notes already drawn
 
     const io = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {

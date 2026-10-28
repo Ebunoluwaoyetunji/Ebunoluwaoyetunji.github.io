@@ -20,7 +20,7 @@ export default function Signpost({ signpost: sp, still }) {
   const [svg, setSvg] = useState(() => signpost(sp.file));
   useEffect(() => {
     let live = true;
-    if (!signpost(sp.file)) loadSignposts([sp.file]).then(() => { if (live) setSvg(signpost(sp.file)); });
+    if (!signpost(sp.file)) loadSignposts([sp.file]).then(() => { if (live) setSvg(signpost(sp.file)); }).catch(() => {}); // its words are still read aloud
     else setSvg(signpost(sp.file));
     return () => { live = false; };
   }, [sp.file]);
@@ -59,7 +59,7 @@ function Drawing({ sp, svg, still }) {
         if (i < strokes.length - 1) tl.to({}, { duration: s.pauseStroke });
       });
       tl.set(strokes, { clearProps: 'strokeDasharray,strokeDashoffset,opacity' });
-    });
+    }).catch(clear); // GSAP could not load: show the signpost already drawn
 
     const io = new IntersectionObserver((entries) => {
       const e = entries[entries.length - 1];

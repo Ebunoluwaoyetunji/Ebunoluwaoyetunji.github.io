@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { butterflyParts, loadButterfly } from '../content/butterfly/index.js';
+import { whenIdle } from '../lib/whenLoaded.js';
 
 // One butterfly in the hero. It flies in on load and lands on top of a
 // letter. While resting its wings open and close slowly. When the mouse comes
@@ -35,7 +36,7 @@ export default function Butterfly(props) {
   const [parts, setParts] = useState(null);
   useEffect(() => {
     let live = true;
-    loadButterfly(props.option).then(() => { if (live) setParts(butterflyParts(props.option)); });
+    loadButterfly(props.option).then(() => { if (live) setParts(butterflyParts(props.option)); }).catch(() => {}); // no butterfly if it cannot load
     return () => { live = false; };
   }, [props.option]);
   return parts ? <ButterflyDrawing {...props} parts={parts} /> : null;
@@ -269,7 +270,8 @@ function ButterflyDrawing({ headingId, font, settings: s, mode, parts }) {
       const heading = document.getElementById(headingId);
       if (cancelled) return;
       if (!heading || !heading.style.fontSize) { requestAnimationFrame(ready); return; }
-      document.fonts.ready.then(() => requestAnimationFrame(start));
+      // In a quiet moment, so finding its resting spots never adds to the page's start.
+      document.fonts.ready.then(() => whenIdle(() => requestAnimationFrame(start)));
     };
     el.style.visibility = 'hidden';
     ready();

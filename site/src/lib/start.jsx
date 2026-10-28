@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { startTransition } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import whenLoaded from './whenLoaded.js';
 
@@ -17,6 +17,8 @@ export async function start(element, ready = []) {
   await Promise.all(ready);
   const root = document.getElementById('root');
   const app = <React.StrictMode>{element}</React.StrictMode>;
-  if (root.hasChildNodes()) hydrateRoot(root, app);
+  // Taking over is split into small pieces (a transition), so the page stays
+  // responsive on a slow phone instead of being busy for one long stretch.
+  if (root.hasChildNodes()) startTransition(() => { hydrateRoot(root, app); });
   else createRoot(root).render(app);
 }
